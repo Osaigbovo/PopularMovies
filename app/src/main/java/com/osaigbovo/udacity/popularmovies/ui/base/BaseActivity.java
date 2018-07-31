@@ -15,11 +15,15 @@ public class BaseActivity extends AppCompatActivity
 
     private Snackbar mSnackBar;
 
+    private CheckConnectionBroadcastReceiver checkConnectionBroadcastReceiver;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.registerReceiver(new CheckConnectionBroadcastReceiver(),
+        checkConnectionBroadcastReceiver = new CheckConnectionBroadcastReceiver();
+
+        this.registerReceiver(checkConnectionBroadcastReceiver,
                 new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
@@ -27,6 +31,12 @@ public class BaseActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         CheckConnectionBroadcastReceiver.checkConnectionListener = this;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(checkConnectionBroadcastReceiver);
     }
 
     private void showMessage(Boolean isConnected) {

@@ -2,24 +2,33 @@ package com.osaigbovo.udacity.popularmovies.ui.movieslist;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.util.Log;
 
 import com.osaigbovo.udacity.popularmovies.R;
+import com.osaigbovo.udacity.popularmovies.data.model.MovieResponse;
+import com.osaigbovo.udacity.popularmovies.data.model.TopMovies;
+import com.osaigbovo.udacity.popularmovies.data.remote.RequestInterface;
+import com.osaigbovo.udacity.popularmovies.data.remote.ServiceGenerator;
 import com.osaigbovo.udacity.popularmovies.dummy.DummyContent;
 import com.osaigbovo.udacity.popularmovies.ui.base.BaseActivity;
 import com.osaigbovo.udacity.popularmovies.ui.moviedetails.MovieDetailActivity;
 
-import butterknife.BindColor;
+import java.util.List;
+
 import butterknife.BindDimen;
-import butterknife.BindDrawable;
 import butterknife.BindInt;
-import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
+
+import static com.osaigbovo.udacity.popularmovies.data.remote.ApiConstants.API_KEY;
 
 /**
  * An activity representing a list of Items. This activity
@@ -31,13 +40,22 @@ import butterknife.ButterKnife;
  */
 public class MoviesListActivity extends BaseActivity {
 
-//    @BindView(R.id.title) TextView title;
-//    @BindView(R.id.subtitle) TextView subtitle;
-//    @BindView(R.id.footer) TextView footer;
 //    @BindString(R.string.title) String title;
 //    @BindDrawable(R.drawable.graphic) Drawable graphic;
 //    @BindColor(R.color.red) int red; // int or ColorStateList field
-//    @BindDimen(R.dimen.spacer) Float spacer;
+
+    @BindView(R.id.recycler_movies_list)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindInt(R.integer.movies_columns)
+    int mColumns;
+    @BindDimen(R.dimen.grid_item_spacing)
+    int mGridSpacing;
+
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+
+    private GridLayoutManager gridLayoutManager;
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -51,9 +69,8 @@ public class MoviesListActivity extends BaseActivity {
         setContentView(R.layout.activity_movies_list);
         ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
+        setSupportActionBar(mToolbar);
+        mToolbar.setTitle(getTitle());
 
         if (findViewById(R.id.item_detail_container) != null) {
             // The detail container view will be present only in the
@@ -63,13 +80,52 @@ public class MoviesListActivity extends BaseActivity {
             mTwoPane = true;
         }
 
-        View recyclerView = findViewById(R.id.item_list);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+        assert mRecyclerView != null;
+        setupRecyclerView(mRecyclerView);
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(
-                new MoviesListAdapter(this, DummyContent.ITEMS, mTwoPane));
+
+        //recyclerView.setAdapter(new MoviesListAdapter(this, DummyContent.ITEMS, mTwoPane));
+
+        gridLayoutManager = new GridLayoutManager(this,
+                getResources().getInteger(R.integer.movies_columns));
+
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setHasFixedSize(true);
+
+        RequestInterface requestInterface = ServiceGenerator.createService(RequestInterface.class);
+
+        compositeDisposable.add(requestInterface.getTopRatedMovies(API_KEY)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<MovieResponse>() {
+                    @Override
+                    public void onSuccess(MovieResponse movieResponse) {
+                        List<TopMovies> topMovies = movieResponse.getResults();
+                        // TODO 3 - Pass the movies list to the Adapter.
+                        recyclerView.setAdapter(new MoviesListAdapter(MoviesListActivity.this, topMovies, mTwoPane));
+                        Timber.i(String.valueOf(topMovies.get(0).getTitle()));
+                        Log.i("MOVIESLISTADAPTER", String.valueOf(topMovies.get(0).getTitle()));
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.w(e);
+                    }
+                })
+        );
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        compositeDisposable.clear();
     }
 }

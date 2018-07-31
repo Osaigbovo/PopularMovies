@@ -16,6 +16,10 @@ public interface RequestInterface {
             @Query("language") String language,
             @Query("page") int page);
 
+    @GET("movie/top_rated")
+    Single<MovieResponse> getTopRatedMovies(
+            @Query("api_key") String apiKey);
+
     //@Headers("Cache-Control:public ,max-age=60")
     @GET("movie/top_rated")
     Single<MovieResponse> getTopRatedMovies(
