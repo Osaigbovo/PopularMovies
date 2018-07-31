@@ -10,7 +10,7 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context=".ItemListActivity">
+    tools:context=".ui.movieslist.MoviesListActivity">
 
     <!--
     This layout is a two-pane layout for the Items
@@ -26,8 +26,8 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        app:layoutManager="LinearLayoutManager"
-        tools:context="com.osaigbovo.udacity.popularmovies.ItemListActivity"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        tools:context="com.osaigbovo.udacity.popularmovies.ui.movieslist.MoviesListActivity"
         tools:listitem="@layout/item_list_content" />
 
     <FrameLayout

@@ -1,4 +1,4 @@
-package com.osaigbovo.udacity.popularmovies;
+package com.osaigbovo.udacity.popularmovies.ui.moviedetails;
 
 import android.app.Activity;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -9,15 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.osaigbovo.udacity.popularmovies.R;
 import com.osaigbovo.udacity.popularmovies.dummy.DummyContent;
+import com.osaigbovo.udacity.popularmovies.ui.movieslist.MoviesListActivity;
 
 /**
  * A fragment representing a single Item detail screen.
- * This fragment is either contained in a {@link ItemListActivity}
- * in two-pane mode (on tablets) or a {@link ItemDetailActivity}
+ * This fragment is either contained in a {@link MoviesListActivity}
+ * in two-pane mode (on tablets) or a {@link MovieDetailActivity}
  * on handsets.
  */
-public class ItemDetailFragment extends Fragment {
+public class MovieDetailFragment extends Fragment {
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -33,7 +35,7 @@ public class ItemDetailFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ItemDetailFragment() {
+    public MovieDetailFragment() {
     }
 
     @Override
@@ -47,7 +49,7 @@ public class ItemDetailFragment extends Fragment {
             mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
 
             Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+            CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
                 appBarLayout.setTitle(mItem.content);
             }

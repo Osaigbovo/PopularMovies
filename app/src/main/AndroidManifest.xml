@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".ItemListActivity"
+            android:name=".ui.movieslist.MoviesListActivity"
             android:label="@string/title_item_list"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -25,13 +25,13 @@
         </activity>
 
         <activity
-            android:name=".ItemDetailActivity"
+            android:name=".ui.moviedetails.MovieDetailActivity"
             android:label="@string/title_item_detail"
-            android:parentActivityName=".ItemListActivity"
+            android:parentActivityName=".ui.movieslist.MoviesListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.osaigbovo.udacity.popularmovies.ItemListActivity" />
+                android:value="com.osaigbovo.udacity.popularmovies.ui.movieslist.MoviesListActivity" />
         </activity>
 
     </application>

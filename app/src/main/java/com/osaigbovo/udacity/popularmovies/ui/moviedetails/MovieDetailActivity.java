@@ -1,4 +1,4 @@
-package com.osaigbovo.udacity.popularmovies;
+package com.osaigbovo.udacity.popularmovies.ui.moviedetails;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,13 +10,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
+import com.osaigbovo.udacity.popularmovies.R;
+import com.osaigbovo.udacity.popularmovies.ui.movieslist.MoviesListActivity;
+
 /**
  * An activity representing a single Item detail screen. This
  * activity is only used on narrow width devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
- * in a {@link ItemListActivity}.
+ * in a {@link MoviesListActivity}.
  */
-public class ItemDetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +56,9 @@ public class ItemDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(ItemDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(ItemDetailFragment.ARG_ITEM_ID));
-            ItemDetailFragment fragment = new ItemDetailFragment();
+            arguments.putString(MovieDetailFragment.ARG_ITEM_ID,
+                    getIntent().getStringExtra(MovieDetailFragment.ARG_ITEM_ID));
+            MovieDetailFragment fragment = new MovieDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.item_detail_container, fragment)
@@ -73,7 +76,7 @@ public class ItemDetailActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            navigateUpTo(new Intent(this, ItemListActivity.class));
+            navigateUpTo(new Intent(this, MoviesListActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
