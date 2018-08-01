@@ -9,6 +9,12 @@
 
         <item name="cardViewStyle">@style/CardView</item>
         <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
+
+        <item name="android:windowContentTransitions">true</item>
+
+        <!--&lt;!&ndash; shared element transitions &ndash;&gt;
+        <item name="android:windowSharedElementEnterTransition">@transition/change_image_transform</item>
+        <item name="android:windowSharedElementExitTransition">@transition/change_image_transform</item>-->
     </style>
 
     <style name="AppTheme.NoActionBar">

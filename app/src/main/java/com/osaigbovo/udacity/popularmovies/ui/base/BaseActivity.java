@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.osaigbovo.udacity.popularmovies.R;
@@ -22,21 +23,26 @@ public class BaseActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         checkConnectionBroadcastReceiver = new CheckConnectionBroadcastReceiver();
-
-        this.registerReceiver(checkConnectionBroadcastReceiver,
-                new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
         CheckConnectionBroadcastReceiver.checkConnectionListener = this;
+        this.registerReceiver(checkConnectionBroadcastReceiver,
+                new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(checkConnectionBroadcastReceiver);
+
+        // TODO 1 - BUG java.lang.IllegalArgumentException: Receiver not registered:
+        // LocalBroadcastManager.getInstance().un
+        if (checkConnectionBroadcastReceiver != null) {
+            this.unregisterReceiver(checkConnectionBroadcastReceiver);
+        }
     }
 
     private void showMessage(Boolean isConnected) {

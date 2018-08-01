@@ -1,7 +1,10 @@
 package com.osaigbovo.udacity.popularmovies.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -11,47 +14,60 @@ import com.google.gson.annotations.SerializedName;
  */
 
 //@Entity(primaryKeys = "id")
-public class TopMovies { //implements Parcelable
+public class TopMovies implements Parcelable { //implements Parcelable
 
     @NonNull
     //@PrimaryKey
     //@ColumnInfo(name = "userid") Skip this if fields already have the correct column name.
+    @Expose
     @SerializedName("id")
     private Integer id;
 
+    @Expose
     @SerializedName("original_title")
     private String originalTitle;
 
+    @Expose
     @SerializedName("title")
     private String title;
 
+    @Expose
     @SerializedName("poster_path")
     private String posterPath;
 
+    @Expose
     @SerializedName("overview")
     private String overview;
 
+    @Expose
     @SerializedName("release_date")
     private String releaseDate;
 
+    @Expose
     @SerializedName("original_language")
     private String originalLanguage;
 
+    @Expose
     @SerializedName("backdrop_path")
     private String backdropPath;
 
+    @Expose
     @SerializedName("popularity")
     private Double popularity;
 
+    @Expose
     @SerializedName("video")
     private Boolean video;
 
+    @Expose
     @SerializedName("vote_count")
     private Integer voteCount;
 
+    @Expose
     @SerializedName("vote_average")
     private Double voteAverage;
 
+    @Expose
     @SerializedName("adult")
     private boolean adult;
 
@@ -177,5 +193,45 @@ public class TopMovies { //implements Parcelable
     public void setAdult(boolean adult) {
         this.adult = adult;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.overview);
+        dest.writeString(this.releaseDate);
+        dest.writeString(this.posterPath);
+        dest.writeString(this.backdropPath);
+        dest.writeDouble(this.popularity);
+        dest.writeString(this.title);
+        dest.writeDouble(this.voteAverage);
+        dest.writeInt(this.voteCount);
+    }
+
+    protected TopMovies(Parcel in) {
+        this.id = in.readInt();
+        this.overview = in.readString();
+        this.releaseDate = in.readString();
+        this.posterPath = in.readString();
+        this.backdropPath = in.readString();
+        this.popularity = in.readDouble();
+        this.title = in.readString();
+        this.voteAverage = in.readDouble();
+        this.voteCount = in.readInt();
+    }
+
+    public static final Creator<TopMovies> CREATOR = new Creator<TopMovies>() {
+        public TopMovies createFromParcel(Parcel source) {
+            return new TopMovies(source);
+        }
+
+        public TopMovies[] newArray(int size) {
+            return new TopMovies[size];
+        }
+    };
 
 }

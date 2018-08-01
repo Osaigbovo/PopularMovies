@@ -10,6 +10,10 @@ import retrofit2.http.Query;
 
 public interface RequestInterface {
 
+    @GET("movie/now_playing")
+    Single<MovieResponse> getPopularMovies(
+            @Query("api_key") String apiKey);
+
     @GET("movie/popular")
     Single<MovieResponse> getPopularMovies(
             @Query("api_key") String apiKey,
@@ -27,6 +31,9 @@ public interface RequestInterface {
             @Query("language") String language,
             @Query("page") int page);
 
+    @GET("movie/now_playing")
+    Single<NowPlayingResponse> getNowPlaying(
+            @Query("api_key") String apiKey);
 
     @GET("movie/now_playing")
     Flowable<NowPlayingResponse> getNowPlaying(

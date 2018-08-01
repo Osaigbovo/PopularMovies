@@ -1,18 +1,18 @@
 package com.osaigbovo.udacity.popularmovies.ui.movieslist;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.transition.Fade;
 
 import com.osaigbovo.udacity.popularmovies.R;
 import com.osaigbovo.udacity.popularmovies.data.model.MovieResponse;
 import com.osaigbovo.udacity.popularmovies.data.model.TopMovies;
 import com.osaigbovo.udacity.popularmovies.data.remote.RequestInterface;
 import com.osaigbovo.udacity.popularmovies.data.remote.ServiceGenerator;
-import com.osaigbovo.udacity.popularmovies.dummy.DummyContent;
 import com.osaigbovo.udacity.popularmovies.ui.base.BaseActivity;
 import com.osaigbovo.udacity.popularmovies.ui.moviedetails.MovieDetailActivity;
 
@@ -80,35 +80,38 @@ public class MoviesListActivity extends BaseActivity {
             mTwoPane = true;
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Fade fade = new Fade();
+            fade.excludeTarget(R.id.app_bar, true);
+            fade.excludeTarget(android.R.id.statusBarBackground, true);
+            fade.excludeTarget(android.R.id.navigationBarBackground, true);
+
+            getWindow().setEnterTransition(fade);
+            getWindow().setExitTransition(fade);
+        }
+
         assert mRecyclerView != null;
         setupRecyclerView(mRecyclerView);
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
 
-        //recyclerView.setAdapter(new MoviesListAdapter(this, DummyContent.ITEMS, mTwoPane));
-
-        gridLayoutManager = new GridLayoutManager(this,
-                getResources().getInteger(R.integer.movies_columns));
-
+        gridLayoutManager = new GridLayoutManager(this, getResources().getInteger(R.integer.movies_columns));
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(true);
 
         RequestInterface requestInterface = ServiceGenerator.createService(RequestInterface.class);
 
-        compositeDisposable.add(requestInterface.getTopRatedMovies(API_KEY)
+        compositeDisposable.add(requestInterface.getPopularMovies(API_KEY)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<MovieResponse>() {
                     @Override
                     public void onSuccess(MovieResponse movieResponse) {
                         List<TopMovies> topMovies = movieResponse.getResults();
-                        // TODO 3 - Pass the movies list to the Adapter.
                         recyclerView.setAdapter(new MoviesListAdapter(MoviesListActivity.this, topMovies, mTwoPane));
-                        Timber.i(String.valueOf(topMovies.get(0).getTitle()));
-                        Log.i("MOVIESLISTADAPTER", String.valueOf(topMovies.get(0).getTitle()));
+                        Timber.i(String.valueOf(topMovies.size()));
                     }
-
                     @Override
                     public void onError(Throwable e) {
                         Timber.w(e);
@@ -118,14 +121,10 @@ public class MoviesListActivity extends BaseActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
 
         compositeDisposable.clear();
     }
+
 }
