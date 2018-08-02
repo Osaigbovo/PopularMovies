@@ -1,6 +1,7 @@
 package com.osaigbovo.udacity.popularmovies.ui.movieslist;
 
 import android.app.Activity;
+import android.arch.paging.PagedListAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Fade;
 import android.view.LayoutInflater;
@@ -31,15 +33,28 @@ import timber.log.Timber;
 import static com.osaigbovo.udacity.popularmovies.data.remote.ApiConstants.BASE_IMAGE_URL;
 import static com.osaigbovo.udacity.popularmovies.util.ViewUtils.getYearOfRelease;
 
-public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.MoviesListViewHolder> {
+/**
+ * A simple PagedListAdapter that binds Cheese items into CardViews.
+ * <p>
+ * PagedListAdapter is a RecyclerView.Adapter base class which can present the content of PagedLists
+ * in a RecyclerView. It requests new pages as the user scrolls, and handles new PagedLists by
+ * computing list differences on a background thread, and dispatching minimal, efficient updates to
+ * the RecyclerView to ensure minimal UI thread work.
+ * <p>
+ * If you want to use your own Adapter base class, try using a PagedListAdapterHelper inside your
+ * adapter instead.
+ *
+ * @see android.arch.paging.PagedListAdapter
+ * see android.arch.paging.PagedListAdapterHelper
+ */
+public class MoviesListAdapter extends PagedListAdapter<TopMovies, MoviesListAdapter.MoviesListViewHolder> {
 
-    private final List<TopMovies> topMovies;
     private final MoviesListActivity mParentActivity;
     private final boolean mTwoPane;
 
-    MoviesListAdapter(MoviesListActivity parent, List<TopMovies> mTopMovies, boolean twoPane) {
+    MoviesListAdapter(MoviesListActivity parent, boolean twoPane) {
+        super(DIFF_CALLBACK);
         mParentActivity = parent;
-        topMovies = mTopMovies;
         mTwoPane = twoPane;
     }
 
@@ -53,7 +68,10 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
 
     @Override
     public void onBindViewHolder(@NonNull final MoviesListAdapter.MoviesListViewHolder holder, int position) {
-        String image_url = BASE_IMAGE_URL + topMovies.get(position).getPosterPath();
+
+        String image_url = BASE_IMAGE_URL + getItem(position).getPosterPath();
+
+        Timber.i(getItem(position).getOriginalTitle());
 
         GlideApp.with(holder.itemView.getContext())
                 .load(image_url)
@@ -62,11 +80,11 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
                 .error(R.drawable.ic_movie_error)
                 .into(holder.movieImage);
 
-        holder.movieTitle.setText(topMovies.get(position).getTitle());
-        holder.dateText.setText(getYearOfRelease(topMovies.get(position).getReleaseDate()));
-        holder.ratingText.setText(String.valueOf(topMovies.get(position).getVoteAverage()));
+        holder.movieTitle.setText(getItem(position).getTitle());
+        holder.dateText.setText(getYearOfRelease(getItem(position).getReleaseDate()));
+        holder.ratingText.setText(String.valueOf(getItem(position).getVoteAverage()));
 
-        holder.itemView.setTag(topMovies.get(position));
+        holder.itemView.setTag(getItem(position));
 
         //holder.itemView.setOnClickListener(mOnClickListener);
 
@@ -100,14 +118,14 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
         });
     }
 
-    @Override
+    /*@Override
     public int getItemCount() {
         if (topMovies != null) {
             return topMovies.size();
         } else {
             return 0;
         }
-    }
+    }*/
 
     class MoviesListViewHolder extends RecyclerView.ViewHolder {
 
@@ -126,4 +144,30 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
         }
     }
 
+    /**
+     * This diff callback informs the PagedListAdapter how to compute list differences when new
+     * PagedLists arrive.
+     * <p>
+     * When you add a Cheese with the 'Add' button, the PagedListAdapter uses diffCallback to
+     * detect there's only a single item difference from before, so it only needs to animate and
+     * rebind a single view.
+     *
+     * @see android.support.v7.util.DiffUtil
+     */
+    private static final DiffUtil.ItemCallback DIFF_CALLBACK = new DiffUtil.ItemCallback<TopMovies>() {
+        @Override
+        public boolean areItemsTheSame(
+                @NonNull TopMovies oldUser, @NonNull TopMovies newUser) {
+            // User properties may have changed if reloaded from the DB, but ID is fixed
+            return oldUser.getId() == newUser.getId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(
+                @NonNull TopMovies oldUser, @NonNull TopMovies newUser) {
+            // NOTE: if you use equals, your object must properly override Object#equals()
+            // Incorrectly returning false here will result in too many animations.
+            return oldUser.equals(newUser);
+        }
+    };
 }

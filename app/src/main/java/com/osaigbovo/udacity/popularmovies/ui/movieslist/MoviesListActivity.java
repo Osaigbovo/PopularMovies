@@ -1,8 +1,12 @@
 package com.osaigbovo.udacity.popularmovies.ui.movieslist;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.arch.paging.PagedList;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -55,7 +59,7 @@ public class MoviesListActivity extends BaseActivity {
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private GridLayoutManager gridLayoutManager;
+    private MovieViewModel movieViewModel;
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -68,6 +72,7 @@ public class MoviesListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies_list);
         ButterKnife.bind(this);
+        movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
         setSupportActionBar(mToolbar);
         mToolbar.setTitle(getTitle());
@@ -80,51 +85,36 @@ public class MoviesListActivity extends BaseActivity {
             mTwoPane = true;
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Fade fade = new Fade();
-            fade.excludeTarget(R.id.app_bar, true);
-            fade.excludeTarget(android.R.id.statusBarBackground, true);
-            fade.excludeTarget(android.R.id.navigationBarBackground, true);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            Fade fade = new Fade();
+//            fade.excludeTarget(R.id.app_bar, true);
+//            fade.excludeTarget(android.R.id.statusBarBackground, true);
+//            fade.excludeTarget(android.R.id.navigationBarBackground, true);
+//
+//            getWindow().setEnterTransition(fade);
+//            getWindow().setExitTransition(fade);
+//        }
 
-            getWindow().setEnterTransition(fade);
-            getWindow().setExitTransition(fade);
-        }
-
-        assert mRecyclerView != null;
+        //assert mRecyclerView != null;
         setupRecyclerView(mRecyclerView);
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,
+                getResources().getInteger(R.integer.movies_columns));
 
-        gridLayoutManager = new GridLayoutManager(this, getResources().getInteger(R.integer.movies_columns));
+        MoviesListAdapter moviesListAdapter = new MoviesListAdapter(this, mTwoPane);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(true);
 
-        RequestInterface requestInterface = ServiceGenerator.createService(RequestInterface.class);
+        movieViewModel.moviesList.observe(this, moviesListAdapter::submitList);
 
-        compositeDisposable.add(requestInterface.getPopularMovies(API_KEY)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<MovieResponse>() {
-                    @Override
-                    public void onSuccess(MovieResponse movieResponse) {
-                        List<TopMovies> topMovies = movieResponse.getResults();
-                        recyclerView.setAdapter(new MoviesListAdapter(MoviesListActivity.this, topMovies, mTwoPane));
-                        Timber.i(String.valueOf(topMovies.size()));
-                    }
-                    @Override
-                    public void onError(Throwable e) {
-                        Timber.w(e);
-                    }
-                })
-        );
+        recyclerView.setAdapter(moviesListAdapter);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        compositeDisposable.clear();
     }
 
 }

@@ -26,6 +26,7 @@
     <string name="castandcrew">Cast and Crew</string>
     <string name="trailers">Trailers</string>
 
-
     <string name="transition_name">poster</string>
+
+    <string name="retry">Retry</string>
 </resources>

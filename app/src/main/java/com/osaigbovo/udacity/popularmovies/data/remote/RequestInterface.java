@@ -16,9 +16,7 @@ public interface RequestInterface {
 
     @GET("movie/popular")
     Single<MovieResponse> getPopularMovies(
-            @Query("api_key") String apiKey,
-            @Query("language") String language,
-            @Query("page") int page);
+            @Query("api_key") String apiKey, @Query("page") int page);
 
     @GET("movie/top_rated")
     Single<MovieResponse> getTopRatedMovies(
