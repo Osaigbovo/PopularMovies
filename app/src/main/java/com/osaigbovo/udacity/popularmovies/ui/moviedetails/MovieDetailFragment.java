@@ -91,9 +91,9 @@ public class MovieDetailFragment extends Fragment {
             GlideApp.with(getContext())
                     .load(image_url)
                     .centerCrop()
-                    .dontAnimate()
+                    /*.dontAnimate()
                     .placeholder(R.drawable.ic_movie_empty)
-                    .error(R.drawable.ic_movie_error)
+                    .error(R.drawable.ic_movie_error)*/
                     /*.listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {

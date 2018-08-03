@@ -31,6 +31,7 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 
 import static com.osaigbovo.udacity.popularmovies.data.remote.ApiConstants.BASE_IMAGE_URL;
+import static com.osaigbovo.udacity.popularmovies.data.remote.ApiConstants.BASE_IMAGE_URL_;
 import static com.osaigbovo.udacity.popularmovies.util.ViewUtils.getYearOfRelease;
 
 /**
@@ -69,15 +70,15 @@ public class MoviesListAdapter extends PagedListAdapter<TopMovies, MoviesListAda
     @Override
     public void onBindViewHolder(@NonNull final MoviesListAdapter.MoviesListViewHolder holder, int position) {
 
-        String image_url = BASE_IMAGE_URL + getItem(position).getPosterPath();
+        String image_url = BASE_IMAGE_URL_ + getItem(position).getPosterPath();
 
         Timber.i(getItem(position).getOriginalTitle());
 
         GlideApp.with(holder.itemView.getContext())
                 .load(image_url)
                 .centerCrop()
-                .placeholder(R.drawable.ic_movie_empty)
-                .error(R.drawable.ic_movie_error)
+                /*.placeholder(R.drawable.ic_movie_empty)
+                .error(R.drawable.ic_movie_error)*/
                 .into(holder.movieImage);
 
         holder.movieTitle.setText(getItem(position).getTitle());

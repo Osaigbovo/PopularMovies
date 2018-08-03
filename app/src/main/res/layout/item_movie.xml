@@ -13,8 +13,7 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraint_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp">
+        android:layout_height="wrap_content">
 
         <!-- Find a suitable width and height that will make -->
         <ImageView
@@ -54,34 +53,37 @@
             android:id="@+id/text_movie_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginTop="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/text_movie_title"
             app:layout_constraintTop_toBottomOf="@+id/text_movie_title"
-            tools:text="@string/movie_date"/>
+            tools:text="@string/movie_date" />
 
         <ImageView
             android:id="@+id/image_rating"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_centerInParent="true"
-            android:layout_marginTop="4dp"
-            app:layout_constraintStart_toStartOf="@id/text_movie_date"
-            app:layout_constraintTop_toBottomOf="@+id/text_movie_date"
-            android:scaleType="centerCrop"
+            android:layout_marginStart="24dp"
             android:contentDescription="@string/movie_image_rating"
-            app:srcCompat="@drawable/ic_star"
-            android:tint="@color/colorAccent"/>
+            android:scaleType="centerCrop"
+            android:tint="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="@+id/text_movie_date"
+            app:layout_constraintStart_toEndOf="@+id/text_movie_date"
+            app:layout_constraintTop_toTopOf="@+id/text_movie_date"
+            app:srcCompat="@drawable/ic_star" />
 
         <TextView
             android:id="@+id/text_movie_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            app:layout_constraintStart_toEndOf="@id/image_rating"
-            app:layout_constraintTop_toBottomOf="@+id/text_movie_date"
+            android:layout_marginStart="8dp"
             android:contentDescription="@string/movie_image_rating"
-            android:text="@string/movie_rating"/>
+            android:text="@string/movie_rating"
+            app:layout_constraintBottom_toBottomOf="@+id/image_rating"
+            app:layout_constraintStart_toEndOf="@+id/image_rating"
+            app:layout_constraintTop_toTopOf="@+id/image_rating" />
     </android.support.constraint.ConstraintLayout>
 
 </android.support.v7.widget.CardView>
