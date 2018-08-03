@@ -105,10 +105,7 @@ public class MoviesListActivity extends BaseActivity {
 
         MoviesListAdapter moviesListAdapter = new MoviesListAdapter(this, mTwoPane);
         recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.setHasFixedSize(true);
-
         movieViewModel.moviesList.observe(this, moviesListAdapter::submitList);
-
         recyclerView.setAdapter(moviesListAdapter);
     }
 

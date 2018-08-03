@@ -8,15 +8,14 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.osaigbovo.udacity.popularmovies.R;
 import com.osaigbovo.udacity.popularmovies.data.NetworkState;
 import com.osaigbovo.udacity.popularmovies.data.Status;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by Ahmed Abd-Elmeged on 2/20/2018.
- */
+
 public class NetworkStateViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.errorMessageTextView)

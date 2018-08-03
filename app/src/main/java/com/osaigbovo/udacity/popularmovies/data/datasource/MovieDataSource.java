@@ -64,13 +64,13 @@ public class MovieDataSource extends ItemKeyedDataSource<Integer, TopMovies> {
 
         // Get the initial Movies from the api
         compositeDisposable.add(requestInterface.getPopularMovies(API_KEY, pageNumber)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                //.subscribeOn(Schedulers.io())
+                //.observeOn(AndroidSchedulers.mainThread())
                 .subscribe(movieResponse -> {
                             // clear retry since last request succeeded
                             this.setRetry(null);
                             pageNumber++;
-                            Timber.i(movieResponse.getResults().get(0).getOriginalTitle());
+
                             callback.onResult(movieResponse.getResults());
                             networkState.postValue(NetworkState.LOADED);
                             initialLoad.postValue(NetworkState.LOADED);
@@ -95,8 +95,8 @@ public class MovieDataSource extends ItemKeyedDataSource<Integer, TopMovies> {
 
         // Get the Movies from the API after id
         compositeDisposable.add(requestInterface.getPopularMovies(API_KEY, params.key)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                //.subscribeOn(Schedulers.io())
+                //.observeOn(AndroidSchedulers.mainThread())
                 .subscribe(movieResponse -> {
                             // clear retry since last request succeeded
                             MovieDataSource.this.setRetry(null);
@@ -123,7 +123,7 @@ public class MovieDataSource extends ItemKeyedDataSource<Integer, TopMovies> {
     @NonNull
     @Override
     public Integer getKey(@NonNull TopMovies topMovies) {
-        return topMovies.getId();
+        return pageNumber;
     }
 
     @NonNull
