@@ -10,6 +10,8 @@ import com.osaigbovo.udacity.popularmovies.data.model.TopMovies;
 import com.osaigbovo.udacity.popularmovies.data.remote.RequestInterface;
 import com.osaigbovo.udacity.popularmovies.data.remote.ServiceGenerator;
 
+import javax.inject.Inject;
+
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -24,6 +26,7 @@ public class MovieDataSource extends ItemKeyedDataSource<Integer, TopMovies> {
     private static final String TAG = "ShowsDataSource";
 
     private RequestInterface requestInterface;
+
     private CompositeDisposable compositeDisposable;
 
     private MutableLiveData<NetworkState> networkState = new MutableLiveData<>();

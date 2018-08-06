@@ -4,34 +4,31 @@ import android.app.Activity;
 import android.arch.paging.PagedListAdapter;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.osaigbovo.udacity.popularmovies.R;
 import com.osaigbovo.udacity.popularmovies.data.model.TopMovies;
 import com.osaigbovo.udacity.popularmovies.ui.moviedetails.MovieDetailActivity;
 import com.osaigbovo.udacity.popularmovies.ui.moviedetails.MovieDetailFragment;
 import com.osaigbovo.udacity.popularmovies.util.glide.GlideApp;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 import static com.osaigbovo.udacity.popularmovies.data.remote.ApiConstants.BASE_IMAGE_URL;
-import static com.osaigbovo.udacity.popularmovies.data.remote.ApiConstants.BASE_IMAGE_URL_;
 import static com.osaigbovo.udacity.popularmovies.util.ViewUtils.getYearOfRelease;
 
 /**
@@ -70,13 +67,18 @@ public class MoviesListAdapter extends PagedListAdapter<TopMovies, MoviesListAda
     @Override
     public void onBindViewHolder(@NonNull final MoviesListAdapter.MoviesListViewHolder holder, int position) {
 
-        String image_url = BASE_IMAGE_URL_ + getItem(position).getPosterPath();
+        String image_url = BASE_IMAGE_URL + getItem(position).getPosterPath();
 
         Timber.i(getItem(position).getOriginalTitle());
 
         GlideApp.with(holder.itemView.getContext())
                 .load(image_url)
-                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .priority(Priority.HIGH)
+                .skipMemoryCache(true)
+                //.centerCrop()
+                .fitCenter()
+                .transition(withCrossFade())
                 /*.placeholder(R.drawable.ic_movie_empty)
                 .error(R.drawable.ic_movie_error)*/
                 .into(holder.movieImage);
@@ -112,7 +114,7 @@ public class MoviesListAdapter extends PagedListAdapter<TopMovies, MoviesListAda
                 ActivityOptionsCompat options = ActivityOptionsCompat.
                         makeSceneTransitionAnimation((Activity) context,
                                 holder.movieImage,
-                                "poster"); //ViewCompat.getTransitionName(holder.movieImage)
+                                context.getResources().getString(R.string.transition_name));
 
                 context.startActivity(intent, options.toBundle());
             }

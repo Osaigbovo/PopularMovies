@@ -1,5 +1,6 @@
 package com.osaigbovo.udacity.popularmovies.ui.movieslist;
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,18 +10,33 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Fade;
+import android.transition.Transition;
+import android.transition.TransitionManager;
+import android.util.ArrayMap;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.osaigbovo.udacity.popularmovies.R;
 import com.osaigbovo.udacity.popularmovies.data.NetworkState;
 import com.osaigbovo.udacity.popularmovies.data.Status;
+import com.osaigbovo.udacity.popularmovies.data.remote.RequestInterface;
+import com.osaigbovo.udacity.popularmovies.data.remote.ServiceGenerator;
 import com.osaigbovo.udacity.popularmovies.ui.base.BaseActivity;
 import com.osaigbovo.udacity.popularmovies.ui.moviedetails.MovieDetailActivity;
 import com.osaigbovo.udacity.popularmovies.util.RetryCallback;
+
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 import butterknife.BindDimen;
 import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.HasActivityInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 
 /**
  * An activity representing a list of Items. This activity
@@ -51,7 +67,7 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
     @BindDimen(R.dimen.grid_item_spacing)
     int mGridSpacing;
 
-    private MovieViewModel movieViewModel;
+    private MoviesListViewModel moviesListViewModel;
     private MoviesListAdapter moviesListAdapter;
 
     /**
@@ -65,7 +81,7 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies_list);
         ButterKnife.bind(this);
-        movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+        moviesListViewModel = ViewModelProviders.of(this).get(MoviesListViewModel.class);
 
         setSupportActionBar(mToolbar);
         mToolbar.setTitle(getTitle());
@@ -78,16 +94,6 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
             mTwoPane = true;
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Fade fade = new Fade();
-            fade.excludeTarget(R.id.app_bar, true);
-            fade.excludeTarget(android.R.id.statusBarBackground, true);
-            fade.excludeTarget(android.R.id.navigationBarBackground, true);
-
-            getWindow().setEnterTransition(fade);
-            getWindow().setExitTransition(fade);
-        }
-
         assert mRecyclerView != null;
         setupRecyclerView(mRecyclerView);
         initSwipeToRefresh();
@@ -98,8 +104,9 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
                 getResources().getInteger(R.integer.movies_columns));
 
         moviesListAdapter = new MoviesListAdapter(this, mTwoPane);
+
         recyclerView.setLayoutManager(gridLayoutManager);
-        movieViewModel.moviesList.observe(this, moviesListAdapter::submitList);
+        moviesListViewModel.moviesList.observe(this, moviesListAdapter::submitList);
         recyclerView.setAdapter(moviesListAdapter);
     }
 
@@ -107,7 +114,7 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
      * Init swipe to refresh and enable pull to refresh only when there are items in the adapter
      */
     private void initSwipeToRefresh() {
-        movieViewModel.getRefreshState().observe(this, networkState -> {
+        moviesListViewModel.getRefreshState().observe(this, networkState -> {
             if (networkState != null) {
                 if (moviesListAdapter.getCurrentList() != null) {
                     if (moviesListAdapter.getCurrentList().size() > 0) {
@@ -121,7 +128,7 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
                 }
             }
         });
-        moviesSwipeRefreshLayout.setOnRefreshListener(() -> movieViewModel.refresh());
+        moviesSwipeRefreshLayout.setOnRefreshListener(() -> moviesListViewModel.refresh());
     }
 
     /**
@@ -146,12 +153,39 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
 
     @Override
     public void retry() {
-        movieViewModel.retry();
+        moviesListViewModel.retry();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        removeActivityFromTransitionManager(this);
     }
 
+    private static void removeActivityFromTransitionManager(Activity activity) {
+        if (Build.VERSION.SDK_INT < 21) {
+            return;
+        }
+        Class transitionManagerClass = TransitionManager.class;
+        try {
+            Field runningTransitionsField = transitionManagerClass.getDeclaredField("sRunningTransitions");
+            runningTransitionsField.setAccessible(true);
+            //noinspection unchecked
+            ThreadLocal<WeakReference<ArrayMap<ViewGroup, ArrayList<Transition>>>> runningTransitions
+                    = (ThreadLocal<WeakReference<ArrayMap<ViewGroup, ArrayList<Transition>>>>)
+                    runningTransitionsField.get(transitionManagerClass);
+            if (runningTransitions.get() == null || runningTransitions.get().get() == null) {
+                return;
+            }
+            ArrayMap map = runningTransitions.get().get();
+            View decorView = activity.getWindow().getDecorView();
+            if (map.containsKey(decorView)) {
+                map.remove(decorView);
+            }
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
 }

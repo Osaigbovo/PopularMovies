@@ -2,29 +2,23 @@ package com.osaigbovo.udacity.popularmovies.ui.moviedetails;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
-import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.osaigbovo.udacity.popularmovies.R;
 import com.osaigbovo.udacity.popularmovies.data.model.TopMovies;
 import com.osaigbovo.udacity.popularmovies.ui.movieslist.MoviesListActivity;
 import com.osaigbovo.udacity.popularmovies.util.glide.GlideApp;
 
+import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -44,6 +38,8 @@ public class MovieDetailFragment extends Fragment {
     ImageView posterImage;
     @BindView(R.id.text_movie_title_detail)
     TextView textMovieTitle;
+    @BindInt(R.integer.detail_desc_slide_duration)
+    int slideDuration;
 
     private Unbinder unbinder;
 
@@ -72,11 +68,12 @@ public class MovieDetailFragment extends Fragment {
             Timber.i(String.valueOf(topMovies.getTitle()));
 
             Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
+            CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.collapsing_toolbar);
             if (appBarLayout != null) {
                 appBarLayout.setTitle(topMovies.getTitle());
             }
         }
+
     }
 
     @Override
@@ -90,6 +87,9 @@ public class MovieDetailFragment extends Fragment {
 
             GlideApp.with(getContext())
                     .load(image_url)
+                    .diskCacheStrategy(DiskCacheStrategy.DATA)
+                    .priority(Priority.HIGH)
+                    .skipMemoryCache(true)
                     .centerCrop()
                     /*.dontAnimate()
                     .placeholder(R.drawable.ic_movie_empty)

@@ -5,6 +5,7 @@ import android.arch.paging.DataSource;
 import android.support.annotation.NonNull;
 
 import com.osaigbovo.udacity.popularmovies.data.model.TopMovies;
+import com.osaigbovo.udacity.popularmovies.data.remote.RequestInterface;
 
 import io.reactivex.disposables.CompositeDisposable;
 

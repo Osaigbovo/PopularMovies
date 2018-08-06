@@ -1,23 +1,33 @@
 package com.osaigbovo.udacity.popularmovies;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.osaigbovo.udacity.popularmovies.di.AppInjector;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
 import timber.log.Timber;
 
-public class PopularMoviesApplication extends Application {
+public class PopularMoviesApp extends Application implements HasActivityInjector {
 
-    private static PopularMoviesApplication instance;
+    private static PopularMoviesApp instance;
+
+    @Inject
+    DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
 
     private RefWatcher refWatcher;
 
     public static RefWatcher getRefWatcher(Context context) {
-        PopularMoviesApplication application = (PopularMoviesApplication) context.getApplicationContext();
+        PopularMoviesApp application = (PopularMoviesApp) context.getApplicationContext();
         return application.refWatcher;
     }
 
@@ -25,6 +35,8 @@ public class PopularMoviesApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        AppInjector.init(this);
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
@@ -37,7 +49,7 @@ public class PopularMoviesApplication extends Application {
         refWatcher = LeakCanary.install(this);
     }
 
-    public static PopularMoviesApplication getInstance() {
+    public static PopularMoviesApp getInstance() {
         return instance;
     }
 
@@ -51,4 +63,8 @@ public class PopularMoviesApplication extends Application {
         return networkInfo != null && networkInfo.isConnected();
     }
 
+    @Override
+    public AndroidInjector<Activity> activityInjector() {
+        return dispatchingAndroidInjector;
+    }
 }

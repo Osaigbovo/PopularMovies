@@ -13,7 +13,7 @@ import com.osaigbovo.udacity.popularmovies.data.model.TopMovies;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-public class MovieViewModel extends ViewModel {
+public class MoviesListViewModel extends ViewModel {
 
     LiveData<PagedList<TopMovies>> moviesList;
 
@@ -23,7 +23,7 @@ public class MovieViewModel extends ViewModel {
 
     private MovieDataSourceFactory movieDataSourceFactory;
 
-    public MovieViewModel() {
+    public MoviesListViewModel() {
         movieDataSourceFactory = new MovieDataSourceFactory(compositeDisposable);
 
         PagedList.Config config = new PagedList.Config.Builder()

@@ -15,7 +15,7 @@
  */
 package com.osaigbovo.udacity.popularmovies.data.remote;
 
-import com.osaigbovo.udacity.popularmovies.PopularMoviesApplication;
+import com.osaigbovo.udacity.popularmovies.PopularMoviesApp;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,7 +39,7 @@ public class ServiceGenerator {
     private final static String BASE_URL = "http://api.themoviedb.org/3/";
 
     private static File httpCacheDirectory
-            = new File(PopularMoviesApplication.getInstance().getCacheDir(), "responses");
+            = new File(PopularMoviesApp.getInstance().getCacheDir(), "responses");
     private static int cacheSize = 30 * 1024 * 1024; // 10 MB
     private static Cache cache = new Cache(httpCacheDirectory, cacheSize);
 
@@ -106,7 +106,7 @@ public class ServiceGenerator {
         public Response intercept(Chain chain) throws IOException {
             Request request = chain.request();
 
-            if (!PopularMoviesApplication.hasNetwork()) {
+            if (!PopularMoviesApp.hasNetwork()) {
                 Timber.i("Offline cache applied");
                 int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale
                 request = request.newBuilder()
