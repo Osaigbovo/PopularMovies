@@ -1,62 +1,48 @@
 package com.osaigbovo.udacity.popularmovies.ui.moviedetails;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.transition.Fade;
-import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.util.ArrayMap;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
+import android.view.ViewTreeObserver;
 
 import com.osaigbovo.udacity.popularmovies.R;
-import com.osaigbovo.udacity.popularmovies.ui.movieslist.MoviesListActivity;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.AndroidInjection;
 
 /**
  * An activity representing a single Item detail screen. This
  * activity is only used on narrow width devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
- * in a {@link MoviesListActivity}.
  */
 public class MovieDetailActivity extends AppCompatActivity {
 
     @BindView(R.id.detail_toolbar)
     Toolbar toolbar;
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
 
+    private View decorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_detail);
+        setContentView(R.layout.activity_movie_detail);
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
-
-        fab.setOnClickListener(view ->
-                Snackbar.make(view, "Fab-ing", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show());
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
@@ -82,6 +68,19 @@ public class MovieDetailActivity extends AppCompatActivity {
                     .commit();
         }
 
+
+        postponeEnterTransition();
+
+        decorView = getWindow().getDecorView();
+        decorView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                decorView.getViewTreeObserver().removeOnPreDrawListener(this);
+                startPostponedEnterTransition();
+                return true;
+            }
+        });
+
     }
 
     @Override
@@ -89,40 +88,34 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. For
-            // more details, see the Navigation pattern on Android Design:
+            finishAfterTransition();
+            finish();
             //navigateUpTo(new Intent(this, MoviesListActivity.class));
-              supportFinishAfterTransition();
-           return true;
+            //supportFinishAfterTransition();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onStop() {
+        //removeActivityFromTransitionManager(this);
         super.onStop();
     }
 
     @Override
     public void onBackPressed() {
+        finish();
         //ActivityCompat.finishAfterTransition(this);
         supportFinishAfterTransition();
     }
 
     @Override
-    public boolean onNavigateUp() {
-        supportFinishAfterTransition();
-        return true;
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
-        removeActivityFromTransitionManager(this);
     }
 
-    private static void removeActivityFromTransitionManager(Activity activity) {
+    private void removeActivityFromTransitionManager(Activity activity) {
 
         Class transitionManagerClass = TransitionManager.class;
         try {
@@ -135,11 +128,13 @@ public class MovieDetailActivity extends AppCompatActivity {
             if (runningTransitions.get() == null || runningTransitions.get().get() == null) {
                 return;
             }
+
             ArrayMap map = runningTransitions.get().get();
-            View decorView = activity.getWindow().getDecorView();
+            //View decorView = activity.getWindow().getDecorView();
             if (map.containsKey(decorView)) {
                 map.remove(decorView);
             }
+
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {

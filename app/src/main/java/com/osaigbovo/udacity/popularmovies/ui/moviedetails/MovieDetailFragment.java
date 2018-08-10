@@ -34,6 +34,8 @@ import static com.osaigbovo.udacity.popularmovies.data.remote.ApiConstants.BASE_
  */
 public class MovieDetailFragment extends Fragment {
 
+    public static final String ARG_MOVIE_ID = "movie_id";
+
     @BindView(R.id.image_movie_detail)
     ImageView posterImage;
     @BindView(R.id.text_movie_title_detail)
@@ -43,20 +45,10 @@ public class MovieDetailFragment extends Fragment {
 
     private Unbinder unbinder;
 
-    /**
-     * The fragment argument representing the item ID that this fragment
-     * represents.
-     */
-    public static final String ARG_MOVIE_ID = "movie_id";
+    private TopMovies topMovies;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public MovieDetailFragment() {
     }
-
-    private TopMovies topMovies;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,10 +60,21 @@ public class MovieDetailFragment extends Fragment {
             Timber.i(String.valueOf(topMovies.getTitle()));
 
             Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.collapsing_toolbar);
-            if (appBarLayout != null) {
-                appBarLayout.setTitle(topMovies.getTitle());
+
+            CollapsingToolbarLayout collapsingToolbarLayout = activity.findViewById(R.id.collapsing_toolbar_detail);
+            if (collapsingToolbarLayout != null) {
+                collapsingToolbarLayout.setTitle(topMovies.getTitle());
             }
+
+            ImageView backdropImage = activity.findViewById(R.id.image_back_drop);
+            GlideApp.with(activity)
+                    .load(BASE_IMAGE_URL + topMovies.getBackdropPath())
+                    .diskCacheStrategy(DiskCacheStrategy.DATA)
+                    .priority(Priority.HIGH)
+                    .skipMemoryCache(true)
+                    .centerCrop()
+                    .into(backdropImage);
+
         }
 
     }
@@ -83,10 +86,9 @@ public class MovieDetailFragment extends Fragment {
         unbinder = ButterKnife.bind(this, rootView);
 
         if (topMovies != null) {
-            String image_url = BASE_IMAGE_URL + topMovies.getPosterPath();
 
-            GlideApp.with(getContext())
-                    .load(image_url)
+            GlideApp.with(getActivity())
+                    .load(BASE_IMAGE_URL + topMovies.getPosterPath())
                     .diskCacheStrategy(DiskCacheStrategy.DATA)
                     .priority(Priority.HIGH)
                     .skipMemoryCache(true)

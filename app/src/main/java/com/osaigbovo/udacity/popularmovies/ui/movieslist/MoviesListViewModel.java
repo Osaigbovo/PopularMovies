@@ -11,6 +11,8 @@ import com.osaigbovo.udacity.popularmovies.data.datasource.MovieDataSource;
 import com.osaigbovo.udacity.popularmovies.data.datasource.MovieDataSourceFactory;
 import com.osaigbovo.udacity.popularmovies.data.model.TopMovies;
 
+import javax.inject.Inject;
+
 import io.reactivex.disposables.CompositeDisposable;
 
 public class MoviesListViewModel extends ViewModel {
@@ -18,11 +20,10 @@ public class MoviesListViewModel extends ViewModel {
     LiveData<PagedList<TopMovies>> moviesList;
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
-
     private static final int pageSize = 20;
-
     private MovieDataSourceFactory movieDataSourceFactory;
 
+    @Inject
     public MoviesListViewModel() {
         movieDataSourceFactory = new MovieDataSourceFactory(compositeDisposable);
 

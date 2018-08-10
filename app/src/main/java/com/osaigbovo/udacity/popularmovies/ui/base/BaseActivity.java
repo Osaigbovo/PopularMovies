@@ -29,6 +29,11 @@ public class BaseActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
+        /*if(true){
+            return;
+        }else{
+
+        }*/
         CheckConnectionBroadcastReceiver.checkConnectionListener = this;
         this.registerReceiver(checkConnectionBroadcastReceiver,
                 new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
@@ -52,7 +57,7 @@ public class BaseActivity extends AppCompatActivity
 
             //Assume "rootLayout" as the root layout of every activity.
             mSnackBar = Snackbar
-                    .make(findViewById(R.id.frameLayout), messageToUser, Snackbar.LENGTH_LONG)
+                    .make(findViewById(R.id.coordinator), messageToUser, Snackbar.LENGTH_LONG)
                     .setAction("Dismiss", view -> mSnackBar.dismiss());
 
             mSnackBar.setDuration(Snackbar.LENGTH_INDEFINITE);
@@ -62,7 +67,7 @@ public class BaseActivity extends AppCompatActivity
         } else {
             String messageToUser = "You are online now.";
             mSnackBar = Snackbar
-                    .make(findViewById(R.id.frameLayout), messageToUser, Snackbar.LENGTH_SHORT);
+                    .make(findViewById(R.id.coordinator), messageToUser, Snackbar.LENGTH_SHORT);
             mSnackBar.setDuration(Snackbar.LENGTH_SHORT);
             mSnackBar.show();
             //mSnackBar.dismiss();

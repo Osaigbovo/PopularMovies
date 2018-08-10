@@ -2,22 +2,32 @@
 <transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
     android:transitionOrdering="together">
 
-    <slide
-        android:duration="300"
-        android:interpolator="@android:interpolator/linear_out_slow_in"
-        android:slideEdge="bottom">
+    <transitionSet>
+        <slide
+            android:duration="200"
+            android:interpolator="@android:interpolator/linear_out_slow_in"
+            android:slideEdge="bottom" />
         <targets>
-            <target android:targetId="@id/text_movie_title_detail" />
-            <!--<target android:targetId="@id/text_movie_title_detail" />
-            Slide slide2 = new Slide(Gravity.TOP);
-            slide2.addTarget(R.id.collapsing_toolbar);-->
+            <target android:targetId="@id/card_overview" />
+            <target android:excludeId="@android:id/navigationBarBackground" />
+            <target android:excludeId="@android:id/statusBarBackground" />
+        </targets>
+    </transitionSet>
+
+    <!--<transitionSet>
+        <slide
+            android:duration="900"
+            android:interpolator="@android:interpolator/linear_out_slow_in"
+            android:slideEdge="top" />
+        <targets>
+            <target android:targetId="@id/collapsing_toolbar_detail" />
 
             <target android:excludeId="@android:id/navigationBarBackground" />
             <target android:excludeId="@android:id/statusBarBackground" />
         </targets>
-    </slide>
-
+    </transitionSet>
+-->
 </transitionSet>
 
-<!-- TODO 1: ENTER Transition for the collasping toolbar so it comes down slowly. slideEdge=top-->
-<!-- TODO 2: ENTER Transition for the content so it comes up slowly-->
+    <!-- TODO 1: ENTER Transition for the collasping toolbar so it comes down slowly. slideEdge=top-->
+    <!-- TODO 2: ENTER Transition for the content so it comes up slowly-->

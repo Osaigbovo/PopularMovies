@@ -11,7 +11,7 @@ import dagger.Component;
 import dagger.android.support.AndroidSupportInjectionModule;
 
 /*
-* Component which actually determine all the modules that has to be used and
+* Component which actually determines all the modules that has to be used and
 * in which classes these dependency injection should work.
 */
 

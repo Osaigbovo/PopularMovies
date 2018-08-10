@@ -1,15 +1,16 @@
 package com.osaigbovo.udacity.popularmovies.ui.movieslist;
 
 import android.app.Activity;
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.transition.Fade;
 import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.util.ArrayMap;
@@ -19,8 +20,6 @@ import android.view.ViewGroup;
 import com.osaigbovo.udacity.popularmovies.R;
 import com.osaigbovo.udacity.popularmovies.data.NetworkState;
 import com.osaigbovo.udacity.popularmovies.data.Status;
-import com.osaigbovo.udacity.popularmovies.data.remote.RequestInterface;
-import com.osaigbovo.udacity.popularmovies.data.remote.ServiceGenerator;
 import com.osaigbovo.udacity.popularmovies.ui.base.BaseActivity;
 import com.osaigbovo.udacity.popularmovies.ui.moviedetails.MovieDetailActivity;
 import com.osaigbovo.udacity.popularmovies.util.RetryCallback;
@@ -35,37 +34,28 @@ import butterknife.BindDimen;
 import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.android.HasActivityInjector;
+import dagger.android.AndroidInjection;
+import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 
 /**
- * An activity representing a list of Items. This activity
+ * An activity representing a list of Movies. This activity
  * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
+ * handsets, the activity presents a list of movies, which when touched,
  * lead to a {@link MovieDetailActivity} representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
+ * movie details. On tablets, the activity presents the list of movies and
+ * movie details side-by-side using two vertical panes.
  */
-public class MoviesListActivity extends BaseActivity implements RetryCallback {
+public class MoviesListActivity extends BaseActivity implements RetryCallback{
 
-//    @BindString(R.string.title) String title;
-//    @BindDrawable(R.drawable.graphic) Drawable graphic;
-//    @BindColor(R.color.red) int red; // int or ColorStateList field
+    @BindView(R.id.moviesSwipeRefreshLayout) SwipeRefreshLayout moviesSwipeRefreshLayout;
+    @BindView(R.id.recycler_movies_list) RecyclerView mRecyclerView;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindInt(R.integer.movies_columns) int mColumns;
+    @BindDimen(R.dimen.grid_item_spacing) int mGridSpacing;
 
-    @BindView(R.id.moviesSwipeRefreshLayout)
-    SwipeRefreshLayout moviesSwipeRefreshLayout;
-
-    @BindView(R.id.recycler_movies_list)
-    RecyclerView mRecyclerView;
-
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-
-    @BindInt(R.integer.movies_columns)
-    int mColumns;
-
-    @BindDimen(R.dimen.grid_item_spacing)
-    int mGridSpacing;
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
 
     private MoviesListViewModel moviesListViewModel;
     private MoviesListAdapter moviesListAdapter;
@@ -78,10 +68,13 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies_list);
         ButterKnife.bind(this);
-        moviesListViewModel = ViewModelProviders.of(this).get(MoviesListViewModel.class);
+
+        moviesListViewModel = ViewModelProviders.of(this, viewModelFactory).get(MoviesListViewModel.class);
 
         setSupportActionBar(mToolbar);
         mToolbar.setTitle(getTitle());
@@ -147,7 +140,6 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
 //        //loading and retry
 //        retryLoadingButton.setVisibility(networkState.getStatus() == Status.FAILED ? View.VISIBLE : View.GONE);
 //        loadingProgressBar.setVisibility(networkState.getStatus() == Status.RUNNING ? View.VISIBLE : View.GONE);
-
         moviesSwipeRefreshLayout.setEnabled(networkState.getStatus() == Status.SUCCESS);
     }
 
@@ -188,4 +180,5 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
             e.printStackTrace();
         }
     }
+
 }

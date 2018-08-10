@@ -21,12 +21,19 @@ import com.osaigbovo.udacity.popularmovies.ui.movieslist.MoviesListActivity;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
+/**
+ * Binds all sub-components within the app. Add bindings for other sub-components here.
+ * @ContributesAndroidInjector was introduced removing the need to:
+ * a) Create separate components annotated with @Subcomponent (the need to define @Subcomponent classes.)
+ * b) Write custom annotations like @PerActivity.
+ */
 @Module
-public abstract class MainActivityModule {
+abstract class MainActivityModule {
 
     @ContributesAndroidInjector
     abstract MoviesListActivity contributeMoviesListActivity();
 
-    @ContributesAndroidInjector(modules = FragmentBuildersModule.class)
+    // TODO 5 : Is this fragment really injected, because MoviesDetail does not implement Fragment.
+    @ContributesAndroidInjector/*(modules = FragmentBuildersModule.class)*/
     abstract MovieDetailActivity contributeMovieDetailActivity();
 }

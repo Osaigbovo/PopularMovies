@@ -6,37 +6,65 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
         <item name="cardViewStyle">@style/CardView</item>
         <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
 
         <item name="android:windowContentTransitions">true</item>
-
-        <item name="android:windowAllowEnterTransitionOverlap">true</item>
-        <item name="android:windowAllowReturnTransitionOverlap">true</item>
         <item name="android:windowSharedElementsUseOverlay">false</item>
     </style>
 
     <style name="AppTheme.Home">
-
         <!--<item name="android:windowSharedElementExitTransition">@transition/detail_shared_return</item>-->
-
-        <item name="android:windowExitTransition">@transition/movies_list_exit</item>
-        <item name="android:windowReenterTransition">@transition/movies_list_reenter</item>
-
+        <!--<item name="android:windowExitTransition">@transition/movies_list_exit</item>
+        <item name="android:windowReenterTransition">@transition/movies_list_reenter</item>-->
     </style>
 
     <style name="AppTheme.Details">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+
         <item name="android:windowSharedElementEnterTransition">@transition/detail_shared_return</item>
         <item name="android:windowSharedElementReturnTransition">@transition/detail_shared_return</item>
-
+        <!--
         <item name="android:windowEnterTransition">@transition/detail_enter</item>
-        <item name="android:windowReturnTransition">@transition/detail_return</item>
+        <item name="android:windowReturnTransition">@transition/detail_return</item>-->
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+
+    <style name="Widget.PopularMovies.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="contentInsetStart">4dp</item>
+        <item name="titleTextAppearance">@style/TextAppearance.PopularMovies.MovieTitle</item>
+    </style>
+
+    <style name="Widget.PopularMovies.CollapsingToolbar" parent="">
+        <item name="collapsedTitleTextAppearance">@style/TextAppearance.PopularMovies.MovieTitle</item>
+        <item name="contentScrim">?attr/colorPrimary</item>
+        <item name="expandedTitleGravity">bottom</item>
+        <item name="expandedTitleMarginStart">24dp</item>
+        <item name="expandedTitleMarginBottom">16dp</item>
+        <item name="expandedTitleTextAppearance">@style/TextAppearance.PopularMovies.MovieTitle</item>
+        <item name="scrimVisibleHeightTrigger">140dp</item>
+    </style>
+
+    <style name="Widget.PopularMovies.CollapsingToolbarImage" parent="">
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginLeft">0dp</item>
+        <item name="android:adjustViewBounds">true</item>
+    </style>
+
+    <style name="TextAppearance.PopularMovies.MovieTitle" parent="TextAppearance.AppCompat.Display3">
+        <item name="android:textColor">@color/text_primary_light</item>
+        <item name="android:fontFamily">@font/product_sans_regular</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

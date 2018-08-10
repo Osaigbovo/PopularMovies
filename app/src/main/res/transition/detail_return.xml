@@ -3,11 +3,11 @@
     android:transitionOrdering="together">
 
     <slide
-        android:duration="300"
-        android:interpolator="@android:interpolator/linear_out_slow_in"
+        android:duration="1800"
+        android:interpolator="@android:interpolator/fast_out_slow_in"
         android:slideEdge="bottom">
         <targets>
-            <target android:targetId="@id/text_movie_title_detail" />
+            <target android:targetId="@id/card_overview" />
             <!--<target android:targetId="@id/text_movie_title_detail" />
             Slide slide2 = new Slide(Gravity.TOP);
             slide2.addTarget(R.id.collapsing_toolbar);-->

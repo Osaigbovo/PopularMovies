@@ -25,7 +25,7 @@ public class MovieDataSource extends ItemKeyedDataSource<Integer, TopMovies> {
 
     private static final String TAG = "ShowsDataSource";
 
-    private RequestInterface requestInterface;
+    RequestInterface requestInterface;
 
     private CompositeDisposable compositeDisposable;
 
@@ -34,9 +34,7 @@ public class MovieDataSource extends ItemKeyedDataSource<Integer, TopMovies> {
 
     private int pageNumber = 1;
 
-    /**
-     * Keep Completable reference for the retry event
-     */
+    //Keep Completable reference for the retry event
     private Completable retryCompletable;
 
     public MovieDataSource(CompositeDisposable compositeDisposable) {
@@ -120,7 +118,7 @@ public class MovieDataSource extends ItemKeyedDataSource<Integer, TopMovies> {
     @Override
     public void loadBefore(@NonNull LoadParams<Integer> params,
                            @NonNull LoadCallback<TopMovies> callback) {
-        // ignored, since we only ever append to our initial load
+        //Ignored, since we only ever append to our initial load
     }
 
     @NonNull
