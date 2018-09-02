@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white_yellow">
+
+    <ImageView
+        android:id="@+id/image_close"
+        android:layout_width="@dimen/filter_imv_close"
+        android:layout_height="@dimen/filter_imv_close"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_16"
+        android:contentDescription="@string/close_filter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_round_close" />
+
+    <TextView
+        android:id="@+id/text_dialog_label"
+        android:layout_width="@dimen/min_width"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/product_sans_bold"
+        android:paddingEnd="@dimen/margin_16"
+        android:paddingStart="@dimen/margin_16"
+        android:text="@string/txt_filter"
+        android:textSize="@dimen/txt_18"
+        app:layout_constraintBottom_toTopOf="@+id/image_close"
+        app:layout_constraintEnd_toStartOf="@+id/image_close"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_close" />
+
+    <RadioGroup
+        android:id="@+id/radio_group_sort"
+        android:layout_width="@dimen/min_width"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_dialog_label">
+
+        <RadioButton
+            android:id="@+id/radio_button_popular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableEnd="@drawable/bg_filter_check"
+            android:fontFamily="@font/product_sans_bold"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:gravity="start|center_vertical|end"
+            android:paddingBottom="@dimen/margin_8"
+            android:paddingEnd="@dimen/margin_16"
+            android:paddingStart="@dimen/margin_16"
+            android:paddingTop="@dimen/margin_8"
+            android:text="@string/txt_popular"
+            android:textColor="@color/grey_700"
+            android:textSize="@dimen/txt_24" />
+
+        <RadioButton
+            android:id="@+id/radio_button_top_rated"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableEnd="@drawable/bg_filter_check"
+            android:fontFamily="@font/product_sans_bold"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:gravity="start|center_vertical|end"
+            android:paddingBottom="@dimen/margin_8"
+            android:paddingEnd="@dimen/margin_16"
+            android:paddingStart="@dimen/margin_16"
+            android:paddingTop="@dimen/margin_8"
+            android:text="@string/txt_top_rated"
+            android:textColor="@color/grey_700"
+            android:textSize="@dimen/txt_24" />
+    </RadioGroup>
+</android.support.constraint.ConstraintLayout>

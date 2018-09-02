@@ -7,7 +7,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.osaigbovo.udacity.popularmovies.di.AppInjector;
-import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
 import javax.inject.Inject;
@@ -17,9 +16,18 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 import timber.log.Timber;
 
+
+/*
+* Application has activities that is why we implement HasActivityInjector interface.
+* Activities have fragments so we have to implement HasFragmentInjector/HasSupportFragmentInjector in our activities.
+*
+* No child fragment and don’t inject anything in your fragments, no need to implement HasSupportFragmentInjector.
+* */
 public class PopularMoviesApp extends Application implements HasActivityInjector {
 
     private static PopularMoviesApp instance;
+
+    public static Context context;
 
     @Inject
     DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
@@ -43,10 +51,12 @@ public class PopularMoviesApp extends Application implements HasActivityInjector
         }
         Timber.i("Creating our Application");
 
-        if (LeakCanary.isInAnalyzerProcess(this)) {
+        /*if (LeakCanary.isInAnalyzerProcess(this)) {
             return;
         }
-        refWatcher = LeakCanary.install(this);
+        refWatcher = LeakCanary.install(this);*/
+
+        context = getApplicationContext();
     }
 
     public static PopularMoviesApp getInstance() {
@@ -61,6 +71,10 @@ public class PopularMoviesApp extends Application implements HasActivityInjector
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
+    }
+
+    public static Context getContext() {
+        return context;
     }
 
     @Override

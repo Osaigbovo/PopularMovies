@@ -1,35 +1,16 @@
 package com.osaigbovo.udacity.popularmovies.ui.movieslist;
 
-import android.app.Activity;
 import android.arch.paging.PagedListAdapter;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.osaigbovo.udacity.popularmovies.R;
+import com.osaigbovo.udacity.popularmovies.data.NetworkState;
 import com.osaigbovo.udacity.popularmovies.data.model.TopMovies;
-import com.osaigbovo.udacity.popularmovies.ui.moviedetails.MovieDetailActivity;
-import com.osaigbovo.udacity.popularmovies.ui.moviedetails.MovieDetailFragment;
-import com.osaigbovo.udacity.popularmovies.util.glide.GlideApp;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import timber.log.Timber;
-
-import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
-import static com.osaigbovo.udacity.popularmovies.data.remote.ApiConstants.BASE_IMAGE_URL;
-import static com.osaigbovo.udacity.popularmovies.util.ViewUtils.getYearOfRelease;
+import com.osaigbovo.udacity.popularmovies.util.NetworkStateViewHolder;
+import com.osaigbovo.udacity.popularmovies.util.RetryCallback;
 
 /**
  * A simple PagedListAdapter that binds Cheese items into CardViews.
@@ -45,105 +26,89 @@ import static com.osaigbovo.udacity.popularmovies.util.ViewUtils.getYearOfReleas
  * @see android.arch.paging.PagedListAdapter
  * see android.arch.paging.PagedListAdapterHelper
  */
-public class MoviesListAdapter extends PagedListAdapter<TopMovies, MoviesListAdapter.MoviesListViewHolder> {
+public class MoviesListAdapter extends PagedListAdapter<TopMovies, RecyclerView.ViewHolder> {
 
+    private NetworkState networkState;
+
+    private final RetryCallback retryCallback;
     private final MoviesListActivity mParentActivity;
     private final boolean mTwoPane;
 
-    MoviesListAdapter(MoviesListActivity parent, boolean twoPane) {
+    MoviesListAdapter(MoviesListActivity parentActivity, RetryCallback retryCallback, boolean twoPane) {
         super(DIFF_CALLBACK);
-        mParentActivity = parent;
+        this.retryCallback = retryCallback;
+        mParentActivity = parentActivity;
         mTwoPane = twoPane;
     }
 
     @NonNull
     @Override
-    public MoviesListAdapter.MoviesListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_movie, parent, false);
-        return new MoviesListAdapter.MoviesListViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        switch (viewType) {
+            case R.layout.item_movie:
+                return MoviesListViewHolder.create(parent);
+            case R.layout.item_network_state:
+                return NetworkStateViewHolder.create(parent, retryCallback);
+            default:
+                throw new IllegalArgumentException("unknown view type");
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MoviesListAdapter.MoviesListViewHolder holder, int position) {
-
-        String image_url = BASE_IMAGE_URL + getItem(position).getPosterPath();
-
-        Timber.i(getItem(position).getOriginalTitle());
-
-        GlideApp.with(holder.itemView.getContext())
-                .load(image_url)
-                .diskCacheStrategy(DiskCacheStrategy.DATA)
-                .priority(Priority.HIGH)
-                .skipMemoryCache(true)
-                //.centerCrop()
-                .fitCenter()
-                .transition(withCrossFade())
-                /*.placeholder(R.drawable.ic_movie_empty)
-                .error(R.drawable.ic_movie_error)*/
-                .into(holder.movieImage);
-
-        holder.movieTitle.setText(getItem(position).getTitle());
-        holder.dateText.setText(getYearOfRelease(getItem(position).getReleaseDate()));
-        holder.ratingText.setText(String.valueOf(getItem(position).getVoteAverage()));
-
-        holder.itemView.setTag(getItem(position));
-
-        //holder.itemView.setOnClickListener(mOnClickListener);
-
-        holder.itemView.setOnClickListener(view -> {
-            TopMovies topMovies = (TopMovies) view.getTag();
-
-            Timber.i(String.valueOf(topMovies));
-
-            if (mTwoPane) {
-                Bundle arguments = new Bundle();
-
-                arguments.putParcelable(MovieDetailFragment.ARG_MOVIE_ID, topMovies);
-                MovieDetailFragment fragment = new MovieDetailFragment();
-                fragment.setArguments(arguments);
-
-                mParentActivity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.item_detail_container, fragment)
-                        .commit();
-            } else {
-                Context context = view.getContext();
-                Intent intent = new Intent(context, MovieDetailActivity.class);
-                intent.putExtra(MovieDetailFragment.ARG_MOVIE_ID, topMovies);
-
-                ActivityOptionsCompat options = ActivityOptionsCompat.
-                        makeSceneTransitionAnimation((Activity) context,
-                                holder.movieImage,
-                                context.getResources().getString(R.string.transition_name));
-
-                context.startActivity(intent, options.toBundle());
-            }
-        });
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        switch (getItemViewType(position)) {
+            case R.layout.item_movie:
+                ((MoviesListViewHolder) holder).bindTo(getItem(position), mParentActivity, mTwoPane);
+                break;
+            case R.layout.item_network_state:
+                ((NetworkStateViewHolder) holder).bindTo(networkState);
+                break;
+        }
     }
 
-    /*@Override
-    public int getItemCount() {
-        if (topMovies != null) {
-            return topMovies.size();
+    private boolean hasExtraRow() {
+        return networkState != null && networkState != NetworkState.LOADED;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (hasExtraRow() && position == getItemCount() - 1) {
+            return R.layout.item_network_state;
         } else {
-            return 0;
+            return R.layout.item_movie;
         }
-    }*/
+    }
 
-    class MoviesListViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public int getItemCount() {
+        return super.getItemCount() + (hasExtraRow() ? 1 : 0);
+    }
 
-        @BindView(R.id.image_movie)
-        ImageView movieImage;
-        @BindView(R.id.text_movie_title)
-        TextView movieTitle;
-        @BindView(R.id.text_movie_date)
-        TextView dateText;
-        @BindView(R.id.text_movie_rating)
-        TextView ratingText;
-
-        MoviesListViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
+    /**
+     * Set the current network state to the adapter
+     * but this work only after the initial load
+     * and the adapter already have list to add new loading raw to it
+     * so the initial loading state the activity responsible for handle it
+     *
+     * @param newNetworkState the new network state
+     */
+    public void setNetworkState(NetworkState newNetworkState) {
+        if (getCurrentList() != null) {
+            if (getCurrentList().size() != 0) {
+                NetworkState previousState = this.networkState;
+                boolean hadExtraRow = hasExtraRow();
+                this.networkState = newNetworkState;
+                boolean hasExtraRow = hasExtraRow();
+                if (hadExtraRow != hasExtraRow) {
+                    if (hadExtraRow) {
+                        notifyItemRemoved(super.getItemCount());
+                    } else {
+                        notifyItemInserted(super.getItemCount());
+                    }
+                } else if (hasExtraRow && previousState != newNetworkState) {
+                    notifyItemChanged(getItemCount() - 1);
+                }
+            }
         }
     }
 

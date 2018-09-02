@@ -15,7 +15,13 @@
     <color name="accent">@color/primary</color> <!-- mono-color -->
     <color name="primary_dark">#4aa87a</color>
 
-     <!-- common colours -->
+
+    <color name="white_yellow">#fefefa</color>
+    <color name="grey_600">#757575</color>
+    <color name="grey_700">#616161</color>
+    <color name="grey_300">#E0E0E0</color>
+
+    <!-- common colours -->
     <color name="text_primary_dark">#de000000</color> <!-- 87% -->
     <color name="text_secondary_dark">#8a000000</color> <!-- 54% -->
     <color name="text_tertiary_dark">#61000000</color> <!-- 38% -->
@@ -32,13 +38,13 @@
     <color name="light_immersive_bars">#b3eeeeee</color> <!-- 70% grey 200 -->
     <color name="light_status_bar">@color/immersive_bars</color> <!-- overridden on v23+ -->
     <color name="light_nav_bar">@color/immersive_bars</color> <!-- overridden on v26+ -->
-    <color name="status_bar_back">#ff676767</color> <!-- this is blended with immersive_bars to produce the desired status bar color i.e. background_super_dark -->
+    <color name="status_bar_back">#ff676767
+    </color> <!-- this is blended with immersive_bars to produce the desired status bar color i.e. background_super_dark -->
     <color name="background_super_dark">#ff292929</color>
     <color name="scrim">#99323232</color>
     <color name="mid_grey">#40808080</color>
     <color name="light_grey">#fff5f5f5</color>
     <color name="grey_200">#ffeeeeee</color>
-    <color name="grey_300">#ffe0e0e0</color>
     <color name="content_placeholder">#ffe0e0e0</color>
     <color name="dark_icon">#99000000</color> <!-- 60% black-->
     <color name="dark_icon_half_alpha">#4d000000</color> <!-- 30% black-->
@@ -95,4 +101,6 @@
 
     <!-- search -->
     <color name="search_background_scrim">#33000000</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

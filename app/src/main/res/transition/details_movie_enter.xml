@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <transitionSet>
+        <targets>
+            <target android:excludeId="@android:id/navigationBarBackground" />
+            <target android:excludeId="@android:id/statusBarBackground" />
+            <target android:excludeId="@id/image_movie_poster" />
+            <target android:excludeId="@id/app_bar_detail" />
+            <target android:targetId="@id/card_overview" />
+        </targets>
+        <transition
+            class="com.osaigbovo.udacity.popularmovies.ui.transitions.StaggeredDistanceSlide"
+            android:duration="350"
+            android:interpolator="@android:interpolator/linear_out_slow_in"
+            app:spread="5" />
+        <!-- Delay fading in so that the shared element transition on the background
+             has time to run -->
+        <fade
+            android:duration="100"
+            android:interpolator="@android:interpolator/linear"
+            android:startDelay="250" />
+    </transitionSet>
+
+    <!-- As this overlaps the shared element transition, content can be outside of the
+         growing background, fade in the title background to make this less noticeable. -->
+    <transition
+        class="com.osaigbovo.udacity.popularmovies.ui.transitions.BackgroundFade"
+        android:duration="150"
+        android:interpolator="@android:interpolator/linear"
+        android:startDelay="300">
+        <targets>
+            <target android:targetId="@id/app_bar_detail" />
+        </targets>
+    </transition>
+
+    <fade
+        android:duration="350"
+        android:interpolator="@android:interpolator/linear">
+        <targets>
+            <target android:targetId="@android:id/statusBarBackground" />
+            <target android:targetId="@android:id/navigationBarBackground" />
+        </targets>
+    </fade>
+
+</transitionSet>

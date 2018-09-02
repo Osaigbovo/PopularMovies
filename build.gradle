@@ -15,7 +15,7 @@ buildscript {
             'paging'          : '1.0.1',
             'okhttp'          : '3.11.0',
             'retrofit'        : '2.4.0',
-            'rxandroid'       : '2.0.2',
+            'rxandroid'       : '2.1.0',
             'rxjava'          : '2.1.17',
             'supportlibrary'  : '27.1.1',
             'timber'          : '4.6.0'

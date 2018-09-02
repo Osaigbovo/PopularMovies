@@ -1,43 +1,38 @@
 package com.osaigbovo.udacity.popularmovies.data.remote;
 
+import com.osaigbovo.udacity.popularmovies.data.model.MovieDetail;
 import com.osaigbovo.udacity.popularmovies.data.model.MovieResponse;
-import com.osaigbovo.udacity.popularmovies.data.model.NowPlayingResponse;
 
-import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface RequestInterface {
 
-    @GET("movie/now_playing")
-    Single<MovieResponse> getPopularMovies(
-            @Query("api_key") String apiKey);
-
+    @Headers("Cache-Control:public ,max-age=60")
     @GET("movie/popular")
     Single<MovieResponse> getPopularMovies(
-            @Query("api_key") String apiKey, @Query("page") int page);
+            @Query("api_key") String apiKey,
+            @Query("page") int page);
 
-    @GET("movie/top_rated")
-    Single<MovieResponse> getTopRatedMovies(
-            @Query("api_key") String apiKey);
-
-    //@Headers("Cache-Control:public ,max-age=60")
+    @Headers("Cache-Control:public ,max-age=60")
     @GET("movie/top_rated")
     Single<MovieResponse> getTopRatedMovies(
             @Query("api_key") String apiKey,
-            @Query("language") String language,
             @Query("page") int page);
 
-    @GET("movie/now_playing")
-    Single<NowPlayingResponse> getNowPlaying(
-            @Query("api_key") String apiKey);
+    @Headers("Cache-Control:public ,max-age=60")
+    @GET("movie/{type}")
+    Single<MovieResponse> getMovies(@Path("type") String type,
+                                    @Query("api_key") String apiKey,
+                                    @Query("page") int page);
 
-    @GET("movie/now_playing")
-    Flowable<NowPlayingResponse> getNowPlaying(
-            @Query("api_key") String apiKey,
-            @Query("language") String language,
-            @Query("page") int page);
+    @GET("movie/{id}?append_to_response=credits,videos")
+    Observable<MovieDetail> getMovieDetail(
+            @Path("id") int id, @Query("api_key") String apiKey);
 
 }
 

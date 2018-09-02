@@ -1,32 +1,62 @@
 <resources>
     <string name="app_name">PopularMovies</string>
-    <string name="title_item_list">Items</string>
+
+    <string name="title_item_list">Popular Movies</string>
+
+    <string name="txt_sort">Sort</string>
+
     <string name="title_item_detail">Item Detail</string>
 
+    <string name="txt_filter">Filter</string>
+    <string name="txt_popular">Popular</string>
+    <string name="txt_top_rated">Top Rated</string>
+    <string name="txt_favorites">Favorites</string>
+    <string name="txt_favorite">Favorite</string>
+    <string name="close_filter">close_filter</string>
 
-    <!--  THEATERS -->
+    <!-- Transition -->
+    <string name="transition_name" translatable="false">poster</string>
+
+    <!--  Movie Item -->
     <string name="movie_image_thumbnail">Movie Thumbnail</string>
     <string name="movie_title">Top Movies</string>
     <string name="movie_date">2018</string>
     <string name="movie_image_rating">COMING SOON</string>
     <string name="movie_rating">5.0</string>
 
-    <!-- MOVIE DETAILS -->
-    <string name="movie_details_trailer_desc">Play the trailer</string>
+    <!-- Movie Details -->
+    <string name="movie_original_label">Movie Title</string>
+    <string name="movie_original_text">Avengers: Infinity Wars</string>
 
-    <string name="rating">Rating</string>
-    <string name="movierating">8.4</string>
-    <string name="movie_desc">A ten year old girl who wanders away from her parents along a path that leads to a
+    <string name="movie_rating_label">Rating</string>
+    <string name="movie_rating_text">8.4</string>
+
+    <string name="movie_runtime_label">Running Time</string>
+    <string name="movie_runtime_text"> 1 hr 50 mins</string>
+
+    <string name="movie_release_label">Release Date</string>
+    <string name="movie_release_text"> 21st April, 2018</string>
+
+    <string name="movie_genres_label">Genres</string>
+    <string name="movie_genres_text">Thriller, Action, Sci Fi </string>
+
+    <string name="movie_overview_label">Synopsis</string>
+    <string name="movie_overview_text">A ten year old girl who wanders away from her parents along a path that leads to a
         world ruled by strange and unusual monster-like animals. Her parents have been changed into pigs along with others
         inside a bathhouse full of these creatures. Will she ever see the world how it once was?</string>
-    <string name="genre">Genre</string>
-    <string name="runtime">Running Time</string>
-    <string name="release">Release Date</string>
-    <string name="director">Director</string>
-    <string name="castandcrew">Cast and Crew</string>
-    <string name="trailers">Trailers</string>
 
-    <string name="transition_name">poster</string>
+    <string name="movie_director_label">Director</string>
+    <string name="movie_director_image">Movie Director</string>
 
+    <string name="movie_cast_label">Casts</string>
+    <string name="movie_trailers_label">Trailers</string>
+
+
+    <!-- Retry -->
     <string name="retry">Retry</string>
+
+
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

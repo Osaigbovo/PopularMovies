@@ -3,69 +3,139 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context=".ui.moviedetails.MovieDetailFragment">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_initial"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp">
+        android:layout_height="wrap_content">
 
-        <android.support.constraint.ConstraintLayout
+        <ImageView
+            android:id="@+id/image_movie_poster"
+            android:layout_width="0dp"
+            android:layout_height="180dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@null"
+            android:transitionName="@string/transition_name"
+            app:layout_constraintDimensionRatio="w, 1:1.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/poster342" />
+
+        <TextView
+            android:id="@+id/text_movie_title"
+            style="?android:attr/textAppearanceLarge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:textIsSelectable="true"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_movie_poster"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/movie_original_text" />
+
+        <RatingBar
+            android:id="@+id/rating_bar"
+            style="?android:attr/ratingBarStyleIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:numStars="5"
+            android:stepSize="0.1"
+            app:layout_constraintEnd_toStartOf="@+id/text_movie_rating"
+            app:layout_constraintTop_toBottomOf="@+id/text_movie_title" />
+
+        <TextView
+            android:id="@+id/text_movie_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/movie_rating"
+            app:layout_constraintBottom_toBottomOf="@+id/rating_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/rating_bar" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline_movie_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="102dp" />
+
+        <TextView
+            android:id="@+id/text_release_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/movie_release_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/text_runtime_label"
+            app:layout_constraintTop_toTopOf="@+id/guideline_movie_details" />
+
+        <TextView
+            android:id="@+id/text_movie_release"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/text_release_label"
+            app:layout_constraintStart_toStartOf="@+id/text_release_label"
+            app:layout_constraintTop_toBottomOf="@+id/text_release_label"
+            tools:text="@string/movie_release_text" />
+
+        <TextView
+            android:id="@+id/text_runtime_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/movie_runtime_label"
+            app:layout_constraintEnd_toStartOf="@+id/text_release_label"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/image_movie_poster"
+            app:layout_constraintTop_toTopOf="@+id/guideline_movie_details" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_genres"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_movie_poster"
+            app:layout_constraintTop_toBottomOf="@+id/text_movie_release" />
+
+        <TextView
+            android:id="@+id/text_movie_runtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/text_runtime_label"
+            app:layout_constraintStart_toStartOf="@+id/text_runtime_label"
+            app:layout_constraintTop_toBottomOf="@+id/text_runtime_label"
+            tools:text="@string/movie_runtime_text" />
+
+        <include
+            android:id="@+id/card_overview"
+            layout="@layout/movie_detail_overview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv_genres" />
 
-            <ImageView
-                android:id="@+id/image_movie_detail"
-                android:layout_width="0dp"
-                android:layout_height="180dp"
-                android:layout_marginBottom="24dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:contentDescription="@null"
-                android:transitionName="@string/transition_name"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintDimensionRatio="w, 1:1.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/poster342" />
+    </android.support.constraint.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/text_movie_title_detail"
-                style="?android:attr/textAppearanceLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:textIsSelectable="true"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/image_movie_detail"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Jurassic World : Fallen Kingdom" />
-
-        </android.support.constraint.ConstraintLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_overview"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:visibility="invisible">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
 
 </LinearLayout>

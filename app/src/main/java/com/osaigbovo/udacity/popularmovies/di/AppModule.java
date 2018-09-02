@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.osaigbovo.udacity.popularmovies.data.datasource.MovieDataSource;
-import com.osaigbovo.udacity.popularmovies.data.datasource.MovieDataSourceFactory;
 import com.osaigbovo.udacity.popularmovies.data.receiver.CheckConnectionBroadcastReceiver;
 import com.osaigbovo.udacity.popularmovies.data.remote.RequestInterface;
 import com.osaigbovo.udacity.popularmovies.data.remote.ServiceGenerator;
@@ -48,16 +46,10 @@ class AppModule {
         return new CheckConnectionBroadcastReceiver();
     }
 
-    /*@Provides
-    @Singleton
-    MovieDataSourceFactory providesMovieDataSourceFactory(MovieDataSource movieDataSource) {
-        return new MovieDataSourceFactory(movieDataSource);
-    }
-
     @Provides
     @Singleton
-    MovieDataSource providesMovieDataSource(RequestInterface requestInterface) {
-        return new MovieDataSource(requestInterface);
-    }*/
+    CompositeDisposable providesCompositeDisposable() {
+        return new CompositeDisposable();
+    }
 
 }

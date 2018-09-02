@@ -25,7 +25,7 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
-                android:id="@+id/image_back_drop"
+                android:id="@+id/image_movie_backdrop"
                 style="@style/Widget.PopularMovies.CollapsingToolbarImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -43,7 +43,7 @@
                 android:background="@drawable/scrim" />
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/detail_toolbar"
+                android:id="@+id/toolbar_detail"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"

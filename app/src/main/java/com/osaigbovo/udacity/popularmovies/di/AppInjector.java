@@ -38,8 +38,11 @@ public class AppInjector {
 
     public static void init(PopularMoviesApp popularMoviesApp) {
 
-        DaggerAppComponent.builder().application(popularMoviesApp)
-                .build().inject(popularMoviesApp);
+        DaggerAppComponent
+                .builder()
+                .application(popularMoviesApp)
+                .build()
+                .inject(popularMoviesApp);
 
         popularMoviesApp
                 .registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
@@ -98,4 +101,5 @@ public class AppInjector {
                             }, true);
         }
     }
+
 }

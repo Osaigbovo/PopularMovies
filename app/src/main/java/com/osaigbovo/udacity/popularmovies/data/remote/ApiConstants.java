@@ -6,6 +6,7 @@ package com.osaigbovo.udacity.popularmovies.data.remote;
 
 public interface ApiConstants {
 
+    // TODO : Remove API Key before committing to Github
     String API_KEY = "5ba7a64b2ea5c12dd9e12ded0bab8faf";
 
     String language = "en-US";

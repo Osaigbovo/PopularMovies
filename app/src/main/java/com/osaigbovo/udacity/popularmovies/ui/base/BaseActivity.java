@@ -1,11 +1,8 @@
 package com.osaigbovo.udacity.popularmovies.ui.base;
 
-import android.content.IntentFilter;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.osaigbovo.udacity.popularmovies.R;
@@ -22,7 +19,7 @@ public class BaseActivity extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        checkConnectionBroadcastReceiver = new CheckConnectionBroadcastReceiver();
+        //checkConnectionBroadcastReceiver = new CheckConnectionBroadcastReceiver();
     }
 
     @Override
@@ -34,9 +31,9 @@ public class BaseActivity extends AppCompatActivity
         }else{
 
         }*/
-        CheckConnectionBroadcastReceiver.checkConnectionListener = this;
+        /*CheckConnectionBroadcastReceiver.checkConnectionListener = this;
         this.registerReceiver(checkConnectionBroadcastReceiver,
-                new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+                new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));*/
     }
 
     @Override
@@ -45,9 +42,9 @@ public class BaseActivity extends AppCompatActivity
 
         // TODO 1 - BUG java.lang.IllegalArgumentException: Receiver not registered:
         // LocalBroadcastManager.getInstance().un
-        if (checkConnectionBroadcastReceiver != null) {
+        /*if (checkConnectionBroadcastReceiver != null) {
             this.unregisterReceiver(checkConnectionBroadcastReceiver);
-        }
+        }*/
     }
 
     private void showMessage(Boolean isConnected) {

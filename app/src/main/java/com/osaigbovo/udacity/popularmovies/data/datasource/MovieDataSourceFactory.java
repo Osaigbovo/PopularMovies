@@ -7,28 +7,51 @@ import android.support.annotation.NonNull;
 import com.osaigbovo.udacity.popularmovies.data.model.TopMovies;
 import com.osaigbovo.udacity.popularmovies.data.remote.RequestInterface;
 
-import io.reactivex.disposables.CompositeDisposable;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class MovieDataSourceFactory extends DataSource.Factory<Integer, TopMovies> {
 
-    private CompositeDisposable compositeDisposable;
+    RequestInterface requestInterface;
 
+    private MovieDataSource movieDataSource;
     private MutableLiveData<MovieDataSource> movieDataSourceLiveData;
+    private String type;
 
-    public MovieDataSourceFactory(CompositeDisposable compositeDisposable) {
-        this.compositeDisposable = compositeDisposable;
+    @Inject
+    MovieDataSourceFactory(MovieDataSource movieDataSource, RequestInterface requestInterface) {
+        this.movieDataSource = movieDataSource;
+        this.requestInterface = requestInterface;
         movieDataSourceLiveData = new MutableLiveData<>();
     }
 
+    /*
+     * After call mDataSource.invalidate() method, mDataSource will be invalidated and the
+     * new DataSource instance will be created via DataSourceFactory.create() method,
+     * so its important to provide new DataSource() instance every time inside
+     * DataSourceFactory.create() method, do not provide same DataSource instance every time.
+     * mDataSource.invalidate() is not working, because after invalidation,
+     * DataSourceFactory provides the same, already invalidated DataSource instance.
+     * */
     @Override
     public DataSource<Integer, TopMovies> create() {
-        MovieDataSource movieDataSource = new MovieDataSource(compositeDisposable);
+        movieDataSource = new MovieDataSource(requestInterface);
+        movieDataSource.type = type;
         movieDataSourceLiveData.postValue(movieDataSource);
         return movieDataSource;
     }
 
     @NonNull
-    public MutableLiveData<MovieDataSource> getMovieDataSourceLiveData() {
+    public MutableLiveData<MovieDataSource> getMoDataSourceLiveData() {
         return movieDataSourceLiveData;
+    }
+
+    public MovieDataSource getMovieDataSource() {
+        return movieDataSource;
+    }
+
+    public void sort(String text) {
+        type = text;
     }
 }

@@ -17,6 +17,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            buildConfigField("String", "API_KEY", '"5ba7a64b2ea5c12dd9e12ded0bab8faf"')
+        }
     }
 
     dataBinding {
@@ -27,6 +30,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -36,6 +43,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${versions.supportlibrary}"
     implementation "com.android.support:cardview-v7:${versions.supportlibrary}"
     implementation "com.android.support:design:${versions.supportlibrary}"
+    implementation "com.android.support:palette-v7:${versions.supportlibrary}"
     implementation "com.android.support:recyclerview-v7:${versions.supportlibrary}"
     implementation "com.android.support:support-v4:${versions.supportlibrary}"
     implementation "com.android.support:support-annotations:${versions.supportlibrary}"
@@ -88,6 +96,12 @@ dependencies {
     // View Injection
     implementation "com.jakewharton:butterknife:${versions.butterknife}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${versions.butterknife}"
+
+    // Lottie
+    implementation "com.airbnb.android:lottie:2.5.6"
+
+    // Flow Layout
+    implementation 'com.xiaofeng.android:flowlayoutmanager:1.2.3.2'
 
     // Logging
     implementation "com.jakewharton.timber:timber:${versions.timber}"

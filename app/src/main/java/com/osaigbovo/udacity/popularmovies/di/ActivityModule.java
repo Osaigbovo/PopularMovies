@@ -28,12 +28,12 @@ import dagger.android.ContributesAndroidInjector;
  * b) Write custom annotations like @PerActivity.
  */
 @Module
-abstract class MainActivityModule {
+abstract class ActivityModule {
 
     @ContributesAndroidInjector
     abstract MoviesListActivity contributeMoviesListActivity();
 
     // TODO 5 : Is this fragment really injected, because MoviesDetail does not implement Fragment.
-    @ContributesAndroidInjector/*(modules = FragmentBuildersModule.class)*/
+    @ContributesAndroidInjector(modules = FragmentBuildersModule.class)
     abstract MovieDetailActivity contributeMovieDetailActivity();
 }
