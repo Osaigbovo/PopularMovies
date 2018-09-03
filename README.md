@@ -4,28 +4,26 @@
 
 <h1 align="center">Popular Movies</h1>
 <p align="center">This is an App made for Udacity Android Nanodegree Project 1.
-It's an Android app to browse the Top Rated and Popular Movies.
+Discover Top Rated and Popular Movies with your friends and family using this app, also find out more infomation about each movie.
 This app uses an API provided by https://www.themoviedb.org/.
-It is made with latest Android Architecture Components like LiveData, ViewModel and Paging library.
-It uses Retrofit for network calls, uses Dagger2 for Dependency Injection, Glide for image processing, and RxJava for reactive programming.
-Also the layouts are designed using Constraint Layout.</p>
+It is made with latest Android Architecture Components like LiveData, ViewModel and Paging library. It uses Retrofit for network calls, uses
+Dagger2 for Dependency Injection, Glide for image processing, and RxJava for reactive programming. Also the layouts are designed using Constraint Layout.</p>
 
 
 <h2>Features</h2>
-- Browse through the Top Rated and Popular Movies
-- Cache
+
+- Browse through the Top Rated and Popular Movies.
+- Caches data from local cache.
 - UI optimized for phone and tablet
 
 
 <h2>Steps To Run The App</h2>
 <p>The app uses themoviedb.org API to get movie information and posters. You must provide your own API key in order to build the app.</p>
-<p>If you do not have a gradle.properties file, create one</p>
 <ol>
-<li>Change you Android view to Project file in the directory</li>
-<li>Right click > New > File</li>
-<li>Put the name as gradle.properties</li>
+<li>In your Android directory</li>
+<li>Open build.gradle (Module)</li>
+<li>Paste your API key under buildTypes node -> debug -> buildConfigField </li>
 </ol>
-<p>Now paste THE_MOVIE_DB_API_KEY="your-api-key-here" in the gradle.properties file</p>
 <p>Build the project and Run</p>
 
 
