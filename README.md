@@ -27,7 +27,6 @@ Dagger2 for Dependency Injection, Glide for image processing, and RxJava for rea
 <p>Build the project and Run</p>
 
 
-
 ## Libraries
 
 * [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/)
@@ -43,7 +42,8 @@ Dagger2 for Dependency Injection, Glide for image processing, and RxJava for rea
 * [FlowLayoutManager](https://github.com/xiaofeng-han/AndroidLibs/tree/master/flowlayoutmanager)
 
 ## License
-Copyright 2018 Osaigbovo Odiasse
+Copyright 2018 Osaigbovo Odiase
+
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
 http://www.apache.org/licenses/LICENSE-2.0

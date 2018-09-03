@@ -42,12 +42,8 @@
         <item name="android:windowEnterTransition">@transition/details_movie_enter</item>
         <item name="android:windowReturnTransition">@transition/details_movie_return</item>
 
-        <item name="android:windowSharedElementEnterTransition">
-            @transition/details_movie_shared_enter
-        </item>
-        <item name="android:windowSharedElementReturnTransition">
-            @transition/details_movie_shared_return
-        </item>
+        <item name="android:windowSharedElementEnterTransition">@transition/details_movie_shared_enter</item>
+        <item name="android:windowSharedElementReturnTransition">@transition/details_movie_shared_return</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -78,16 +74,22 @@
 
     <style name="Collasped.TextAppearance.PopularMovies.MovieTitle" parent="TextAppearance.AppCompat.Display3">
         <item name="android:textColor">@color/text_primary_light</item>
-        <item name="android:fontFamily">@font/product_sans_regular</item>
-        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">@font/opensans_bold</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Expanded.TextAppearance.PopularMovies.MovieTitle" parent="TextAppearance.AppCompat.Display3">
         <item name="android:textColor">@color/text_primary_light</item>
-        <item name="android:fontFamily">@font/product_sans_regular</item>
-        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">@font/opensans_bold</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MovieText">
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:fontFamily">@font/opensans_regular</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

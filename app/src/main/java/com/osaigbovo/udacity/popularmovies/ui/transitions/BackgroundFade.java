@@ -30,6 +30,7 @@ import com.osaigbovo.udacity.popularmovies.util.ViewsUtils;
 
 
 /**
+ * https://github.com/nickbutcher/plaid
  * A transition which fades in/out the background {@link Drawable} of a View.
  */
 public class BackgroundFade extends Visibility {

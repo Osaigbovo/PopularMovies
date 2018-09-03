@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#79094c</color>
+    <color name="colorPrimaryDark">#840d54</color>
+    <color name="colorAccent">#ffff9800</color>
 
     <color name="grey_ripple">#8ddd</color>
     <color name="colorBlack">#555555</color>
@@ -14,7 +14,6 @@
     <color name="primary">#69F0AE</color>
     <color name="accent">@color/primary</color> <!-- mono-color -->
     <color name="primary_dark">#4aa87a</color>
-
 
     <color name="white_yellow">#fefefa</color>
     <color name="grey_600">#757575</color>
@@ -58,42 +57,6 @@
     <color name="error">#ffdd2c00</color>
     <color name="delete">#fff44336</color>
     <color name="shadow">#4c000000</color>
-
-    <!-- text (most text uses material theme colours) -->
-    <color name="hint_disabled_dark">#43000000</color> <!-- 26% black -->
-    <color name="text_on_accent">#8f000000</color>
-
-    <!-- designer news -->
-    <color name="designer_news">#03a9f4</color> <!--light blue 500 -->-->
-    <color name="designer_news_dark">#039be5</color> <!-- light blue 600 -->
-    <color name="designer_news_link_highlight">#b303a9f4</color>
-    <color name="designer_news_story_comment_background">@android:color/transparent</color>
-
-
-    <color name="designer_news_super_dark">#000133</color>
-    <color name="designer_news_quote_line">#ffeceef1</color>
-    <color name="designer_news_quote">#73000000</color>
-
-    <!-- dribbble -->
-    <color name="dribbble">#fff06292</color> <!-- pink 300 -->
-    <color name="dribbble_dark">#ec407a</color> <!-- pink 400 -->
-    <color name="dribbble_super_dark">#ff33292d</color>
-    <color name="dribbble_link_highlight">#b3f06292</color>
-    <color name="fab_heart_empty">@color/text_primary_light</color>
-    <color name="fab_heart_progress_bar">#deffffff</color> <!-- 87% white-->
-    <color name="fab_heart_full">#ffffffff</color>
-    <color name="gif_badge_light_image">#40000000</color>
-    <color name="gif_badge_dark_image">#b3ffffff</color>
-    <array name="loading_placeholders_dark">
-        <item>#ff191919</item>
-        <item>#ff212121</item>
-        <item>#ff232323</item>
-    </array>
-    <array name="loading_placeholders_light">
-        <item>#fff5f5f5</item>
-        <item>#ffeeeeee</item>
-        <item>#ffe0e0e0</item>
-    </array>
 
 
     <!-- product hunt-->

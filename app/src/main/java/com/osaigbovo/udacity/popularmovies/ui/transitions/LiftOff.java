@@ -28,8 +28,8 @@ import android.view.ViewGroup;
 
 import com.osaigbovo.udacity.popularmovies.R;
 
-
 /**
+ * https://github.com/nickbutcher/plaid
  * A transition that animates the elevation of a View from a given value down to zero.
  * <p>
  * Useful for creating parent↔child navigation transitions

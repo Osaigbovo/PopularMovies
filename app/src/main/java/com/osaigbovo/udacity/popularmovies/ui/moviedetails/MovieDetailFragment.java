@@ -86,7 +86,7 @@ public class MovieDetailFragment extends Fragment implements Injectable {
     TextView mMovieOverviewLabel;
     @BindView(R.id.text_movie_overview)
     TextView mMovieOverview;
-    @BindView(R.id.rv_genres)
+    @BindView(R.id.recycler_view_genres)
     RecyclerView mGenreRecyclerView;
     @BindInt(R.integer.detail_desc_slide_duration)
     int slideDuration;

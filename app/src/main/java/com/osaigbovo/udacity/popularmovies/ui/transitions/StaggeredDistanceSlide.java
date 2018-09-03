@@ -34,6 +34,8 @@ import com.osaigbovo.udacity.popularmovies.util.TransitionUtils;
 import java.util.List;
 
 /**
+ * https://github.com/nickbutcher/plaid
+ *
  * An alternative to {@link android.transition.Slide} which staggers elements by <b>distance</b>
  * rather than using start delays. That is elements start from/end at a progressively increasing
  * displacement such that they come together/move apart over the same duration as they enter/exit.

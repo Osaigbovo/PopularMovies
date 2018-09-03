@@ -23,7 +23,7 @@
         <targets>
             <target android:excludeId="@android:id/navigationBarBackground" />
             <target android:excludeId="@android:id/statusBarBackground" />
-
+            <target android:targetId="@+id/recycler_view_genres"/>
             <target android:targetId="@id/card_overview" />
         </targets>
         <fade
