@@ -3,13 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorGreyLight"
     tools:context=".ui.moviedetails.MovieDetailFragment">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+>
 
         <ImageView
             android:id="@+id/image_movie_poster"
@@ -29,7 +31,7 @@
             style="?android:attr/textAppearanceLarge"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:textIsSelectable="true"
@@ -42,11 +44,11 @@
 
         <RatingBar
             android:id="@+id/rating_bar"
-            style="?android:attr/ratingBarStyleIndicator"
+            style="?android:attr/ratingBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:numStars="5"
             android:stepSize="0.1"
             app:layout_constraintEnd_toStartOf="@+id/text_movie_rating"
@@ -62,46 +64,51 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/rating_bar" />
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline_movie_details"
+        <ImageView
+            android:id="@+id/imageView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="102dp" />
-
-        <TextView
-            android:id="@+id/text_release_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="4dp"
             android:layout_marginTop="16dp"
-            android:text="@string/movie_release_label"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/text_runtime_label"
-            app:layout_constraintTop_toTopOf="@+id/guideline_movie_details" />
+            android:contentDescription="@string/movie_release_label"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_calendar"
+            android:tint="@color/colorGrey"
+            app:layout_constraintEnd_toStartOf="@+id/text_movie_release"
+            app:layout_constraintTop_toBottomOf="@+id/rating_bar" />
 
         <TextView
             android:id="@+id/text_movie_release"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="@+id/text_release_label"
-            app:layout_constraintStart_toStartOf="@+id/text_release_label"
-            app:layout_constraintTop_toBottomOf="@+id/text_release_label"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView2"
             tools:text="@string/movie_release_text" />
 
-        <TextView
-            android:id="@+id/text_runtime_label"
+        <ImageView
+            android:id="@+id/image_running_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:text="@string/movie_runtime_label"
-            app:layout_constraintEnd_toStartOf="@+id/text_release_label"
-            app:layout_constraintHorizontal_bias="0.5"
+            android:contentDescription="@string/movie_runtime_label"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_time"
+            android:tint="@color/colorGrey"
             app:layout_constraintStart_toEndOf="@+id/image_movie_poster"
-            app:layout_constraintTop_toTopOf="@+id/guideline_movie_details" />
+            app:layout_constraintTop_toBottomOf="@+id/rating_bar" />
+
+        <TextView
+            android:id="@+id/text_movie_runtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            app:layout_constraintBottom_toBottomOf="@+id/image_running_time"
+            app:layout_constraintStart_toEndOf="@+id/image_running_time"
+            app:layout_constraintTop_toTopOf="@+id/image_running_time"
+            tools:text="@string/movie_runtime_text" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_genres"
@@ -109,31 +116,27 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image_movie_poster"
             app:layout_constraintTop_toBottomOf="@+id/text_movie_release" />
-
-        <TextView
-            android:id="@+id/text_movie_runtime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="@+id/text_runtime_label"
-            app:layout_constraintStart_toStartOf="@+id/text_runtime_label"
-            app:layout_constraintTop_toBottomOf="@+id/text_runtime_label"
-            tools:text="@string/movie_runtime_text" />
 
         <include
             android:id="@+id/card_overview"
             layout="@layout/movie_detail_overview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_genres" />
+            app:layout_constraintTop_toBottomOf="@+id/image_movie_poster"
+            app:layout_constraintVertical_bias="0.0" />
+
 
     </android.support.constraint.ConstraintLayout>
 

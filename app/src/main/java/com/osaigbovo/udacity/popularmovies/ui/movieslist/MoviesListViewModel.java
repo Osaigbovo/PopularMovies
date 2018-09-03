@@ -1,3 +1,18 @@
+/*
+ * Copyright 2018.  Osaigbovo Odiase
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.osaigbovo.udacity.popularmovies.ui.movieslist;
 
 import android.arch.lifecycle.LiveData;
@@ -9,13 +24,13 @@ import android.arch.paging.PagedList;
 import com.osaigbovo.udacity.popularmovies.data.NetworkState;
 import com.osaigbovo.udacity.popularmovies.data.datasource.MovieDataSource;
 import com.osaigbovo.udacity.popularmovies.data.datasource.MovieDataSourceFactory;
-import com.osaigbovo.udacity.popularmovies.data.model.TopMovies;
+import com.osaigbovo.udacity.popularmovies.data.model.Movie;
 
 import javax.inject.Inject;
 
 public class MoviesListViewModel extends ViewModel {
 
-    LiveData<PagedList<TopMovies>> moviesList;
+    LiveData<PagedList<Movie>> moviesList;
     private static final int pageSize = 20;
     private MovieDataSourceFactory movieDataSourceFactory;
     private PagedList.Config config;
@@ -28,26 +43,17 @@ public class MoviesListViewModel extends ViewModel {
                 .setPageSize(pageSize)
                 .setInitialLoadSizeHint(pageSize * 2)
                 .setEnablePlaceholders(false)
-                .build();
-
+                .build();/**/
         //createFilteredUsers();
-
     }
 
     public void sort(String text) {
-        /*
-        * After modification CouponListDataSourceFactory will be looked like in below smple,
-        * and call to mCouponListDataSourceFactory.dataSource.invalidate() method will make a refresh,
-        * alternatively instead of keeping dataSource instance inside the factory, we can call
-        * invalidate method on LiveData< PagedList < CouponModel > >.getValue().getDataSource().invalidate()
-        * */
         movieDataSourceFactory.sort(text);
 
         if(movieDataSourceFactory.getMoDataSourceLiveData().getValue() != null){
             movieDataSourceFactory.getMoDataSourceLiveData().getValue().invalidate();
         }
-
-        //moviesList.getValue().getDataSource().invalidate();
+        //or moviesList.getValue().getDataSource().invalidate();
 
         createFilteredUsers();
     }
@@ -71,7 +77,6 @@ public class MoviesListViewModel extends ViewModel {
     public LiveData<NetworkState> getRefreshState() {
         return Transformations.switchMap(movieDataSourceFactory.getMoDataSourceLiveData(), MovieDataSource::getInitialLoad);
     }
-
 
     @Override
     protected void onCleared() {

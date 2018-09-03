@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.splashscreen.SplashActivity">
 
+    <!-- TODO - change rawRes to my own file-->
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view"
         android:layout_width="match_parent"

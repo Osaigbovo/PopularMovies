@@ -1,6 +1,22 @@
+/*
+ * Copyright 2018.  Osaigbovo Odiase
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.osaigbovo.udacity.popularmovies.data.model;
 
 import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class MovieResponse {
@@ -9,7 +25,7 @@ public class MovieResponse {
     private int page;
 
     @SerializedName("results")
-    private List<TopMovies> results;
+    private List<Movie> results;
 
     public int getPage() {
         return page;
@@ -19,11 +35,11 @@ public class MovieResponse {
         this.page = page;
     }
 
-    public List<TopMovies> getResults() {
+    public List<Movie> getResults() {
         return results;
     }
 
-    public void setResults(List<TopMovies> results) {
+    public void setResults(List<Movie> results) {
         this.results = results;
     }
 

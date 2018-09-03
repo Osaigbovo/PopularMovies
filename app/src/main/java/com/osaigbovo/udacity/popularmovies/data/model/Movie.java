@@ -1,3 +1,18 @@
+/*
+ * Copyright 2018.  Osaigbovo Odiase
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.osaigbovo.udacity.popularmovies.data.model;
 
 import android.os.Parcel;
@@ -7,18 +22,9 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Room creates a table for each class annotated with @Entity;
- * the fields in the class correspond to columns in the table.
- * Therefore, the entity classes tend to be small model classes that don’t contain any logic.
- */
-
-//@Entity(primaryKeys = "id")
-public class TopMovies implements Parcelable { //implements Parcelable
+public class Movie implements Parcelable {
 
     @NonNull
-    //@PrimaryKey
-    //@ColumnInfo(name = "userid") Skip this if fields already have the correct column name.
     @Expose
     @SerializedName("id")
     private Integer id;
@@ -71,10 +77,10 @@ public class TopMovies implements Parcelable { //implements Parcelable
     @SerializedName("adult")
     private boolean adult;
 
-    public TopMovies(Integer id, String originalTitle, String title, String posterPath,
-                     String overview, String releaseDate, String originalLanguage, String backdropPath,
-                     Double popularity, Boolean video, Integer voteCount, Double voteAverage,
-                     boolean adult) {
+    public Movie(Integer id, String originalTitle, String title, String posterPath,
+                 String overview, String releaseDate, String originalLanguage, String backdropPath,
+                 Double popularity, Boolean video, Integer voteCount, Double voteAverage,
+                 boolean adult) {
         this.id = id;
         this.originalTitle = originalTitle;
         this.title = title;
@@ -212,7 +218,7 @@ public class TopMovies implements Parcelable { //implements Parcelable
         dest.writeInt(this.voteCount);
     }
 
-    protected TopMovies(Parcel in) {
+    protected Movie(Parcel in) {
         this.id = in.readInt();
         this.overview = in.readString();
         this.releaseDate = in.readString();
@@ -224,13 +230,13 @@ public class TopMovies implements Parcelable { //implements Parcelable
         this.voteCount = in.readInt();
     }
 
-    public static final Creator<TopMovies> CREATOR = new Creator<TopMovies>() {
-        public TopMovies createFromParcel(Parcel source) {
-            return new TopMovies(source);
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        public Movie createFromParcel(Parcel source) {
+            return new Movie(source);
         }
 
-        public TopMovies[] newArray(int size) {
-            return new TopMovies[size];
+        public Movie[] newArray(int size) {
+            return new Movie[size];
         }
     };
 

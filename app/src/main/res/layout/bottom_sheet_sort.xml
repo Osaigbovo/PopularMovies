@@ -11,7 +11,7 @@
         android:layout_height="@dimen/filter_imv_close"
         android:layout_marginEnd="@dimen/margin_16"
         android:layout_marginTop="@dimen/margin_16"
-        android:contentDescription="@string/close_filter"
+        android:contentDescription="@string/close_sort"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_round_close" />
@@ -23,7 +23,7 @@
         android:fontFamily="@font/product_sans_bold"
         android:paddingEnd="@dimen/margin_16"
         android:paddingStart="@dimen/margin_16"
-        android:text="@string/txt_filter"
+        android:text="@string/text_sort"
         android:textSize="@dimen/txt_18"
         app:layout_constraintBottom_toTopOf="@+id/image_close"
         app:layout_constraintEnd_toStartOf="@+id/image_close"
@@ -54,7 +54,7 @@
             android:paddingEnd="@dimen/margin_16"
             android:paddingStart="@dimen/margin_16"
             android:paddingTop="@dimen/margin_8"
-            android:text="@string/txt_popular"
+            android:text="@string/text_popular"
             android:textColor="@color/grey_700"
             android:textSize="@dimen/txt_24" />
 
@@ -72,7 +72,7 @@
             android:paddingEnd="@dimen/margin_16"
             android:paddingStart="@dimen/margin_16"
             android:paddingTop="@dimen/margin_8"
-            android:text="@string/txt_top_rated"
+            android:text="@string/text_top_rated"
             android:textColor="@color/grey_700"
             android:textSize="@dimen/txt_24" />
     </RadioGroup>

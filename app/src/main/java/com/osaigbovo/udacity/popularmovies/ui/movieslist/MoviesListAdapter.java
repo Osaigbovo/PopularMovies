@@ -1,3 +1,18 @@
+/*
+ * Copyright 2018.  Osaigbovo Odiase
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.osaigbovo.udacity.popularmovies.ui.movieslist;
 
 import android.arch.paging.PagedListAdapter;
@@ -8,25 +23,17 @@ import android.view.ViewGroup;
 
 import com.osaigbovo.udacity.popularmovies.R;
 import com.osaigbovo.udacity.popularmovies.data.NetworkState;
-import com.osaigbovo.udacity.popularmovies.data.model.TopMovies;
+import com.osaigbovo.udacity.popularmovies.data.model.Movie;
 import com.osaigbovo.udacity.popularmovies.util.NetworkStateViewHolder;
 import com.osaigbovo.udacity.popularmovies.util.RetryCallback;
 
 /**
- * A simple PagedListAdapter that binds Cheese items into CardViews.
- * <p>
  * PagedListAdapter is a RecyclerView.Adapter base class which can present the content of PagedLists
  * in a RecyclerView. It requests new pages as the user scrolls, and handles new PagedLists by
  * computing list differences on a background thread, and dispatching minimal, efficient updates to
  * the RecyclerView to ensure minimal UI thread work.
- * <p>
- * If you want to use your own Adapter base class, try using a PagedListAdapterHelper inside your
- * adapter instead.
- *
- * @see android.arch.paging.PagedListAdapter
- * see android.arch.paging.PagedListAdapterHelper
  */
-public class MoviesListAdapter extends PagedListAdapter<TopMovies, RecyclerView.ViewHolder> {
+public class MoviesListAdapter extends PagedListAdapter<Movie, RecyclerView.ViewHolder> {
 
     private NetworkState networkState;
 
@@ -115,24 +122,17 @@ public class MoviesListAdapter extends PagedListAdapter<TopMovies, RecyclerView.
     /**
      * This diff callback informs the PagedListAdapter how to compute list differences when new
      * PagedLists arrive.
-     * <p>
-     * When you add a Cheese with the 'Add' button, the PagedListAdapter uses diffCallback to
-     * detect there's only a single item difference from before, so it only needs to animate and
-     * rebind a single view.
-     *
-     * @see android.support.v7.util.DiffUtil
      */
-    private static final DiffUtil.ItemCallback DIFF_CALLBACK = new DiffUtil.ItemCallback<TopMovies>() {
+    private static final DiffUtil.ItemCallback DIFF_CALLBACK = new DiffUtil.ItemCallback<Movie>() {
         @Override
         public boolean areItemsTheSame(
-                @NonNull TopMovies oldUser, @NonNull TopMovies newUser) {
-            // User properties may have changed if reloaded from the DB, but ID is fixed
+                @NonNull Movie oldUser, @NonNull Movie newUser) {
             return oldUser.getId() == newUser.getId();
         }
 
         @Override
         public boolean areContentsTheSame(
-                @NonNull TopMovies oldUser, @NonNull TopMovies newUser) {
+                @NonNull Movie oldUser, @NonNull Movie newUser) {
             // NOTE: if you use equals, your object must properly override Object#equals()
             // Incorrectly returning false here will result in too many animations.
             return oldUser.equals(newUser);

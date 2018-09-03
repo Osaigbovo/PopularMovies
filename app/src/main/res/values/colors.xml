@@ -8,7 +8,7 @@
     <color name="colorBlack">#555555</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorGrey">#707070</color>
-    <color name="colorGreyLight">#8A8A8A</color>
+    <color name="colorGreyLight">#39f2f2f2</color>
 
     <!-- app palette -->
     <color name="primary">#69F0AE</color>

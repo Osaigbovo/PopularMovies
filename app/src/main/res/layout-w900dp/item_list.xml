@@ -11,13 +11,8 @@
     android:showDividers="middle"
     tools:context=".ui.movieslist.MoviesListActivity">
 
-    <!--
-    This layout is a two-pane layout for the Items
-    master/detail flow.
-    -->
-
-    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <!-- This layout is a two-pane layout for the movies master/detail flow.-->
+    <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/moviesSwipeRefreshLayout"
         android:name="com.osaigbovo.udacity.popularmovies.MoviesListFragment"
         android:layout_width="@dimen/item_width"

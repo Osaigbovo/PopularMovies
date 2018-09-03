@@ -55,19 +55,18 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-
     <style name="Widget.PopularMovies.Toolbar" parent="Widget.AppCompat.Toolbar">
         <item name="contentInsetStart">4dp</item>
-        <item name="titleTextAppearance">@style/TextAppearance.PopularMovies.MovieTitle</item>
+        <item name="titleTextAppearance">@style/Collasped.TextAppearance.PopularMovies.MovieTitle</item>
     </style>
 
     <style name="Widget.PopularMovies.CollapsingToolbar" parent="">
-        <item name="collapsedTitleTextAppearance">@style/TextAppearance.PopularMovies.MovieTitle</item>
+        <item name="collapsedTitleTextAppearance">@style/Collasped.TextAppearance.PopularMovies.MovieTitle</item>
         <item name="contentScrim">?attr/colorPrimary</item>
         <item name="expandedTitleGravity">bottom</item>
         <item name="expandedTitleMarginStart">24dp</item>
         <item name="expandedTitleMarginBottom">16dp</item>
-        <item name="expandedTitleTextAppearance">@style/TextAppearance.PopularMovies.MovieTitle</item>
+        <item name="expandedTitleTextAppearance">@style/Expanded.TextAppearance.PopularMovies.MovieTitle</item>
         <item name="scrimVisibleHeightTrigger">140dp</item>
     </style>
 
@@ -77,7 +76,14 @@
         <item name="android:adjustViewBounds">true</item>
     </style>
 
-    <style name="TextAppearance.PopularMovies.MovieTitle" parent="TextAppearance.AppCompat.Display3">
+    <style name="Collasped.TextAppearance.PopularMovies.MovieTitle" parent="TextAppearance.AppCompat.Display3">
+        <item name="android:textColor">@color/text_primary_light</item>
+        <item name="android:fontFamily">@font/product_sans_regular</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Expanded.TextAppearance.PopularMovies.MovieTitle" parent="TextAppearance.AppCompat.Display3">
         <item name="android:textColor">@color/text_primary_light</item>
         <item name="android:fontFamily">@font/product_sans_regular</item>
         <item name="android:textSize">22sp</item>
@@ -87,8 +93,6 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-
 
     <style name="FullscreenTheme" parent="AppTheme">
         <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>

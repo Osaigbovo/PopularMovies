@@ -33,10 +33,10 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
 
+import static com.osaigbovo.udacity.popularmovies.util.AppConstants.BASE_URL;
+
 @Singleton
 public class ServiceGenerator {
-
-    private final static String BASE_URL = "http://api.themoviedb.org/3/";
 
     private static File httpCacheDirectory
             = new File(PopularMoviesApp.getInstance().getCacheDir(), "responses");
@@ -121,14 +121,13 @@ public class ServiceGenerator {
     }
 
     /**
-     * Interceptor to
+     * Interceptor to display response message
      */
     private static class ErrorHandlerInterceptor implements Interceptor {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Request request = chain.request();
             Response response = chain.proceed(request);
-            // TODO: Find a way to display an Error message when any of these response code is returned.
             /*if (response.code() == 500) {
                 // M
                 return response;
@@ -148,7 +147,6 @@ public class ServiceGenerator {
                     break;
                 default:
                     Timber.i("Network Unknown Error");
-                    //Toast.makeText(ErrorHandlingActivity.this, "not found", Toast.LENGTH_SHORT).show();
                     break;
             }
 

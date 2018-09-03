@@ -1,3 +1,18 @@
+/*
+ * Copyright 2018.  Osaigbovo Odiase
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.osaigbovo.udacity.popularmovies.data.datasource;
 
 import android.arch.lifecycle.MutableLiveData;
@@ -9,7 +24,7 @@ import com.osaigbovo.udacity.popularmovies.BuildConfig;
 import com.osaigbovo.udacity.popularmovies.data.NetworkState;
 import com.osaigbovo.udacity.popularmovies.data.model.MovieDetail;
 import com.osaigbovo.udacity.popularmovies.data.model.MovieResponse;
-import com.osaigbovo.udacity.popularmovies.data.model.TopMovies;
+import com.osaigbovo.udacity.popularmovies.data.model.Movie;
 import com.osaigbovo.udacity.popularmovies.data.remote.RequestInterface;
 
 import javax.inject.Inject;
@@ -24,7 +39,7 @@ import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 @Singleton
-public class MovieDataSource extends ItemKeyedDataSource<Integer, TopMovies> {
+public class MovieDataSource extends ItemKeyedDataSource<Integer, Movie> {
 
     private static final String API_KEY = BuildConfig.API_KEY;
     private static final String TAG = "ShowsDataSource";
@@ -37,9 +52,9 @@ public class MovieDataSource extends ItemKeyedDataSource<Integer, TopMovies> {
     private int pageNumber = 1;
 
     private LoadInitialParams<Integer> initialParams;
-    private LoadInitialCallback<TopMovies> initialCallback;
+    private LoadInitialCallback<Movie> initialCallback;
     private LoadParams<Integer> afterParams;
-    private LoadCallback<TopMovies> afterCallback;
+    private LoadCallback<Movie> afterCallback;
     //Keep Completable reference for the retry event
     private Completable retryCompletable;
 
@@ -55,7 +70,7 @@ public class MovieDataSource extends ItemKeyedDataSource<Integer, TopMovies> {
 
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Integer> params,
-                            @NonNull LoadInitialCallback<TopMovies> callback) {
+                            @NonNull LoadInitialCallback<Movie> callback) {
         this.initialParams = params;
         this.initialCallback = callback;
 
@@ -73,7 +88,7 @@ public class MovieDataSource extends ItemKeyedDataSource<Integer, TopMovies> {
 
     }
 
-    private void onMoviesFetched(MovieResponse movieResponse, LoadInitialCallback<TopMovies> callback) {
+    private void onMoviesFetched(MovieResponse movieResponse, LoadInitialCallback<Movie> callback) {
         // Clear retry since request succeeded
         this.setRetry(null);
         pageNumber++;
@@ -93,7 +108,7 @@ public class MovieDataSource extends ItemKeyedDataSource<Integer, TopMovies> {
 
     @Override
     public void loadAfter(@NonNull LoadParams<Integer> params,
-                          @NonNull LoadCallback<TopMovies> callback) {
+                          @NonNull LoadCallback<Movie> callback) {
         this.afterParams = params;
         this.afterCallback = callback;
 
@@ -108,7 +123,7 @@ public class MovieDataSource extends ItemKeyedDataSource<Integer, TopMovies> {
         );
     }
 
-    private void onMoreMoviesFetched(MovieResponse movieResponse, LoadCallback<TopMovies> callback) {
+    private void onMoreMoviesFetched(MovieResponse movieResponse, LoadCallback<Movie> callback) {
         // clear retry since last request succeeded
         MovieDataSource.this.setRetry(null);
         networkState.postValue(NetworkState.LOADED);
@@ -126,13 +141,13 @@ public class MovieDataSource extends ItemKeyedDataSource<Integer, TopMovies> {
 
     @Override
     public void loadBefore(@NonNull LoadParams<Integer> params,
-                           @NonNull LoadCallback<TopMovies> callback) {
+                           @NonNull LoadCallback<Movie> callback) {
         //Ignored, since we only ever append to our initial load
     }
 
     @NonNull
     @Override
-    public Integer getKey(@NonNull TopMovies topMovies) {
+    public Integer getKey(@NonNull Movie movie) {
         return pageNumber;
     }
 

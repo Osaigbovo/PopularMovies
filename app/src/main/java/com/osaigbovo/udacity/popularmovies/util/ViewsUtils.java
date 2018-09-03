@@ -14,10 +14,6 @@ import java.util.Locale;
 
 public class ViewsUtils {
 
-    private static final double VOTE_PERFECT = 9.0;
-    private static final double VOTE_GOOD = 7.0;
-    private static final double VOTE_NORMAL = 5.0;
-
     private ViewsUtils() {
     }
 
@@ -67,7 +63,7 @@ public class ViewsUtils {
     public static String getDisplayRuntime(int runtime) {
         int hours = runtime / 60;
         int minutes = runtime % 60;
-        return String.valueOf(hours + " h. " + minutes + " min.");
+        return String.valueOf(hours + " h. " + minutes + " m.");
     }
 
     public static String getDisplayGenres(ArrayList<Genre> genres) {

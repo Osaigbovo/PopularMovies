@@ -1,6 +1,20 @@
+/*
+ * Copyright 2018.  Osaigbovo Odiase
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.osaigbovo.udacity.popularmovies.ui.moviedetails;
 
-import android.app.Activity;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,12 +27,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
-import android.transition.Transition;
-import android.transition.TransitionManager;
-import android.util.ArrayMap;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Priority;
@@ -28,13 +37,9 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.osaigbovo.udacity.popularmovies.R;
-import com.osaigbovo.udacity.popularmovies.data.model.TopMovies;
+import com.osaigbovo.udacity.popularmovies.data.model.Movie;
 import com.osaigbovo.udacity.popularmovies.util.ColorUtils;
 import com.osaigbovo.udacity.popularmovies.util.glide.GlideApp;
-
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -46,29 +51,30 @@ import dagger.android.support.HasSupportFragmentInjector;
 import timber.log.Timber;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
-import static com.osaigbovo.udacity.popularmovies.data.remote.ApiConstants.BASE_BACKDROP_URL;
+import static com.osaigbovo.udacity.popularmovies.util.AppConstants.BASE_BACKDROP_URL;
 import static com.osaigbovo.udacity.popularmovies.util.ColorUtils.WHITE_FILTER;
 
 /**
- * An activity representing a single Item detail screen. This
+ * An activity representing a single Movie detail screen. This
  * activity is only used on narrow width devices. On tablet-size devices,
- * item details are presented side-by-side with a list of items
+ * movie details are presented side-by-side with a list of movies
  */
 public class MovieDetailActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
-    private TopMovies topMovies;
-    CollapsingToolbarLayout collapsingToolbarLayout;
-    ImageView backdropImage;
-
+    @BindView(R.id.collapsing_toolbar_detail)
+    CollapsingToolbarLayout mCollapsingToolbarLayout;
+    @BindView(R.id.image_movie_backdrop)
+    ImageView mBackdropImage;
     @BindView(R.id.toolbar_detail)
-    Toolbar toolbar;
+    Toolbar mToolbar;
 
+    @Inject
+    DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     private MovieDetailViewModel movieDetailViewModel;
 
-    @Inject
-    DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
+    private Movie movie;
 
     @Override
     public DispatchingAndroidInjector<Fragment> supportFragmentInjector() {
@@ -85,45 +91,42 @@ public class MovieDetailActivity extends AppCompatActivity implements HasSupport
         //movieDetailViewModel = ViewModelProviders.of(this, viewModelFactory).get(MovieDetailViewModel.class);
 
         // Show the Up button in the action bar.
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            toolbar.setNavigationOnClickListener(view -> onBackPressed());
+            mToolbar.setNavigationOnClickListener(view -> onBackPressed());
         }
 
         Intent intent = getIntent();
         if (intent.hasExtra(MovieDetailFragment.ARG_MOVIE)) {
-            topMovies = intent.getExtras().getParcelable(MovieDetailFragment.ARG_MOVIE);
-            Timber.i(String.valueOf(topMovies.getTitle()));
+            movie = intent.getExtras().getParcelable(MovieDetailFragment.ARG_MOVIE);
+            Timber.i(String.valueOf(movie.getTitle()));
 
-            collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar_detail);
-            if (collapsingToolbarLayout != null) {
-                collapsingToolbarLayout.setTitle(topMovies.getTitle());
+            if (mCollapsingToolbarLayout != null) {
+                mCollapsingToolbarLayout.setTitle(movie.getTitle());
             }
 
-            backdropImage = findViewById(R.id.image_movie_backdrop);
             GlideApp.with(this)
-                    .load(BASE_BACKDROP_URL + topMovies.getBackdropPath())
+                    .load(BASE_BACKDROP_URL + movie.getBackdropPath())
                     .listener(backDropImageListener)
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.DATA)
                     .priority(Priority.IMMEDIATE)
                     .transition(withCrossFade())
                     .centerCrop()
-                    .into(backdropImage);
+                    .into(mBackdropImage);
         }
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
         // (e.g. when rotating the screen from portrait to landscape).
         // In this case, the fragment will automatically be re-added
         // to its container so we don't need to manually add it.
-        // For more information, see the Fragments API guide at:
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.item_detail_container, MovieDetailFragment.newInstance(topMovies))
+                    .add(R.id.item_detail_container, MovieDetailFragment.newInstance(movie))
                     .commit();
         }
     }
@@ -171,9 +174,9 @@ public class MovieDetailActivity extends AppCompatActivity implements HasSupport
                             topColor.getTitleTextColor();
                         }
                         if (statusBarColor != getWindow().getStatusBarColor()) {
-                            collapsingToolbarLayout.setBackgroundColor(statusBarColor);
-                            collapsingToolbarLayout.setContentScrimColor(statusBarColor);
-                            collapsingToolbarLayout.setStatusBarScrimColor(statusBarColor);
+                            mCollapsingToolbarLayout.setBackgroundColor(statusBarColor);
+                            mCollapsingToolbarLayout.setContentScrimColor(statusBarColor);
+                            mCollapsingToolbarLayout.setStatusBarScrimColor(statusBarColor);
                         }
                     });
             return false;
@@ -185,36 +188,4 @@ public class MovieDetailActivity extends AppCompatActivity implements HasSupport
             return false;
         }
     };
-
-    private static void removeActivityFromTransitionManager(Activity activity) {
-        Class transitionManagerClass = TransitionManager.class;
-        try {
-            Field runningTransitionsField = transitionManagerClass.getDeclaredField("sRunningTransitions");
-
-            runningTransitionsField.setAccessible(true);
-
-            //noinspection unchecked
-            ThreadLocal<WeakReference<ArrayMap<ViewGroup, ArrayList<Transition>>>> runningTransitions
-                    = (ThreadLocal<WeakReference<ArrayMap<ViewGroup, ArrayList<Transition>>>>)
-                    runningTransitionsField.get(transitionManagerClass);
-
-            if (runningTransitions.get() == null || runningTransitions.get().get() == null) {
-                return;
-            }
-
-            ArrayMap map = runningTransitions.get().get();
-
-            View decorView = activity.getWindow().getDecorView();
-
-            if (map.containsKey(decorView)) {
-                map.remove(decorView);
-            }
-
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
-
 }

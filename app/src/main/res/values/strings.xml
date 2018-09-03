@@ -1,18 +1,17 @@
 <resources>
-    <string name="app_name">PopularMovies</string>
+    <string name="app_name">Popular Movies</string>
 
     <string name="title_item_list">Popular Movies</string>
 
-    <string name="txt_sort">Sort</string>
+    <string name="title_activity_splash">SplashActivity</string>
 
-    <string name="title_item_detail">Item Detail</string>
+    <string name="title_item_detail">Movie Detail</string>
 
-    <string name="txt_filter">Filter</string>
-    <string name="txt_popular">Popular</string>
-    <string name="txt_top_rated">Top Rated</string>
-    <string name="txt_favorites">Favorites</string>
-    <string name="txt_favorite">Favorite</string>
-    <string name="close_filter">close_filter</string>
+    <!-- Bottom Sheet Dialog for SORTING -->
+    <string name="text_sort">Sort</string>
+    <string name="text_popular">Popular</string>
+    <string name="text_top_rated">Top Rated</string>
+    <string name="close_sort">Close Sort</string>
 
     <!-- Transition -->
     <string name="transition_name" translatable="false">poster</string>
@@ -51,12 +50,7 @@
     <string name="movie_cast_label">Casts</string>
     <string name="movie_trailers_label">Trailers</string>
 
-
     <!-- Retry -->
     <string name="retry">Retry</string>
 
-
-    <string name="title_activity_splash">SplashActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

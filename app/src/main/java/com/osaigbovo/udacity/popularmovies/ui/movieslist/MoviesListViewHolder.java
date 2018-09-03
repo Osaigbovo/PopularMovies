@@ -1,3 +1,18 @@
+/*
+ * Copyright 2018.  Osaigbovo Odiase
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.osaigbovo.udacity.popularmovies.ui.movieslist;
 
 import android.app.Activity;
@@ -15,7 +30,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.osaigbovo.udacity.popularmovies.R;
-import com.osaigbovo.udacity.popularmovies.data.model.TopMovies;
+import com.osaigbovo.udacity.popularmovies.data.model.Movie;
 import com.osaigbovo.udacity.popularmovies.ui.moviedetails.MovieDetailActivity;
 import com.osaigbovo.udacity.popularmovies.ui.moviedetails.MovieDetailFragment;
 import com.osaigbovo.udacity.popularmovies.util.glide.GlideApp;
@@ -25,29 +40,29 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
-import static com.osaigbovo.udacity.popularmovies.data.remote.ApiConstants.BASE_IMAGE_URL;
+import static com.osaigbovo.udacity.popularmovies.util.AppConstants.BASE_IMAGE_URL;
 import static com.osaigbovo.udacity.popularmovies.util.ViewsUtils.getYearOfRelease;
 
 public class MoviesListViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.image_movie)
-    ImageView movieImage;
+    ImageView mMovieImage;
     @BindView(R.id.text_movie_title)
-    TextView movieTitle;
+    TextView mMovieTitle;
     @BindView(R.id.text_movie_date)
-    TextView dateText;
+    TextView mMovieDate;
     @BindView(R.id.text_movie_rating)
-    TextView ratingText;
+    TextView mMovieRating;
 
     MoviesListViewHolder(View view) {
         super(view);
         ButterKnife.bind(this, view);
     }
 
-    public void bindTo(TopMovies topMovies, MoviesListActivity mParentActivity, boolean mTwoPane) {
-        Timber.i(topMovies.getOriginalTitle());
+    public void bindTo(Movie movie, MoviesListActivity mParentActivity, boolean mTwoPane) {
+        Timber.i(movie.getOriginalTitle());
 
-        String image_url = BASE_IMAGE_URL + topMovies.getPosterPath();
+        String image_url = BASE_IMAGE_URL + movie.getPosterPath();
         GlideApp.with(itemView.getContext())
                 .load(image_url)
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
@@ -57,19 +72,19 @@ public class MoviesListViewHolder extends RecyclerView.ViewHolder {
                 .transition(withCrossFade())
                 /*.placeholder(R.drawable.ic_movie_empty)
                 .error(R.drawable.ic_movie_error)*/
-                .into(movieImage);
+                .into(mMovieImage);
 
-        movieTitle.setText(topMovies.getTitle());
-        dateText.setText(getYearOfRelease(topMovies.getReleaseDate()));
-        ratingText.setText(String.valueOf(topMovies.getVoteAverage()));
+        mMovieTitle.setText(movie.getTitle());
+        mMovieDate.setText(getYearOfRelease(movie.getReleaseDate()));
+        mMovieRating.setText(String.valueOf(movie.getVoteAverage()));
 
-        itemView.setTag(topMovies);
+        itemView.setTag(movie);
         itemView.setOnClickListener(view -> {
-            TopMovies mTopMovies = (TopMovies) view.getTag();
-            Timber.i(String.valueOf(topMovies));
+            Movie mMovie = (Movie) view.getTag();
+            Timber.i(String.valueOf(movie));
             if (mTwoPane) {
                 Bundle arguments = new Bundle();
-                arguments.putParcelable(MovieDetailFragment.ARG_MOVIE, topMovies);
+                arguments.putParcelable(MovieDetailFragment.ARG_MOVIE, movie);
                 MovieDetailFragment fragment = new MovieDetailFragment();
                 fragment.setArguments(arguments);
                 mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -78,10 +93,10 @@ public class MoviesListViewHolder extends RecyclerView.ViewHolder {
             } else {
                 Context context = view.getContext();
                 Intent intent = new Intent(context, MovieDetailActivity.class);
-                intent.putExtra(MovieDetailFragment.ARG_MOVIE, mTopMovies);
+                intent.putExtra(MovieDetailFragment.ARG_MOVIE, mMovie);
 
                 ActivityOptionsCompat options = ActivityOptionsCompat
-                        .makeSceneTransitionAnimation((Activity) context, movieImage, context.getResources()
+                        .makeSceneTransitionAnimation((Activity) context, mMovieImage, context.getResources()
                                 .getString(R.string.transition_name));
                 context.startActivity(intent, options.toBundle());
             }

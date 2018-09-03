@@ -1,3 +1,18 @@
+/*
+ * Copyright 2018.  Osaigbovo Odiase
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.osaigbovo.udacity.popularmovies.ui.movieslist;
 
 import android.arch.lifecycle.ViewModelProvider;
@@ -55,6 +70,10 @@ import timber.log.Timber;
  */
 public class MoviesListActivity extends BaseActivity implements RetryCallback {
 
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+    private MoviesListViewModel moviesListViewModel;
+
     @BindView(R.id.moviesSwipeRefreshLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.recycler_movies_list)
@@ -67,21 +86,14 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
     Button mRetryButton;
     @BindView(R.id.loadingProgressBar)
     ProgressBar mProgressBar;
-
     @BindInt(R.integer.movies_columns)
     int mColumns;
     @BindDimen(R.dimen.grid_item_spacing)
     int mGridSpacing;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
-    private MoviesListViewModel moviesListViewModel;
     private MoviesListAdapter moviesListAdapter;
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
+    // Whether or not the activity is in two-pane mode, i.e. running on a tablet device.
     private boolean mTwoPane;
 
     @Override
@@ -104,10 +116,6 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
         mToolbar.setTitle(getTitle());
 
         if (findViewById(R.id.item_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
             mTwoPane = true;
         }
 
@@ -297,7 +305,6 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
         if (networkState.getMessage() != null) {
             mErrorMessageTextView.setText(networkState.getMessage());
         }
-
         // Loading and Retry
         mRetryButton.setVisibility(networkState.getStatus() == Status.FAILED ? View.VISIBLE : View.GONE);
         mProgressBar.setVisibility(networkState.getStatus() == Status.RUNNING ? View.VISIBLE : View.GONE);

@@ -5,7 +5,7 @@
     <item
         android:id="@+id/action_sort"
         android:icon="@drawable/ic_round_sort"
-        android:title="@string/txt_sort"
+        android:title="@string/text_sort"
         app:showAsAction="always" />
 
 </menu>

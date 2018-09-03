@@ -1,3 +1,18 @@
+/*
+ * Copyright 2018.  Osaigbovo Odiase
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.osaigbovo.udacity.popularmovies.ui.moviedetails;
 
 import android.arch.lifecycle.ViewModelProvider;
@@ -8,9 +23,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,14 +39,12 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.osaigbovo.udacity.popularmovies.R;
-import com.osaigbovo.udacity.popularmovies.data.model.Genre;
-import com.osaigbovo.udacity.popularmovies.data.model.TopMovies;
+import com.osaigbovo.udacity.popularmovies.data.model.Movie;
 import com.osaigbovo.udacity.popularmovies.di.Injectable;
 import com.osaigbovo.udacity.popularmovies.ui.movieslist.MoviesListActivity;
 import com.osaigbovo.udacity.popularmovies.util.ViewsUtils;
 import com.osaigbovo.udacity.popularmovies.util.glide.GlideApp;
-
-import java.util.List;
+import com.xiaofeng.flowlayoutmanager.FlowLayoutManager;
 
 import javax.inject.Inject;
 
@@ -44,7 +55,7 @@ import butterknife.Unbinder;
 import dagger.android.support.AndroidSupportInjection;
 import timber.log.Timber;
 
-import static com.osaigbovo.udacity.popularmovies.data.remote.ApiConstants.BASE_IMAGE_URL;
+import static com.osaigbovo.udacity.popularmovies.util.AppConstants.BASE_IMAGE_URL;
 
 /**
  * A fragment representing a single Movie detail screen.
@@ -53,49 +64,45 @@ import static com.osaigbovo.udacity.popularmovies.data.remote.ApiConstants.BASE_
  */
 public class MovieDetailFragment extends Fragment implements Injectable {
 
-    public static final String ARG_MOVIE = "movie_id";
+    public static final String ARG_MOVIE = "movie";
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+    private MovieDetailViewModel movieDetailViewModel;
 
     @BindView(R.id.image_movie_poster)
-    ImageView posterImage;
+    ImageView mPosterImage;
     @BindView(R.id.text_movie_title)
     TextView mMovieTitle;
     @BindView(R.id.rating_bar)
     RatingBar mMovieRatingBar;
     @BindView(R.id.text_movie_rating)
     TextView mMovieRating;
-    @BindView(R.id.text_release_label)
-    TextView mMovieReleaseLabel;
     @BindView(R.id.text_movie_release)
     TextView mMovieRelease;
-    @BindView(R.id.text_runtime_label)
-    TextView mMovieRuntimeLabel;
     @BindView(R.id.text_movie_runtime)
     TextView mMovieRuntime;
     @BindView(R.id.text_overview_label)
     TextView mMovieOverviewLabel;
     @BindView(R.id.text_movie_overview)
     TextView mMovieOverview;
+    @BindView(R.id.rv_genres)
+    RecyclerView mGenreRecyclerView;
     @BindInt(R.integer.detail_desc_slide_duration)
     int slideDuration;
 
-    @BindView(R.id.rv_genres)
-    RecyclerView mRvGenres;
     private GenreAdapter genreAdapter;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
-    private MovieDetailViewModel movieDetailViewModel;
     private Unbinder unbinder;
 
-    private TopMovies topMovies;
-    //private OnFragmentInteractionListener mListener;
+    private Movie movie;
 
     public MovieDetailFragment() {
     }
 
-    public static MovieDetailFragment newInstance(TopMovies topMovies) {
+    public static MovieDetailFragment newInstance(Movie movie) {
         Bundle args = new Bundle();
-        args.putParcelable(ARG_MOVIE, topMovies);
+        args.putParcelable(ARG_MOVIE, movie);
         MovieDetailFragment fragment = new MovieDetailFragment();
         fragment.setArguments(args);
         return fragment;
@@ -105,9 +112,11 @@ public class MovieDetailFragment extends Fragment implements Injectable {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            topMovies = getArguments().getParcelable(ARG_MOVIE);
+            movie = getArguments().getParcelable(ARG_MOVIE);
         }
-        movieDetailViewModel = ViewModelProviders.of(this, viewModelFactory).get(MovieDetailViewModel.class);
+        movieDetailViewModel = ViewModelProviders
+                .of(this, viewModelFactory)
+                .get(MovieDetailViewModel.class);
         setRetainInstance(true);
     }
 
@@ -118,30 +127,31 @@ public class MovieDetailFragment extends Fragment implements Injectable {
         unbinder = ButterKnife.bind(this, rootView);
 
         genreAdapter = new GenreAdapter();
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        mRvGenres.setLayoutManager(llm);
-        mRvGenres.setAdapter(genreAdapter);
+        FlowLayoutManager mFlowLayoutManager = new FlowLayoutManager();
+        mFlowLayoutManager.setAutoMeasureEnabled(true);
+        mGenreRecyclerView.setLayoutManager(mFlowLayoutManager);
+        mGenreRecyclerView.setAdapter(genreAdapter);
 
         postponeEnterTransition();
 
-        if (topMovies != null) {
+        if (movie != null) {
             // Display Movie Poster
-            Context context = posterImage.getContext();
+            Context context = mPosterImage.getContext();
             GlideApp.with(context)
-                    .load(BASE_IMAGE_URL + topMovies.getPosterPath())
+                    .load(BASE_IMAGE_URL + movie.getPosterPath())
                     .listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onResourceReady(Drawable resource, Object model,
                                                        Target<Drawable> target, DataSource dataSource,
                                                        boolean isFirstResource) {
-                            scheduleStartPostponedEnterTransition(posterImage);
+                            scheduleStartPostponedEnterTransition(mPosterImage);
                             return false;
                         }
 
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model,
                                                     Target<Drawable> target, boolean isFirstResource) {
-                            scheduleStartPostponedEnterTransition(posterImage);
+                            scheduleStartPostponedEnterTransition(mPosterImage);
                             return false;
                         }
                     })
@@ -154,24 +164,19 @@ public class MovieDetailFragment extends Fragment implements Injectable {
                     .onlyRetrieveFromCache(true)
                     .dontAnimate()
                     //.error(R.drawable.ic_movie_error)
-                    .into(posterImage);
+                    .into(mPosterImage);
 
             // Display Movie Original Title
-            mMovieTitle.setText(topMovies.getOriginalTitle());
+            mMovieTitle.setText(movie.getTitle());
             // Display Movie Rating
-            mMovieRating.setText(String.valueOf(topMovies.getVoteAverage()));
-            mMovieRatingBar.setRating(Float.parseFloat(Double.toString(topMovies.getVoteAverage())) / 2);
+            mMovieRating.setText(String.valueOf(movie.getVoteAverage()));
+            mMovieRatingBar.setRating(Float.parseFloat(Double.toString(movie.getVoteAverage())) / 2);
             // Display Movie Release Date
-            mMovieRelease.setText(ViewsUtils.getDate(topMovies.getReleaseDate()));
+            mMovieRelease.setText(ViewsUtils.getDate(movie.getReleaseDate()));
             // Display Movie Synopsis or Overview
-            if (!TextUtils.isEmpty(topMovies.getOverview())) {
-                mMovieOverview.setText(topMovies.getOverview());
-            } else {
-                mMovieOverview.setVisibility(View.GONE);
-                mMovieOverviewLabel.setVisibility(View.GONE);
-            }
+            mMovieOverview.setText(movie.getOverview());
 
-            movieDetailViewModel.getMovie(topMovies.getId());
+            movieDetailViewModel.getMovie(movie.getId());
             movieDetailViewModel.movieDetailMutableLiveData.observe(this, movieDetail -> {
                 // Display Movie Genres
                 Timber.i(ViewsUtils.getDisplayGenres(movieDetail.getGenres()));
@@ -200,7 +205,7 @@ public class MovieDetailFragment extends Fragment implements Injectable {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable(ARG_MOVIE, topMovies);
+        outState.putParcelable(ARG_MOVIE, movie);
         super.onSaveInstanceState(outState);
     }
 
@@ -208,12 +213,19 @@ public class MovieDetailFragment extends Fragment implements Injectable {
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         if (savedInstanceState != null) {
-            this.topMovies = savedInstanceState.getParcelable(ARG_MOVIE);
+            this.movie = savedInstanceState.getParcelable(ARG_MOVIE);
         }
     }
 
-    private void getGenres(List<Genre> genresID) {
+    @Override
+    public void onAttach(Context context) {
+        AndroidSupportInjection.inject(this);
+        super.onAttach(context);
+    }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
     @Override
@@ -221,32 +233,4 @@ public class MovieDetailFragment extends Fragment implements Injectable {
         super.onDestroyView();
         unbinder.unbind();
     }
-
-    /*public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }*/
-
-    @Override
-    public void onAttach(Context context) {
-        AndroidSupportInjection.inject(this);
-        super.onAttach(context);
-        /*if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }*/
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        //mListener = null;
-    }
-
-    /*public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
-    }*/
 }
