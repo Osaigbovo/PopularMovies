@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://github.com/xsahil03x/MovieMania/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png">
+<img src="https://github.com/Osaigbovo/PopularMovies/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png">
 </p>
 
 <h1 align="center">Popular Movies</h1>
@@ -13,11 +13,8 @@ Also the layouts are designed using Constraint Layout.</p>
 
 <h2>Features</h2>
 - Browse through the Top Rated and Popular Movies
-- Offline access to movies list
-- Caches data from Room Database (Refreshes every 60 minutes from Network)
-- UI optimized for potrait and landscape
-- Add movies to favorite and access them offline
-- Design inspired from Pinterest
+- Cache
+- UI optimized for phone and tablet
 
 
 <h2>Steps To Run The App</h2>
