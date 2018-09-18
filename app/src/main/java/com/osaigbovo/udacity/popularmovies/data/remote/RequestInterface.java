@@ -15,8 +15,9 @@
  */
 package com.osaigbovo.udacity.popularmovies.data.remote;
 
-import com.osaigbovo.udacity.popularmovies.data.model.MovieDetail;
+import com.osaigbovo.udacity.popularmovies.data.local.entity.MovieDetail;
 import com.osaigbovo.udacity.popularmovies.data.model.MovieResponse;
+import com.osaigbovo.udacity.popularmovies.data.model.Reviews;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -48,6 +49,13 @@ public interface RequestInterface {
     @GET("movie/{id}?append_to_response=credits,videos")
     Observable<MovieDetail> getMovieDetail(
             @Path("id") int id, @Query("api_key") String apiKey);
+
+    @GET("/movie/{id}/reviews")
+    Observable<Reviews> reviews(
+            @Path("id") long movieId,
+            @Query("api_key") String apiKey,
+            @Query("page") int page);
+
 
 }
 

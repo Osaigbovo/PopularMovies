@@ -23,7 +23,6 @@
         <targets>
             <target android:excludeId="@android:id/navigationBarBackground" />
             <target android:excludeId="@android:id/statusBarBackground" />
-            <target android:targetId="@+id/recycler_view_genres"/>
             <target android:targetId="@id/card_overview" />
         </targets>
         <fade
@@ -41,6 +40,18 @@
         <targets>
             <target android:targetId="@android:id/navigationBarBackground" />
             <target android:targetId="@android:id/statusBarBackground" />
+        </targets>
+    </fade>
+
+    <fade android:duration="200">
+        <targets>
+            <target android:targetId="@id/group_info" />
+        </targets>
+    </fade>
+
+    <fade android:duration="48">
+        <targets>
+            <target android:targetId="@id/recycler_view_genres" />
         </targets>
     </fade>
 

@@ -18,7 +18,6 @@ package com.osaigbovo.udacity.popularmovies.data;
 public class NetworkState {
 
     private Status status;
-
     private String message;
 
     private NetworkState(Status status, String message) {

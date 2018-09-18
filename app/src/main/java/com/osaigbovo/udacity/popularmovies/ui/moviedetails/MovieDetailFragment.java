@@ -19,6 +19,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -31,6 +32,7 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
@@ -39,9 +41,11 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.osaigbovo.udacity.popularmovies.R;
+import com.osaigbovo.udacity.popularmovies.data.local.entity.MovieDetail;
 import com.osaigbovo.udacity.popularmovies.data.model.Movie;
 import com.osaigbovo.udacity.popularmovies.di.Injectable;
 import com.osaigbovo.udacity.popularmovies.ui.movieslist.MoviesListActivity;
+import com.osaigbovo.udacity.popularmovies.ui.widget.WishListIconView;
 import com.osaigbovo.udacity.popularmovies.util.ViewsUtils;
 import com.osaigbovo.udacity.popularmovies.util.glide.GlideApp;
 import com.xiaofeng.flowlayoutmanager.FlowLayoutManager;
@@ -65,11 +69,16 @@ import static com.osaigbovo.udacity.popularmovies.util.AppConstants.BASE_IMAGE_U
 public class MovieDetailFragment extends Fragment implements Injectable {
 
     public static final String ARG_MOVIE = "movie";
+    public static final String FAVORITE_STATE = "clicked";
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     private MovieDetailViewModel movieDetailViewModel;
 
+    /*@BindView(R.id.favoriteIcon)
+    LottieAnimationView mLottie;*/
+    @BindView(R.id.favoriteIcon)
+    WishListIconView mFavoriteLottie;
     @BindView(R.id.image_movie_poster)
     ImageView mPosterImage;
     @BindView(R.id.text_movie_title)
@@ -96,6 +105,8 @@ public class MovieDetailFragment extends Fragment implements Injectable {
     private Unbinder unbinder;
 
     private Movie movie;
+    private MovieDetail movieDetail;
+    private MediaPlayer mediaPlayer;
 
     public MovieDetailFragment() {
     }
@@ -117,6 +128,10 @@ public class MovieDetailFragment extends Fragment implements Injectable {
         movieDetailViewModel = ViewModelProviders
                 .of(this, viewModelFactory)
                 .get(MovieDetailViewModel.class);
+
+        /*if (savedInstanceState != null){
+            mFavoriteLottie.setActivated(savedInstanceState.getBoolean(FAVORITE_STATE));
+        }*/
         setRetainInstance(true);
     }
 
@@ -125,6 +140,10 @@ public class MovieDetailFragment extends Fragment implements Injectable {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.item_movie_detail, container, false);
         unbinder = ButterKnife.bind(this, rootView);
+
+        mFavoriteLottie.setVisibility(View.INVISIBLE);
+
+        mediaPlayer = MediaPlayer.create(this.getActivity(), R.raw.favorite_sound);
 
         genreAdapter = new GenreAdapter();
         FlowLayoutManager mFlowLayoutManager = new FlowLayoutManager();
@@ -176,8 +195,11 @@ public class MovieDetailFragment extends Fragment implements Injectable {
             // Display Movie Synopsis or Overview
             mMovieOverview.setText(movie.getOverview());
 
-            movieDetailViewModel.getMovie(movie.getId());
+
+            movieDetailViewModel.getMovieDetails(movie.getId());
             movieDetailViewModel.movieDetailMutableLiveData.observe(this, movieDetail -> {
+                this.movieDetail = movieDetail;
+
                 // Display Movie Genres
                 Timber.i(ViewsUtils.getDisplayGenres(movieDetail.getGenres()));
                 genreAdapter.addGenres(movieDetail.getGenres());
@@ -185,9 +207,31 @@ public class MovieDetailFragment extends Fragment implements Injectable {
                 mMovieRuntime.setText(ViewsUtils.getDisplayRuntime(movieDetail.getRuntime()));
             });
 
+            movieDetailViewModel.isFavorite(movie.getId()).observe(this, movieDetail -> {
+
+                //mFavoriteLottie.setActivated(movieDetail != null);
+                mFavoriteLottie.setZ(4.0F);
+
+                if(movieDetail!=null){
+                    mFavoriteLottie.setProgress(1.0F);
+                    //mFavoriteLottie.setActivated(true);
+                }else {
+                    mFavoriteLottie.setProgress(0.0F);
+                    //mFavoriteLottie.setActivated(false);
+                }
+                mFavoriteLottie.setVisibility(View.VISIBLE);
+
+            });
+
+            mFavoriteLottie.setOnClickListener(view -> {
+                mFavoriteLottie.toggleWishlisted();
+                onFavoriteClick(movieDetail);
+            });
+
         } else {
             // TODO : Display some layout to indicate a null movie object.
         }
+
         return rootView;
     }
 
@@ -203,8 +247,28 @@ public class MovieDetailFragment extends Fragment implements Injectable {
                 });
     }
 
+    public void onFavoriteClick(MovieDetail movieDetail) {
+        mediaPlayer.start();
+        if(mFavoriteLottie.isActivated()){
+            //mFavoriteLottie.toggleWishlisted(!mFavoriteLottie.isActivated());
+            Toast.makeText(getContext(), String.valueOf("Added: " + movieDetail.getOriginalTitle()),
+                    Toast.LENGTH_SHORT).show();
+            movieDetailViewModel.addFavorite(movieDetail);
+            //mFavoriteLottie.setProgress(1);
+        }else {
+            //mFavoriteLottie.toggleWishlisted(mFavoriteLottie.isActivated());
+            Toast.makeText(getContext(), String.valueOf("Removed: " + movieDetail.getOriginalTitle()),
+                    Toast.LENGTH_SHORT).show();
+            movieDetailViewModel.removeFavorite(movieDetail);
+            //mFavoriteLottie.setProgress(0);
+        }
+    }
+
+    // TODO - save sate of Favorite Icon
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(FAVORITE_STATE, mFavoriteLottie.isActivated());
+
         outState.putParcelable(ARG_MOVIE, movie);
         super.onSaveInstanceState(outState);
     }
@@ -231,6 +295,11 @@ public class MovieDetailFragment extends Fragment implements Injectable {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+                mediaPlayer.release();
+            }
+        });
         unbinder.unbind();
     }
 }

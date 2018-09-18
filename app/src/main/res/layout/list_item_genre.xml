@@ -13,7 +13,7 @@
         android:layout_marginEnd="@dimen/margin_2"
         android:layout_marginStart="@dimen/margin_2"
         android:layout_marginTop="@dimen/margin_2"
-        android:background="@drawable/gradient_chip"
+
         android:elevation="1dp"
         android:fontFamily="@font/opensans_regular"
         android:paddingBottom="@dimen/margin_4"
@@ -21,6 +21,7 @@
         android:paddingStart="@dimen/margin_8"
         android:paddingTop="@dimen/margin_4"
         android:textColor="@android:color/white"
+        android:background="@drawable/gradient_chip"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

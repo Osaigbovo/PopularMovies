@@ -43,19 +43,19 @@ public class MoviesListViewModel extends ViewModel {
                 .setPageSize(pageSize)
                 .setInitialLoadSizeHint(pageSize * 2)
                 .setEnablePlaceholders(false)
-                .build();/**/
-        //createFilteredUsers();
+                .build();
+
+        moviesList = new LivePagedListBuilder<>(movieDataSourceFactory, config).build();
     }
 
     public void sort(String text) {
-        movieDataSourceFactory.sort(text);
 
-        if(movieDataSourceFactory.getMoDataSourceLiveData().getValue() != null){
+        if (movieDataSourceFactory.getMoDataSourceLiveData().getValue() != null) {
             movieDataSourceFactory.getMoDataSourceLiveData().getValue().invalidate();
         }
-        //or moviesList.getValue().getDataSource().invalidate();
 
-        createFilteredUsers();
+        //moviesList.getValue().getDataSource().invalidate();
+        movieDataSourceFactory.sort(text);
     }
 
     private void createFilteredUsers() {
@@ -67,7 +67,9 @@ public class MoviesListViewModel extends ViewModel {
     }
 
     public void refresh() {
-        movieDataSourceFactory.getMoDataSourceLiveData().getValue().invalidate();
+        if (movieDataSourceFactory.getMoDataSourceLiveData().getValue() != null) {
+            movieDataSourceFactory.getMoDataSourceLiveData().getValue().invalidate();
+        }
     }
 
     public LiveData<NetworkState> getNetworkState() {

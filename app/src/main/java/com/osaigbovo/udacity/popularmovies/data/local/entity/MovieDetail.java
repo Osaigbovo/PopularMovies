@@ -13,14 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.osaigbovo.udacity.popularmovies.data.model;
+package com.osaigbovo.udacity.popularmovies.data.local.entity;
 
+import android.arch.persistence.room.Embedded;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
+import com.osaigbovo.udacity.popularmovies.data.model.Credits;
+import com.osaigbovo.udacity.popularmovies.data.model.Genre;
+import com.osaigbovo.udacity.popularmovies.data.model.Videos;
 
 import java.util.ArrayList;
 
+@Entity(primaryKeys = "id",
+        tableName = "favorite",
+        indices = {@Index(value = {"id"}, unique = true)}
+        )
 public class MovieDetail {
 
     @NonNull
@@ -81,13 +91,15 @@ public class MovieDetail {
     @SerializedName("video")
     private boolean video;
 
+    @Embedded
     @SerializedName("videos")
     private Videos videos;
 
+    @Embedded
     @SerializedName("credits")
     private Credits credits;
 
-    public MovieDetail(@NonNull int id, String imdbId, String posterPath, String backdropPath,
+    public MovieDetail(int id, String imdbId, String posterPath, String backdropPath,
                        int budget, ArrayList<Genre> genres, String title, String originalTitle,
                        String overview, float popularity, String releaseDate, int revenue, int runtime,
                        String originalLanguage, String tagline, float voteAverage, int voteCount, boolean adult,

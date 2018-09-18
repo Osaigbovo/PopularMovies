@@ -15,6 +15,8 @@
  */
 package com.osaigbovo.udacity.popularmovies.data.model;
 
+import android.arch.persistence.room.ColumnInfo;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import java.util.ArrayList;
 public class Videos {
 
     @SerializedName("id")
+    @ColumnInfo(name = "video_id")
     private int id;
 
     @SerializedName("results")

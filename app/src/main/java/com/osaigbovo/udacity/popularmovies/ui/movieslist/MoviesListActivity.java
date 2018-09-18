@@ -20,6 +20,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -70,6 +71,8 @@ import timber.log.Timber;
  */
 public class MoviesListActivity extends BaseActivity implements RetryCallback {
 
+    private static final String SAVED_LAYOUT_MANAGER = "layout-manager-state";
+
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     private MoviesListViewModel moviesListViewModel;
@@ -91,7 +94,9 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
     @BindDimen(R.dimen.grid_item_spacing)
     int mGridSpacing;
 
+    private GridLayoutManager gridLayoutManager;
     private MoviesListAdapter moviesListAdapter;
+    private Parcelable mLayoutManagerSavedState;
 
     // Whether or not the activity is in two-pane mode, i.e. running on a tablet device.
     private boolean mTwoPane;
@@ -125,7 +130,7 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, mColumns);
+        gridLayoutManager = new GridLayoutManager(this, mColumns);
         moviesListAdapter = new MoviesListAdapter(this, this, mTwoPane);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -184,20 +189,16 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
      */
     private void initSwipeToRefresh() {
         moviesListViewModel.getRefreshState().observe(this, networkState -> {
-            if (networkState != null) {
-                if (moviesListAdapter.getCurrentList() != null) {
-                    if (moviesListAdapter.getCurrentList().size() > 0) {
-                        mSwipeRefreshLayout.setRefreshing(networkState.getStatus() ==
-                                NetworkState.LOADING.getStatus());
-                    } else {
-                        setInitialLoadingState(networkState);
-                    }
-                } else {
-                    setInitialLoadingState(networkState);
-                }
-            }
+            mSwipeRefreshLayout.setRefreshing(networkState == NetworkState.LOADING);
+
         });
         mSwipeRefreshLayout.setOnRefreshListener(() -> moviesListViewModel.refresh());
+        // Scheme colors for animation
+        mSwipeRefreshLayout.setColorSchemeColors(
+                getResources().getColor(android.R.color.holo_green_light),
+                getResources().getColor(android.R.color.holo_orange_light),
+                getResources().getColor(android.R.color.holo_red_light)
+        );
     }
 
     private void loadMoviesFromSharedPrefs() {
@@ -307,7 +308,7 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
         }
         // Loading and Retry
         mRetryButton.setVisibility(networkState.getStatus() == Status.FAILED ? View.VISIBLE : View.GONE);
-        mProgressBar.setVisibility(networkState.getStatus() == Status.RUNNING ? View.VISIBLE : View.GONE);
+        mProgressBar.setVisibility(networkState.getStatus() == Status.FAILED ? View.VISIBLE : View.GONE);
         mSwipeRefreshLayout.setEnabled(networkState.getStatus() == Status.SUCCESS);
     }
 

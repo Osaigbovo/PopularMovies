@@ -31,9 +31,11 @@ import dagger.android.support.AndroidSupportInjectionModule;
 */
 
 @Singleton
-@Component(modules = {AndroidSupportInjectionModule.class,
+@Component(modules = {
+        AndroidSupportInjectionModule.class,
         AppModule.class,
-        ActivityModule.class, FragmentBuildersModule.class})
+        ActivityModule.class,
+        FragmentBuildersModule.class})
 public interface AppComponent {
 
     @Component.Builder

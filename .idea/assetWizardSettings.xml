@@ -47,8 +47,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_calendar" />
-                            <entry key="sourceFile" value="C:\Users\osamudiamen\Downloads\calendar (1).svg" />
+                            <entry key="outputName" value="ic_favorite_filled" />
+                            <entry key="sourceFile" value="C:\Users\osamudiamen\Downloads\like.svg" />
                           </map>
                         </option>
                       </PersistentState>

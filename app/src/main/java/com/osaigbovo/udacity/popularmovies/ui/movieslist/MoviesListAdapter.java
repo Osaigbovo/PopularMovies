@@ -100,8 +100,7 @@ public class MoviesListAdapter extends PagedListAdapter<Movie, RecyclerView.View
      * @param newNetworkState the new network state
      */
     public void setNetworkState(NetworkState newNetworkState) {
-        if (getCurrentList() != null) {
-            if (getCurrentList().size() != 0) {
+
                 NetworkState previousState = this.networkState;
                 boolean hadExtraRow = hasExtraRow();
                 this.networkState = newNetworkState;
@@ -115,8 +114,7 @@ public class MoviesListAdapter extends PagedListAdapter<Movie, RecyclerView.View
                 } else if (hasExtraRow && previousState != newNetworkState) {
                     notifyItemChanged(getItemCount() - 1);
                 }
-            }
-        }
+
     }
 
     /**

@@ -33,7 +33,6 @@
         android:startDelay="300">
         <targets>
             <target android:targetId="@id/app_bar_detail" />
-            <target android:targetId="@id/recycler_view_genres"/>
         </targets>
     </transition>
 

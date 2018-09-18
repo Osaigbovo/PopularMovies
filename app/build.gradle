@@ -18,7 +18,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            buildConfigField("String", "API_KEY", '""')
+            buildConfigField("String", "API_KEY", '"5ba7a64b2ea5c12dd9e12ded0bab8faf"')
         }
     }
 
@@ -60,6 +60,12 @@ dependencies {
     // ReactiveStreams support for LiveData
     implementation "android.arch.lifecycle:reactivestreams:${versions.lifecycle}"
 
+    // Room
+    implementation "android.arch.persistence.room:runtime:${versions.room}"
+    annotationProcessor "android.arch.persistence.room:compiler:${versions.room}"
+    // Room RxJava Support for Room
+    implementation "android.arch.persistence.room:rxjava2:${versions.room}"
+
     // Paging
     implementation "android.arch.paging:runtime:${versions.paging}"
     implementation "android.arch.paging:rxjava2:${versions.paging}"
@@ -98,7 +104,7 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:${versions.butterknife}"
 
     // Lottie
-    implementation "com.airbnb.android:lottie:2.5.6"
+    implementation "com.airbnb.android:lottie:2.6.0"
 
     // Flow Layout
     implementation 'com.xiaofeng.android:flowlayoutmanager:1.2.3.2'
