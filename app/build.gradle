@@ -116,6 +116,24 @@ dependencies {
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leakcanary}"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${versions.leakcanary}"
 
+    // Testing
+    testImplementation 'junit:junit:4.12'
+
+    // Dependencies for local unit tests
+    testImplementation "junit:junit:${versions.junit}"
+    testImplementation "org.mockito:mockito-all:${versions.mockito}"
+    testImplementation "org.hamcrest:hamcrest-all:${versions.hamcrest}"
+    testImplementation "org.powermock:powermock-module-junit4:${versions.powerMockito}"
+    testImplementation "org.powermock:powermock-api-mockito:${versions.powerMockito}"
+
+    // Android Testing Support Library's runner and rules
+    androidTestImplementation "com.android.support.test:runner:${versions.runner}"
+    androidTestImplementation "com.android.support.test:rules:${versions.runner}"
+
+    // Espresso UI Testing dependencies.
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:${versions.espresso}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:${versions.espresso}"
+
 }
 repositories {
     mavenCentral()
