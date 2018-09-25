@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="movies_columns">3</integer>
+
+    <integer name="anim_duration_very_long">1500</integer>
+    <integer name="anim_duration_long">500</integer>
+    <integer name="anim_duration_medium">300</integer>
+
+    <integer name="detail_desc_slide_duration">300</integer>
+
+    <integer name="rapid_animation">120</integer>
+</resources>

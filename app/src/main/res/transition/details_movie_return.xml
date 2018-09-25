@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <transitionSet>
+        <targets>
+            <target android:excludeId="@android:id/navigationBarBackground" />
+            <target android:excludeId="@android:id/statusBarBackground" />
+            <target android:targetId="@id/app_bar_detail" />
+        </targets>
+        <fade
+            android:duration="48"
+            android:interpolator="@android:interpolator/fast_out_linear_in" />
+        <slide
+            android:duration="250"
+            android:interpolator="@android:interpolator/fast_out_linear_in"
+            android:slideEdge="top" />
+
+    </transitionSet>
+
+    <!-- Rapidly fade out all non-shared-element content with a slight downward shift. -->
+    <transitionSet>
+        <targets>
+            <target android:excludeId="@android:id/navigationBarBackground" />
+            <target android:excludeId="@android:id/statusBarBackground" />
+            <target android:targetId="@id/card_overview" />
+        </targets>
+        <fade
+            android:duration="48"
+            android:interpolator="@android:interpolator/fast_out_linear_in" />
+        <slide
+            android:duration="250"
+            android:interpolator="@android:interpolator/fast_out_linear_in"
+            android:slideEdge="bottom" />
+    </transitionSet>
+
+    <fade
+        android:duration="250"
+        android:interpolator="@android:interpolator/linear">
+        <targets>
+            <target android:targetId="@android:id/navigationBarBackground" />
+            <target android:targetId="@android:id/statusBarBackground" />
+        </targets>
+    </fade>
+
+    <fade android:duration="200">
+        <targets>
+            <target android:targetId="@id/group_info" />
+        </targets>
+    </fade>
+
+    <fade android:duration="48">
+        <targets>
+            <target android:targetId="@id/recycler_view_genres" />
+        </targets>
+    </fade>
+
+</transitionSet>

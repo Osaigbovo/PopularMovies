@@ -1,0 +1,67 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+
+    <string name="title_item_list">Popular Movies</string>
+
+    <string name="title_activity_splash">SplashActivity</string>
+
+    <string name="title_item_detail">Movie Detail</string>
+
+
+
+    <string name="text_search">Search</string>
+    <string name="transition_search_back" translatable="false">transition_search_back</string>
+    <!-- Search -->
+    <string name="search_hint">Search Dribbble &amp; Designer News</string>
+    <string name="no_search_results">No results for\n“%1$s”</string>
+    <string name="confirm_save_dribbble_search">Save Dribbble</string>
+    <string name="confirm_save_designer_news_search">Save Designer News</string>
+
+    <!-- Bottom Sheet Dialog for SORTING -->
+    <string name="text_sort">Sort</string>
+    <string name="text_popular">Popular</string>
+    <string name="text_top_rated">Top Rated</string>
+    <string name="text_favorite">Favorite</string>
+    <string name="close_sort">Close Sort</string>
+
+    <!-- Transition -->
+    <string name="transition_name" translatable="false">poster</string>
+
+    <!--  Movie Item -->
+    <string name="movie_image_thumbnail">Movie Thumbnail</string>
+    <string name="movie_title">Top Movies</string>
+    <string name="movie_date">2018</string>
+    <string name="movie_image_rating">COMING SOON</string>
+    <string name="movie_rating">5.0</string>
+
+    <!-- Movie Details -->
+    <string name="movie_original_label">Movie Title</string>
+    <string name="movie_original_text">Avengers: Infinity Wars</string>
+
+    <string name="movie_rating_label">Rating</string>
+    <string name="movie_rating_text">8.4</string>
+
+    <string name="movie_runtime_label">Running Time</string>
+    <string name="movie_runtime_text"> 1 hr 50 mins</string>
+
+    <string name="movie_release_label">Release Date</string>
+    <string name="movie_release_text"> 21st April, 2018</string>
+
+    <string name="movie_genres_label">Genres</string>
+    <string name="movie_genres_text">Thriller, Action, Sci Fi </string>
+
+    <string name="movie_overview_label">Synopsis</string>
+    <string name="movie_overview_text">A ten year old girl who wanders away from her parents along a path that leads to a
+        world ruled by strange and unusual monster-like animals. Her parents have been changed into pigs along with others
+        inside a bathhouse full of these creatures. Will she ever see the world how it once was?</string>
+
+    <string name="movie_director_label">Director</string>
+    <string name="movie_director_image">Movie Director</string>
+
+    <string name="movie_cast_label">Casts</string>
+    <string name="movie_trailers_label">Trailers</string>
+
+    <!-- Retry -->
+    <string name="retry">Retry</string>
+
+</resources>

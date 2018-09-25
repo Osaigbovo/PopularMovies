@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:baselineAligned="false"
+    android:divider="?android:attr/dividerHorizontal"
+    android:orientation="horizontal"
+    android:showDividers="middle"
+    tools:context=".ui.movieslist.MoviesListActivity">
+
+    <!-- This layout is a two-pane layout for the movies master/detail flow.-->
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/moviesSwipeRefreshLayout"
+        android:name="com.osaigbovo.udacity.popularmovies.MoviesListFragment"
+        android:layout_width="@dimen/item_width"
+        android:layout_height="match_parent"
+        tools:context=".ui.movieslist.MoviesListActivity">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_movies_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_movie" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <FrameLayout
+        android:id="@+id/item_detail_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3" />
+
+</LinearLayout>

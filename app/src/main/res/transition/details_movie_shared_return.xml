@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:duration="250"
+    android:transitionOrdering="together">
+
+    <transitionSet>
+        <targets>
+            <target android:targetId="@id/image_movie_poster" />
+        </targets>
+        <changeTransform />
+        <changeClipBounds />
+        <changeImageTransform />
+        <changeBounds android:interpolator="@android:interpolator/fast_out_slow_in" />
+        <arcMotion
+            android:duration="150"
+            android:minimumHorizontalAngle="40" />
+
+        <!--&lt;!&ndash; compensate for the diff in elevation of this element in the two activities &ndash;&gt;-->
+        <transition
+            class="com.osaigbovo.udacity.popularmovies.ui.transitions.LiftOff"
+            app:finalElevation="8dp"
+            app:initialElevation="-4dp" />
+    </transitionSet>
+
+</transitionSet>
