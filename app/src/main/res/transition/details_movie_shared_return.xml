@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:duration="250"
+    android:duration="300"
     android:transitionOrdering="together">
 
     <transitionSet>
@@ -13,12 +13,14 @@
         <changeImageTransform />
         <changeBounds android:interpolator="@android:interpolator/fast_out_slow_in" />
         <arcMotion
-            android:duration="150"
+            android:duration="300"
+            android:startDelay="100"
             android:minimumHorizontalAngle="40" />
 
-        <!--&lt;!&ndash; compensate for the diff in elevation of this element in the two activities &ndash;&gt;-->
+        <!--compensate for the diff in elevation of this element in the two activities &ndash;&gt;-->
         <transition
             class="com.osaigbovo.udacity.popularmovies.ui.transitions.LiftOff"
+            android:duration="400"
             app:finalElevation="8dp"
             app:initialElevation="-4dp" />
     </transitionSet>

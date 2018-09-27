@@ -22,6 +22,8 @@
     <style name="AppTheme.Home">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor"></item>
+
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
@@ -134,6 +136,11 @@
         <item name="android:textColor">@color/text_primary_light</item>
         <item name="android:fontFamily">@font/opensans_bold</item>
         <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MovieTextLabel" parent="MovieText">
+        <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 

@@ -25,6 +25,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -106,6 +107,8 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
     ProgressBar mProgressBar;
     @BindInt(R.integer.movies_columns)
     int mColumns;
+    @BindView(R.id.item_favorite_state)
+    View noFavorites;
     @BindDimen(R.dimen.grid_item_spacing)
     int mGridSpacing;
 
@@ -164,9 +167,7 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
         CustomItemAnimator animator = new CustomItemAnimator(newHolder ->
                 favoriteMoviesAdapter.removeItem(newHolder.getAdapterPosition()));
         mFavoriteRecyclerView.setItemAnimator(animator);
-
         mFavoriteRecyclerView.addItemDecoration(new ItemOffsetDecoration(spacing));
-
         mRecyclerView.setAdapter(moviesListAdapter);
         mFavoriteRecyclerView.setAdapter(favoriteMoviesAdapter);
 
@@ -213,9 +214,14 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
                 return true;
             case R.id.menu_search:
                 View searchMenuView = mToolbar.findViewById(R.id.menu_search);
-                Bundle options = ActivityOptions.makeSceneTransitionAnimation(this, searchMenuView,
-                        getString(R.string.transition_search_back)).toBundle();
-                ActivityCompat.startActivityForResult(this, new Intent(this, SearchActivity.class), RC_SEARCH, options);
+                Bundle options = ActivityOptions
+                        .makeSceneTransitionAnimation(this, searchMenuView,
+                                getString(R.string.transition_search_back)).toBundle();
+
+                ActivityCompat.startActivityForResult(this,
+                        new Intent(this, SearchActivity.class),
+                        RC_SEARCH,
+                        options);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -250,7 +256,6 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
     private void initSwipeToRefresh() {
         moviesListViewModel.getRefreshState().observe(this, networkState -> {
             mSwipeRefreshLayout.setRefreshing(networkState == NetworkState.LOADING);
-
         });
         mSwipeRefreshLayout.setOnRefreshListener(() -> moviesListViewModel.refresh());
         // Scheme colors for animation
@@ -262,6 +267,7 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
     }
 
     private void loadMoviesFromSharedPrefs() {
+        noFavorites.setVisibility(View.GONE);
         int loadingIdentifier = SharedPreferenceUtils.contains(AppConstants.PREF_FILTER) ? 2 : 1;
 
         switch (loadingIdentifier) {
@@ -323,6 +329,7 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
             switch (checkedId) {
                 case R.id.radio_button_popular:
                     if (PopularMoviesApp.hasNetwork()) {
+                        noFavorites.setVisibility(View.GONE);
                         SharedPreferenceUtils.setSharedPreferenceString(AppConstants.PREF_FILTER, AppConstants.SORT_BY_POPULAR);
                         Timber.i("Get Popular Movies");
                         loadMovies(AppConstants.SORT_BY_POPULAR);
@@ -332,6 +339,7 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
                     break;
                 case R.id.radio_button_top_rated:
                     if (PopularMoviesApp.hasNetwork()) {
+                        noFavorites.setVisibility(View.GONE);
                         SharedPreferenceUtils.setSharedPreferenceString(AppConstants.PREF_FILTER, AppConstants.SORT_BY_TOP_RATED);
                         Timber.i("Get Top Rated Movies");
                         loadMovies(AppConstants.SORT_BY_TOP_RATED);
@@ -358,14 +366,15 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
 
         if (sort.equalsIgnoreCase(AppConstants.SORT_BY_FAVORITE)) {
             mSwipeRefreshLayout.setEnabled(false);
-            mFavoriteRecyclerView.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
+            mFavoriteRecyclerView.setVisibility(View.VISIBLE);
 
             moviesListViewModel.getFavorites().observe(this, favoriteMovies -> {
                 if (favoriteMovies != null && favoriteMovies.size() != 0) {
                     favoriteMoviesAdapter.addMoviesList(favoriteMovies);
                 } else {
-                    //
+                    mFavoriteRecyclerView.setVisibility(View.GONE);
+                    noFavorites.setVisibility(View.VISIBLE);
                 }
             });
 
@@ -374,6 +383,7 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
 
         } else {
             mFavoriteRecyclerView.setVisibility(View.GONE);
+            noFavorites.setVisibility(View.GONE);
             mRecyclerView.setVisibility(View.VISIBLE);
             moviesListViewModel.sort(sort);
             setupList();
@@ -386,17 +396,18 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
         moviesListViewModel.getNetworkState().observe(this, moviesListAdapter::setNetworkState);
     }
 
-
-    ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper
+    private ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper
             .SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
         @Override
-        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
+                              @NonNull RecyclerView.ViewHolder target) {
             return false;
         }
 
         @Override
-        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             if (viewHolder instanceof FavoriteMoviesAdapter.ViewHolder) {
+
                 final int position = viewHolder.getAdapterPosition();
                 final MovieDetail movieDetail = favoriteMoviesAdapter.removeItem(position);
 
@@ -405,13 +416,19 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
                 favoriteMoviesAdapter.notifyDataSetChanged();
                 //favoriteMoviesAdapter.notifyItemRangeChanged(position, favMoviesList.size());
 
-                // showing snack bar with Undo option
+                // Show SnackBar with Movie name and Undo option
                 Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinator),
-                        " removed from Recyclerview!", Snackbar.LENGTH_LONG);
+                        movieDetail.getOriginalTitle() + " is removed from Favorites!",
+                        Snackbar.LENGTH_LONG);
+
                 snackbar.setAction("UNDO", view -> {
-                    // undo is selected, restore the deleted item
+                    // Undo is selected, restore the deleted item
                     moviesListViewModel.addFavorite(movieDetail);
                     favoriteMoviesAdapter.restoreItem(movieDetail, position);
+                    if (favoriteMoviesAdapter.getItemCount() != 0){
+                        mFavoriteRecyclerView.setVisibility(View.VISIBLE);
+                        noFavorites.setVisibility(View.GONE);
+                    }
                 });
                 snackbar.setActionTextColor(Color.YELLOW);
                 snackbar.show();
@@ -419,16 +436,17 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
         }
 
         @Override
-        public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                                float dX, float dY, int actionState, boolean isCurrentlyActive) {
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
+                                @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY,
+                                int actionState, boolean isCurrentlyActive) {
             if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
                 View itemView = viewHolder.itemView;
                 float height = (float) itemView.getBottom() - (float) itemView.getTop();
                 float width = height / 3;
                 p.setAntiAlias(true);
+                p.setColor(Color.parseColor("#388E3C"));
 
                 if (dX > 0) {
-                    p.setColor(Color.parseColor("#388E3C"));
                     RectF background = new RectF((float) itemView.getLeft(),
                             (float) itemView.getTop(), dX, (float) itemView.getBottom());
                     RectF iconDest = new RectF((float) itemView.getLeft() + width,
@@ -437,7 +455,6 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
                     c.drawRect(background, p);
                     c.drawBitmap(ViewsUtils.getBitmap(getDrawable(R.drawable.ic_delete)), null, iconDest, p);
                 } else {
-                    p.setColor(Color.parseColor("#388E3C"));
                     RectF background = new RectF((float) itemView.getRight() + dX,
                             (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
                     RectF iconDest = new RectF((float) itemView.getRight() - 2 * width,

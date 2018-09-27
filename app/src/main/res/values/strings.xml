@@ -8,15 +8,6 @@
     <string name="title_item_detail">Movie Detail</string>
 
 
-
-    <string name="text_search">Search</string>
-    <string name="transition_search_back" translatable="false">transition_search_back</string>
-    <!-- Search -->
-    <string name="search_hint">Search Dribbble &amp; Designer News</string>
-    <string name="no_search_results">No results for\n“%1$s”</string>
-    <string name="confirm_save_dribbble_search">Save Dribbble</string>
-    <string name="confirm_save_designer_news_search">Save Designer News</string>
-
     <!-- Bottom Sheet Dialog for SORTING -->
     <string name="text_sort">Sort</string>
     <string name="text_popular">Popular</string>
@@ -24,8 +15,10 @@
     <string name="text_favorite">Favorite</string>
     <string name="close_sort">Close Sort</string>
 
+
     <!-- Transition -->
     <string name="transition_name" translatable="false">poster</string>
+
 
     <!--  Movie Item -->
     <string name="movie_image_thumbnail">Movie Thumbnail</string>
@@ -33,6 +26,22 @@
     <string name="movie_date">2018</string>
     <string name="movie_image_rating">COMING SOON</string>
     <string name="movie_rating">5.0</string>
+
+
+    <!--  Movie Favorite -->
+    <string name="image_no_favorites">Empty Favorites List</string>
+    <string name="no_favorites">No Movies Here</string>
+    <string name="add_favorites">Add a movie to your favorites list</string>
+
+
+    <!-- Movie Search -->
+    <string name="text_search">Search</string>
+    <string name="transition_search_back" translatable="false">transition_search_back</string>
+    <string name="search_hint">Search Dribbble &amp; Designer News</string>
+    <string name="no_search_results">No results for\n“%1$s”</string>
+    <string name="confirm_save_dribbble_search">Save Dribbble</string>
+    <string name="confirm_save_designer_news_search">Save Designer News</string>
+
 
     <!-- Movie Details -->
     <string name="movie_original_label">Movie Title</string>
@@ -59,7 +68,12 @@
     <string name="movie_director_image">Movie Director</string>
 
     <string name="movie_cast_label">Casts</string>
+
     <string name="movie_trailers_label">Trailers</string>
+
+
+
+    <string name="DEVELOPER_KEY">AIzaSyAcPnu4LocIiUAM2mOcpiGkzp6DnMRSn04</string>
 
     <!-- Retry -->
     <string name="retry">Retry</string>

@@ -16,6 +16,7 @@
 
 package com.osaigbovo.udacity.popularmovies.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
@@ -50,6 +51,14 @@ public class ImeUtils {
         InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context
                 .INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        View view = activity.findViewById(android.R.id.content);
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
 }

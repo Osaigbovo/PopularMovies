@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <transitionSet
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:transitionOrdering="together"
+    android:interpolator="@android:interpolator/fast_out_linear_in">
 
     <transitionSet>
         <targets>
             <target android:excludeId="@android:id/navigationBarBackground" />
             <target android:excludeId="@android:id/statusBarBackground" />
+            <target android:excludeId="@id/group_info" />
             <target android:targetId="@id/app_bar_detail" />
         </targets>
+        <transition
+            class="com.osaigbovo.udacity.popularmovies.ui.transitions.StaggeredDistanceSlide"
+            android:duration="100"
+            android:interpolator="@android:interpolator/linear_out_slow_in" />
         <fade
-            android:duration="48"
+            android:duration="40"
             android:interpolator="@android:interpolator/fast_out_linear_in" />
         <slide
-            android:duration="250"
+            android:duration="100"
             android:interpolator="@android:interpolator/fast_out_linear_in"
             android:slideEdge="top" />
 
@@ -23,19 +30,29 @@
         <targets>
             <target android:excludeId="@android:id/navigationBarBackground" />
             <target android:excludeId="@android:id/statusBarBackground" />
-            <target android:targetId="@id/card_overview" />
+            <target android:excludeId="@id/group_info" />
+            <target android:targetId="@id/group_more_info" />
         </targets>
         <fade
             android:duration="48"
             android:interpolator="@android:interpolator/fast_out_linear_in" />
         <slide
-            android:duration="250"
+            android:duration="150"
             android:interpolator="@android:interpolator/fast_out_linear_in"
             android:slideEdge="bottom" />
     </transitionSet>
 
+    <slide
+        android:slideEdge="bottom"
+        android:duration="200">
+        <targets>
+            <target android:excludeId="@android:id/navigationBarBackground" />
+            <target android:excludeId="@android:id/statusBarBackground" />
+        </targets>
+    </slide>
+
     <fade
-        android:duration="250"
+        android:duration="300"
         android:interpolator="@android:interpolator/linear">
         <targets>
             <target android:targetId="@android:id/navigationBarBackground" />
@@ -43,16 +60,12 @@
         </targets>
     </fade>
 
-    <fade android:duration="200">
+    <fade
+        android:duration="40">
         <targets>
             <target android:targetId="@id/group_info" />
         </targets>
     </fade>
 
-    <fade android:duration="48">
-        <targets>
-            <target android:targetId="@id/recycler_view_genres" />
-        </targets>
-    </fade>
 
 </transitionSet>

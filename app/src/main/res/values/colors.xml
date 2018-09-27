@@ -5,10 +5,12 @@
     <color name="colorAccent">#ffff9800</color>
 
     <color name="grey_ripple">#8ddd</color>
-    <color name="colorBlack">#555555</color>
+    <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorGrey">#707070</color>
-    <color name="colorGreyLight">#39f2f2f2</color>
+    <color name="colorGrey">#757575</color>
+    <color name="colorGreyLight">#39a99898</color>
+
+    <color name="lightbox_background">#E2DDE8</color>
 
     <!-- app palette -->
     <color name="primary">#69F0AE</color>

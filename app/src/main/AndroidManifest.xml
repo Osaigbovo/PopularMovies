@@ -36,6 +36,7 @@
 
         <activity
             android:name=".ui.moviedetails.MovieDetailActivity"
+            android:configChanges="keyboardHidden"
             android:label="@string/title_item_detail"
             android:parentActivityName=".ui.movieslist.MoviesListActivity"
             android:theme="@style/AppTheme.Details">
@@ -55,6 +56,16 @@
                 <action android:name="com.google.android.gms.actions.SEARCH_ACTION" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.trailer.YoutubeLightboxActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:parentActivityName=".ui.moviedetails.MovieDetailActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.osaigbovo.udacity.popularmovies.ui.moviedetails.MovieDetailActivity" />
         </activity>
 
     </application>

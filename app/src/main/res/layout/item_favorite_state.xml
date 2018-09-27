@@ -1,29 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/image_no_favoriites"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/image_no_favorites"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_favorite_empty" />
 
     <TextView
-        android:id="@+id/errorMessageTextView"
+        android:id="@+id/text_no_favorites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal" />
+        android:layout_marginTop="8dp"
+        android:text="@string/no_favorites"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintEnd_toEndOf="@+id/image_no_favoriites"
+        app:layout_constraintStart_toStartOf="@+id/image_no_favoriites"
+        app:layout_constraintTop_toBottomOf="@+id/image_no_favoriites" />
 
-    <ProgressBar
-        android:id="@+id/loadingProgressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
-
-    <Button
-        android:id="@+id/retryLoadingButton"
-        style="@style/Widget.AppCompat.Button.Colored"
+    <TextView
+        android:id="@+id/text_add_favorites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/retry" />
+        android:layout_marginTop="8dp"
+        android:text="@string/add_favorites"
+        android:textColor="@color/colorGrey"
+        app:layout_constraintEnd_toEndOf="@+id/text_no_favorites"
+        app:layout_constraintStart_toStartOf="@+id/text_no_favorites"
+        app:layout_constraintTop_toBottomOf="@+id/text_no_favorites" />
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

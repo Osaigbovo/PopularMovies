@@ -27,6 +27,7 @@ android {
         }
         debug {
             buildConfigField("String", "API_KEY", '"5ba7a64b2ea5c12dd9e12ded0bab8faf"')
+            buildConfigField("String", "YOUTUBE_KEY", '"AIzaSyAcPnu4LocIiUAM2mOcpiGkzp6DnMRSn04"')
         }
     }
 
@@ -123,6 +124,9 @@ dependencies {
     // View Injection
     implementation "com.jakewharton:butterknife:${versions.butterknife}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${versions.butterknife}"
+
+    // Youtube
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
 
     // Lottie
     implementation "com.airbnb.android:lottie:2.7.0"

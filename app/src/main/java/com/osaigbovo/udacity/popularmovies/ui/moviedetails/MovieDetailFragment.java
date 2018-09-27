@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,15 +41,22 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.youtube.player.YouTubeApiServiceUtil;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.osaigbovo.udacity.popularmovies.PopularMoviesApp;
 import com.osaigbovo.udacity.popularmovies.R;
 import com.osaigbovo.udacity.popularmovies.data.local.entity.MovieDetail;
 import com.osaigbovo.udacity.popularmovies.data.model.Movie;
+import com.osaigbovo.udacity.popularmovies.data.model.Video;
+import com.osaigbovo.udacity.popularmovies.data.model.Videos;
 import com.osaigbovo.udacity.popularmovies.di.Injectable;
 import com.osaigbovo.udacity.popularmovies.ui.movieslist.MoviesListActivity;
 import com.osaigbovo.udacity.popularmovies.ui.widget.WishListIconView;
 import com.osaigbovo.udacity.popularmovies.util.ViewsUtils;
 import com.osaigbovo.udacity.popularmovies.util.glide.GlideApp;
 import com.xiaofeng.flowlayoutmanager.FlowLayoutManager;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -97,10 +105,15 @@ public class MovieDetailFragment extends Fragment implements Injectable {
     TextView mMovieOverview;
     @BindView(R.id.recycler_view_genres)
     RecyclerView mGenreRecyclerView;
+    @BindView(R.id.recycler_view_videos)
+    RecyclerView mVideoRecyclerView;
     @BindInt(R.integer.detail_desc_slide_duration)
     int slideDuration;
 
+    LinearLayoutManager videoLayoutManager;
+
     private GenreAdapter genreAdapter;
+    private VideoAdapter videoAdapter;
 
     private Unbinder unbinder;
 
@@ -141,6 +154,8 @@ public class MovieDetailFragment extends Fragment implements Injectable {
         View rootView = inflater.inflate(R.layout.item_movie_detail, container, false);
         unbinder = ButterKnife.bind(this, rootView);
 
+        //ImeUtils.hideKeyboard(this.getActivity());
+
         mFavoriteLottie.setVisibility(View.INVISIBLE);
 
         mediaPlayer = MediaPlayer.create(this.getActivity(), R.raw.favorite_sound);
@@ -150,6 +165,21 @@ public class MovieDetailFragment extends Fragment implements Injectable {
         mFlowLayoutManager.setAutoMeasureEnabled(true);
         mGenreRecyclerView.setLayoutManager(mFlowLayoutManager);
         mGenreRecyclerView.setAdapter(genreAdapter);
+
+
+        videoAdapter = new VideoAdapter();
+        videoLayoutManager = new LinearLayoutManager(PopularMoviesApp.getContext(), LinearLayoutManager.HORIZONTAL,
+                false);
+        mVideoRecyclerView.setLayoutManager(videoLayoutManager);
+        //mVideoRecyclerView.setHasFixedSize(true);
+
+        //Check whether the main Youtube app exists on the device.
+        final YouTubeInitializationResult result = YouTubeApiServiceUtil
+                .isYouTubeApiServiceAvailable(getActivity());
+        if (result != YouTubeInitializationResult.SUCCESS) {
+            //If there are any issues we can show an error dialog.
+            result.getErrorDialog(getActivity(), 0).show();
+        }
 
         postponeEnterTransition();
 
@@ -205,6 +235,9 @@ public class MovieDetailFragment extends Fragment implements Injectable {
                 genreAdapter.addGenres(movieDetail.getGenres());
                 // Display Movie Runtime
                 mMovieRuntime.setText(ViewsUtils.getDisplayRuntime(movieDetail.getRuntime()));
+
+
+                onLoadVideo(movieDetail.getVideos());
             });
 
             movieDetailViewModel.isFavorite(movie.getId()).observe(this, movieDetail -> {
@@ -227,6 +260,7 @@ public class MovieDetailFragment extends Fragment implements Injectable {
                 mFavoriteLottie.toggleWishlisted();
                 onFavoriteClick(movieDetail);
             });
+
 
         } else {
             // TODO : Display some layout to indicate a null movie object.
@@ -258,6 +292,12 @@ public class MovieDetailFragment extends Fragment implements Injectable {
                     Toast.LENGTH_SHORT).show();
             movieDetailViewModel.removeFavorite(movieDetail);
         }
+    }
+
+    private void onLoadVideo(Videos videos) {
+        ArrayList<Video> videoList = videos.getVideos();
+        videoAdapter.setVideo(videoList);
+        mVideoRecyclerView.setAdapter(videoAdapter);
     }
 
     // TODO - save sate of Favorite Icon
