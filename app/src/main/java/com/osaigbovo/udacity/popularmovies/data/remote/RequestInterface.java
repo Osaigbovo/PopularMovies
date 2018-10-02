@@ -20,6 +20,7 @@ import com.osaigbovo.udacity.popularmovies.data.model.MovieResponse;
 import com.osaigbovo.udacity.popularmovies.data.model.Reviews;
 import com.osaigbovo.udacity.popularmovies.data.model.SearchResponse;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.http.GET;
@@ -28,18 +29,6 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface RequestInterface {
-
-    @Headers("Cache-Control:public ,max-age=60")
-    @GET("movie/popular")
-    Single<MovieResponse> getPopularMovies(
-            @Query("api_key") String apiKey,
-            @Query("page") int page);
-
-    @Headers("Cache-Control:public ,max-age=60")
-    @GET("movie/top_rated")
-    Single<MovieResponse> getTopRatedMovies(
-            @Query("api_key") String apiKey,
-            @Query("page") int page);
 
     @Headers("Cache-Control:public ,max-age=60")
     @GET("movie/{type}")
@@ -59,12 +48,22 @@ public interface RequestInterface {
             @Query("api_key") String apiKey,
             @Query("page") int page);
 
-
-    // search/movie?api_key={api_key}&query=Jack+Reacher
     @GET("search/movie")
     Observable<SearchResponse> search(
             @Query("api_key") String apiKey,
             @Query("query") String query);
 
 }
+
+/*@Headers("Cache-Control:public ,max-age=60")
+    @GET("movie/popular")
+    Single<MovieResponse> getPopularMovies(
+            @Query("api_key") String apiKey,
+            @Query("page") int page);
+
+    @Headers("Cache-Control:public ,max-age=60")
+    @GET("movie/top_rated")
+    Single<MovieResponse> getTopRatedMovies(
+            @Query("api_key") String apiKey,
+            @Query("page") int page);*/
 

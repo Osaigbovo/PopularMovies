@@ -55,6 +55,8 @@ import com.osaigbovo.udacity.popularmovies.data.Status;
 import com.osaigbovo.udacity.popularmovies.data.local.entity.MovieDetail;
 import com.osaigbovo.udacity.popularmovies.ui.base.BaseActivity;
 import com.osaigbovo.udacity.popularmovies.ui.moviedetails.MovieDetailActivity;
+import com.osaigbovo.udacity.popularmovies.ui.movieslist.adapters.FavoriteMoviesAdapter;
+import com.osaigbovo.udacity.popularmovies.ui.movieslist.adapters.MoviesListAdapter;
 import com.osaigbovo.udacity.popularmovies.ui.search.SearchActivity;
 import com.osaigbovo.udacity.popularmovies.ui.widget.CustomItemAnimator;
 import com.osaigbovo.udacity.popularmovies.ui.widget.ItemOffsetDecoration;

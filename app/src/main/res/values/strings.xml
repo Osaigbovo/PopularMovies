@@ -37,10 +37,8 @@
     <!-- Movie Search -->
     <string name="text_search">Search</string>
     <string name="transition_search_back" translatable="false">transition_search_back</string>
-    <string name="search_hint">Search Dribbble &amp; Designer News</string>
+    <string name="search_hint">Search for a movie</string>
     <string name="no_search_results">No results for\n“%1$s”</string>
-    <string name="confirm_save_dribbble_search">Save Dribbble</string>
-    <string name="confirm_save_designer_news_search">Save Designer News</string>
 
 
     <!-- Movie Details -->
@@ -66,14 +64,19 @@
 
     <string name="movie_director_label">Director</string>
     <string name="movie_director_image">Movie Director</string>
+    <string name="movie_director_name">Stanley Kubrick.</string>
 
     <string name="movie_cast_label">Casts</string>
+    <string name="movie_cast_image">Movie Cast Image</string>
+    <string name="movie_cast_name">Robert Downer Jr.</string>
+    <string name="movie_cast_character">Iron Man</string>
 
     <string name="movie_trailers_label">Trailers</string>
+    <string name="movie_trailers_count">0</string>
 
-
-
-    <string name="DEVELOPER_KEY">AIzaSyAcPnu4LocIiUAM2mOcpiGkzp6DnMRSn04</string>
+    <string name="movie_reviews_label">Reviews</string>
+    <string name="movie_review_name">John Paul</string>
+    <string name="movie_review_body">Movie was good</string>
 
     <!-- Retry -->
     <string name="retry">Retry</string>

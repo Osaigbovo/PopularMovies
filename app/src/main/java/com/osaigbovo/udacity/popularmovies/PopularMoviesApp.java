@@ -24,6 +24,8 @@ import android.net.NetworkInfo;
 import com.osaigbovo.udacity.popularmovies.di.AppInjector;
 import com.squareup.leakcanary.RefWatcher;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
@@ -84,7 +86,7 @@ public class PopularMoviesApp extends Application implements HasActivityInjector
 
     public boolean checkIfHasNetwork() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        NetworkInfo networkInfo = Objects.requireNonNull(cm).getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
     }
 

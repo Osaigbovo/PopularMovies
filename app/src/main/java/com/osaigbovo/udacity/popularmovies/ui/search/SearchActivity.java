@@ -43,13 +43,13 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.android.AndroidInjection;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -65,32 +65,21 @@ public class SearchActivity extends AppCompatActivity {
 
     @BindView(R.id.searchback)
     ImageButton searchBack;
-    @BindView(R.id.searchback_container)
-    ViewGroup searchBackContainer;
     @BindView(R.id.search_view)
     SearchView searchView;
-    @BindView(R.id.search_background)
-    View searchBackground;
     @BindView(android.R.id.empty)
     ProgressBar progress;
     @BindView(R.id.search_results)
     RecyclerView searchRecyclerView;
     @BindView(R.id.container)
     ViewGroup container;
-    @BindView(R.id.search_toolbar)
-    ViewGroup searchToolbar;
     @BindView(R.id.results_container)
     ViewGroup resultsContainer;
-    @BindView(R.id.fab)
-    ImageButton fab;
     @BindView(R.id.scrim)
     View scrim;
     @BindView(R.id.results_scrim)
     View resultsScrim;
-    @BindDimen(R.dimen.z_app_bar)
-    float appBarElevation;
-    /*SearchDataManager dataManager;
-     */
+
     SearchMoviesAdapter searchMoviesAdapter;
     private TextView noResults;
     private SparseArray<Transition> transitions = new SparseArray<>();
@@ -98,6 +87,8 @@ public class SearchActivity extends AppCompatActivity {
 
     LinearLayoutManager linearLayoutManager;
     List<Movie> searchMoviesList;
+
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private boolean mTwoPane;
 
@@ -118,9 +109,10 @@ public class SearchActivity extends AppCompatActivity {
 
         linearLayoutManager = new LinearLayoutManager(this);
         searchMoviesAdapter = new SearchMoviesAdapter(this, mTwoPane);
-        searchRecyclerView.setLayoutManager(linearLayoutManager);
-        //searchRecyclerView.addItemDecoration(new ItemOffsetDecoration(spacing));
+
         searchRecyclerView.setAdapter(searchMoviesAdapter);
+        searchRecyclerView.setLayoutManager(linearLayoutManager);
+        searchRecyclerView.setHasFixedSize(true);
 
         setupTransitions();
     }
@@ -139,7 +131,7 @@ public class SearchActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        //dataManager.cancelLoading();
+        compositeDisposable.dispose();
         super.onDestroy();
     }
 
@@ -168,50 +160,45 @@ public class SearchActivity extends AppCompatActivity {
         searchView.setImeOptions(searchView.getImeOptions() | EditorInfo.IME_ACTION_SEARCH |
                 EditorInfo.IME_FLAG_NO_EXTRACT_UI | EditorInfo.IME_FLAG_NO_FULLSCREEN);
 
-        RxSearchObservable.fromView(searchView)
-                .debounce(300, TimeUnit.MILLISECONDS)
-                .filter(text -> {
-                    if (text.isEmpty()) {
-                        Log.d(TAG, "Empty: " + text);
-                        return false;
-                    } else {
-                        return true;
-                    }
-                })
-                .distinctUntilChanged()
-                .switchMap((Function<String, ObservableSource<SearchResponse>>) query -> searchViewModel
-                        .search(query)
-                        .subscribeOn(Schedulers.io()))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(searchResponse -> {
-                    progress.setVisibility(View.VISIBLE);
-                    ImeUtils.hideIme(searchView);
-                    searchView.clearFocus();
+        compositeDisposable.add(
+                RxSearchObservable.fromView(searchView)
+                        .debounce(300, TimeUnit.MILLISECONDS)
+                        .filter(text -> text.length() > 0)
+                        .distinctUntilChanged()
+                        .switchMap((Function<String, ObservableSource<SearchResponse>>) query -> searchViewModel
+                                .search(query)
+                                .subscribeOn(Schedulers.io()))
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(searchResponse -> {
+                            progress.setVisibility(View.VISIBLE);
+                            ImeUtils.hideIme(searchView);
+                            searchView.clearFocus();
 
-                    if (searchResponse.getResults() != null && searchResponse.getResults().size() > 0) {
-                        searchMoviesList = searchResponse.getResults();
-                        Log.d(TAG, "Result:" + searchMoviesList.get(0).getOriginalTitle());
+                            if (searchResponse.getResults() != null
+                                    && searchResponse.getResults().size() > 0) {
+                                searchMoviesList = searchResponse.getResults();
+                                Log.d(TAG, "Result:" + searchMoviesList.get(0).getOriginalTitle());
 
-                        if (searchRecyclerView.getVisibility() != View.VISIBLE) {
-                            setNoResultsVisibility(View.GONE);
-                            TransitionManager.beginDelayedTransition(container,
-                                    getTransition(R.transition.search_show_results));
-                            progress.setVisibility(View.GONE);
-                            searchRecyclerView.setVisibility(View.VISIBLE);
-                            //fab.setVisibility(View.VISIBLE);
-                        }
-                        searchMoviesAdapter.setSearchMoviesList(searchMoviesList);
-                    } else {
-                        TransitionManager.beginDelayedTransition(
-                                container, getTransition(R.transition.auto));
-                        progress.setVisibility(View.GONE);
-                        setNoResultsVisibility(View.VISIBLE);
-                    }
+                                if (searchRecyclerView.getVisibility() != View.VISIBLE) {
+                                    setNoResultsVisibility(View.GONE);
+                                    TransitionManager.beginDelayedTransition(container,
+                                            getTransition(R.transition.search_show_results));
+                                    progress.setVisibility(View.GONE);
+                                    searchRecyclerView.setVisibility(View.VISIBLE);
+                                    //fab.setVisibility(View.VISIBLE);
+                                }
+                                searchMoviesAdapter.setSearchMoviesList(searchMoviesList);
+                            } else {
+                                TransitionManager.beginDelayedTransition(
+                                        container, getTransition(R.transition.auto));
+                                progress.setVisibility(View.GONE);
+                                setNoResultsVisibility(View.VISIBLE);
+                            }
 
-                }, throwable -> {
-                    Log.d(TAG, throwable.getMessage());
-                    clearResults();
-                });
+                        }, throwable -> {
+                            Log.d(TAG, throwable.getMessage());
+                            clearResults();
+                        }));
 
         searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
             /*if (hasFocus && confirmSaveContainer.getVisibility() == View.VISIBLE) {

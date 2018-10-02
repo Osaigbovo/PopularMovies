@@ -19,11 +19,12 @@ public class AppConstants {
 
     // API Constants
     public static final String language = "en-US";
-    public static final String BASE_URL = "http://api.themoviedb.org/3/";
-    public static final String BASE_IMAGE_URL_ = "http://image.tmdb.org/t/p/w185/";
-    public static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/w342/";
+    public static final String BASE_URL = "https://api.themoviedb.org/3/";
+    public static final String BASE_IMAGE_URL_ = "https://image.tmdb.org/t/p/w185";
+    public static final String BASE_IMAGE_URL = "https://image.tmdb.org/t/p/w342";
+    public static final String BASE_IMAGE_URLs = "https://image.tmdb.org/t/p/w342";
     //"w92", "w154", "w185", "w342", "w500", "w780", or "original"
-    public static final String BASE_BACKDROP_URL = "http://image.tmdb.org/t/p/w500";
+    public static final String BASE_BACKDROP_URL = "https://image.tmdb.org/t/p/w500";
 
     // Sort Constants
     public static final String SORT_BY_POPULAR = "popular";

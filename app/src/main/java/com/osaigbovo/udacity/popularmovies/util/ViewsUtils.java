@@ -2,10 +2,14 @@ package com.osaigbovo.udacity.popularmovies.util;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Outline;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Property;
+import android.view.View;
+import android.view.ViewOutlineProvider;
 
+import com.osaigbovo.udacity.popularmovies.data.model.Crew;
 import com.osaigbovo.udacity.popularmovies.data.model.Genre;
 
 import java.text.DateFormat;
@@ -79,6 +83,40 @@ public class ViewsUtils {
         return sb.toString();
     }
 
+    public static String getDisplayDirecting(ArrayList<Crew> crews) {
+        if (crews.isEmpty()) return "";
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < crews.size(); i++) {
+            if (crews.get(i).getJob().equals("Director")) {
+                sb.append(crews.get(i).getName());
+            }
+        }
+        return sb.toString();
+    }
+
+    public static Crew getDisplayDirector(ArrayList<Crew> crews) {
+        if (crews.isEmpty()) return null;
+        Crew crew = null;
+
+        for (int i = 0; i < crews.size(); i++) {
+            if (crews.get(i).getJob().equals("Director")) {
+                crew = crews.get(i);
+            }
+        }
+        return crew;
+    }
+
+    public static final ViewOutlineProvider CIRCULAR_OUTLINE = new ViewOutlineProvider() {
+        @Override
+        public void getOutline(View view, Outline outline) {
+            outline.setOval(view.getPaddingLeft(),
+                    view.getPaddingTop(),
+                    view.getWidth() - view.getPaddingRight(),
+                    view.getHeight() - view.getPaddingBottom());
+        }
+    };
+
     /**
      * converts drawable to bitmap
      *
@@ -97,7 +135,8 @@ public class ViewsUtils {
         if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
             bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
         } else {
-            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                    drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         }
 
         Canvas canvas = new Canvas(bitmap);

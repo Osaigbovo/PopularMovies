@@ -25,39 +25,38 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/image_director"
+        <include
+            android:id="@+id/list_item_director"
+            layout="@layout/list_item_director"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:contentDescription="@string/movie_director_image"
             app:layout_constraintStart_toStartOf="@+id/text_director_label"
-            app:layout_constraintTop_toBottomOf="@+id/text_director_label"
-            app:srcCompat="@drawable/ic_time" />
+            app:layout_constraintTop_toBottomOf="@+id/text_director_label" />
 
         <TextView
             android:id="@+id/text_cast_label"
             style="@style/MovieTextLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:text="@string/movie_cast_label"
             app:layout_constraintStart_toStartOf="@+id/text_director_label"
-            app:layout_constraintTop_toBottomOf="@+id/image_director" />
+            app:layout_constraintTop_toBottomOf="@+id/list_item_director" />
 
-        <!--<android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_cast_list"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_cast"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
+            android:scrollbars="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_cast_label" />-->
+            app:layout_constraintTop_toBottomOf="@+id/text_cast_label" />
 
     </android.support.constraint.ConstraintLayout>
 

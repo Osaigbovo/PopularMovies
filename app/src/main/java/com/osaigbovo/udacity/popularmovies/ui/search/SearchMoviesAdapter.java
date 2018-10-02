@@ -15,12 +15,10 @@
  */
 package com.osaigbovo.udacity.popularmovies.ui.search;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -58,7 +56,7 @@ public class SearchMoviesAdapter extends RecyclerView.Adapter<SearchMoviesAdapte
         mTwoPane = twoPane;
     }
 
-    public void setSearchMoviesList(List<Movie> searchMoviesList) {
+    void setSearchMoviesList(List<Movie> searchMoviesList) {
         this.searchMoviesList = searchMoviesList;
         notifyDataSetChanged();
     }
@@ -134,10 +132,10 @@ public class SearchMoviesAdapter extends RecyclerView.Adapter<SearchMoviesAdapte
                     Intent intent = new Intent(context, MovieDetailActivity.class);
                     intent.putExtra(MovieDetailFragment.ARG_MOVIE, mMovie);
 
-                    ActivityOptionsCompat options = ActivityOptionsCompat
+                   /* ActivityOptionsCompat options = ActivityOptionsCompat
                             .makeSceneTransitionAnimation((Activity) context, movieImage, context.getResources()
-                                    .getString(R.string.transition_name));
-                    context.startActivity(intent, options.toBundle());
+                                    .getString(R.string.transition_name));*/
+                    context.startActivity(intent/*, options.toBundle()*/);
                 }
             });
         }

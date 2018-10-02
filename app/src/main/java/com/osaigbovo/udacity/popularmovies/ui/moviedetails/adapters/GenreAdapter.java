@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.osaigbovo.udacity.popularmovies.ui.moviedetails;
+package com.osaigbovo.udacity.popularmovies.ui.moviedetails.adapters;
 
 import android.support.annotation.NonNull;
-import android.support.design.chip.Chip;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="130dp"
+    android:layout_height="wrap_content">
+
+    <com.osaigbovo.udacity.popularmovies.ui.widget.CircularImageView
+        android:id="@+id/image_cast"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/movie_cast_image"
+        android:scaleType="center"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_crew_cast" />
+
+    <TextView
+        android:id="@+id/text_cast_name"
+        style="@style/MovieText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:lines="1"
+        android:singleLine="true"
+        android:textColor="@color/grey_700"
+        android:textSize="@dimen/txt_14"
+        app:layout_constraintEnd_toEndOf="@+id/image_cast"
+        app:layout_constraintStart_toStartOf="@+id/image_cast"
+        app:layout_constraintTop_toBottomOf="@+id/image_cast"
+        tools:text="@string/movie_cast_name" />
+
+    <TextView
+        android:id="@+id/text_cast_character"
+        style="@style/MovieText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="8dp"
+        android:lines="1"
+        android:singleLine="true"
+        android:textColor="@color/grey_700"
+        android:textSize="@dimen/txt_14"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_cast_name"
+        tools:text="@string/movie_cast_character" />
+</android.support.constraint.ConstraintLayout>

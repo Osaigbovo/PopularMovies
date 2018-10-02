@@ -31,6 +31,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,20 +44,28 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.osaigbovo.udacity.popularmovies.PopularMoviesApp;
 import com.osaigbovo.udacity.popularmovies.R;
 import com.osaigbovo.udacity.popularmovies.data.local.entity.MovieDetail;
+import com.osaigbovo.udacity.popularmovies.data.model.Cast;
+import com.osaigbovo.udacity.popularmovies.data.model.Credits;
+import com.osaigbovo.udacity.popularmovies.data.model.Crew;
 import com.osaigbovo.udacity.popularmovies.data.model.Movie;
 import com.osaigbovo.udacity.popularmovies.data.model.Video;
 import com.osaigbovo.udacity.popularmovies.data.model.Videos;
 import com.osaigbovo.udacity.popularmovies.di.Injectable;
+import com.osaigbovo.udacity.popularmovies.ui.moviedetails.adapters.CastAdapter;
+import com.osaigbovo.udacity.popularmovies.ui.moviedetails.adapters.GenreAdapter;
+import com.osaigbovo.udacity.popularmovies.ui.moviedetails.adapters.ReviewAdapter;
+import com.osaigbovo.udacity.popularmovies.ui.moviedetails.adapters.VideoAdapter;
 import com.osaigbovo.udacity.popularmovies.ui.movieslist.MoviesListActivity;
+import com.osaigbovo.udacity.popularmovies.ui.widget.CircularImageView;
 import com.osaigbovo.udacity.popularmovies.ui.widget.WishListIconView;
 import com.osaigbovo.udacity.popularmovies.util.ViewsUtils;
 import com.osaigbovo.udacity.popularmovies.util.glide.GlideApp;
 import com.xiaofeng.flowlayoutmanager.FlowLayoutManager;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -103,17 +112,33 @@ public class MovieDetailFragment extends Fragment implements Injectable {
     TextView mMovieOverviewLabel;
     @BindView(R.id.text_movie_overview)
     TextView mMovieOverview;
+    @BindView(R.id.image_director)
+    CircularImageView mMovieDirectorImage;
+    @BindView(R.id.text_director_name)
+    TextView mMovieDirector;
     @BindView(R.id.recycler_view_genres)
     RecyclerView mGenreRecyclerView;
+    @BindView(R.id.recycler_view_cast)
+    RecyclerView mCastRecyclerView;
+    @BindView(R.id.text_video_count)
+    TextView mTrailerCount;
     @BindView(R.id.recycler_view_videos)
     RecyclerView mVideoRecyclerView;
+    @BindView(R.id.progress_bar_review)
+    ProgressBar mReviewsProgressBar;
+    @BindView(R.id.recycler_view_reviews)
+    RecyclerView mReviewsRecyclerView;
     @BindInt(R.integer.detail_desc_slide_duration)
     int slideDuration;
 
-    LinearLayoutManager videoLayoutManager;
-
     private GenreAdapter genreAdapter;
+    private CastAdapter castAdapter;
     private VideoAdapter videoAdapter;
+    private ReviewAdapter reviewAdapter;
+
+    LinearLayoutManager castLayoutManager;
+    LinearLayoutManager videoLayoutManager;
+    LinearLayoutManager reviewLayoutManager;
 
     private Unbinder unbinder;
 
@@ -121,8 +146,7 @@ public class MovieDetailFragment extends Fragment implements Injectable {
     private MovieDetail movieDetail;
     private MediaPlayer mediaPlayer;
 
-    public MovieDetailFragment() {
-    }
+    public MovieDetailFragment() { }
 
     public static MovieDetailFragment newInstance(Movie movie) {
         Bundle args = new Bundle();
@@ -154,36 +178,50 @@ public class MovieDetailFragment extends Fragment implements Injectable {
         View rootView = inflater.inflate(R.layout.item_movie_detail, container, false);
         unbinder = ButterKnife.bind(this, rootView);
 
-        //ImeUtils.hideKeyboard(this.getActivity());
-
         mFavoriteLottie.setVisibility(View.INVISIBLE);
 
         mediaPlayer = MediaPlayer.create(this.getActivity(), R.raw.favorite_sound);
 
-        genreAdapter = new GenreAdapter();
         FlowLayoutManager mFlowLayoutManager = new FlowLayoutManager();
         mFlowLayoutManager.setAutoMeasureEnabled(true);
         mGenreRecyclerView.setLayoutManager(mFlowLayoutManager);
+        genreAdapter = new GenreAdapter();
         mGenreRecyclerView.setAdapter(genreAdapter);
 
 
-        videoAdapter = new VideoAdapter();
-        videoLayoutManager = new LinearLayoutManager(PopularMoviesApp.getContext(), LinearLayoutManager.HORIZONTAL,
-                false);
+        videoLayoutManager = new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.HORIZONTAL, false);
         mVideoRecyclerView.setLayoutManager(videoLayoutManager);
+        videoAdapter = new VideoAdapter();
+        mVideoRecyclerView.setAdapter(videoAdapter);
         //mVideoRecyclerView.setHasFixedSize(true);
+
+        castLayoutManager = new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.HORIZONTAL, false);
+        mCastRecyclerView.setLayoutManager(castLayoutManager);
+        //mCastRecyclerView.setHasFixedSize(true);
+        castAdapter = new CastAdapter();
+        mCastRecyclerView.setAdapter(castAdapter);
+
+        reviewLayoutManager = new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.VERTICAL, false);
+        mReviewsRecyclerView.setLayoutManager(reviewLayoutManager);
+        reviewAdapter = new ReviewAdapter();
+        mReviewsRecyclerView.setAdapter(reviewAdapter);
 
         //Check whether the main Youtube app exists on the device.
         final YouTubeInitializationResult result = YouTubeApiServiceUtil
                 .isYouTubeApiServiceAvailable(getActivity());
         if (result != YouTubeInitializationResult.SUCCESS) {
             //If there are any issues we can show an error dialog.
-            result.getErrorDialog(getActivity(), 0).show();
+            result.getErrorDialog(Objects.requireNonNull(getActivity()), 0).show();
         }
 
         postponeEnterTransition();
 
-        if (movie != null) {
+
+
+            Objects.requireNonNull(movie);
             // Display Movie Poster
             Context context = mPosterImage.getContext();
             GlideApp.with(context)
@@ -231,14 +269,21 @@ public class MovieDetailFragment extends Fragment implements Injectable {
                 this.movieDetail = movieDetail;
 
                 // Display Movie Genres
-                Timber.i(ViewsUtils.getDisplayGenres(movieDetail.getGenres()));
+                Timber.i(ViewsUtils.getDisplayGenres(Objects.requireNonNull(movieDetail).getGenres()));
                 genreAdapter.addGenres(movieDetail.getGenres());
                 // Display Movie Runtime
                 mMovieRuntime.setText(ViewsUtils.getDisplayRuntime(movieDetail.getRuntime()));
 
 
+                onLoadDirector(movieDetail.getCredits());
+                onLoadCast(movieDetail.getCredits());
                 onLoadVideo(movieDetail.getVideos());
             });
+
+            movieDetailViewModel.getReviews(movie.getId());
+            onLoadReview();
+
+
 
             movieDetailViewModel.isFavorite(movie.getId()).observe(this, movieDetail -> {
 
@@ -261,11 +306,6 @@ public class MovieDetailFragment extends Fragment implements Injectable {
                 onFavoriteClick(movieDetail);
             });
 
-
-        } else {
-            // TODO : Display some layout to indicate a null movie object.
-        }
-
         return rootView;
     }
 
@@ -283,21 +323,48 @@ public class MovieDetailFragment extends Fragment implements Injectable {
 
     public void onFavoriteClick(MovieDetail movieDetail) {
         mediaPlayer.start();
-        if(mFavoriteLottie.isActivated()){
+        if (mFavoriteLottie.isActivated()) {
             Toast.makeText(getContext(), String.valueOf("Added: " + movieDetail.getOriginalTitle()),
                     Toast.LENGTH_SHORT).show();
             movieDetailViewModel.addFavorite(movieDetail);
-        }else {
+        } else {
             Toast.makeText(getContext(), String.valueOf("Removed: " + movieDetail.getOriginalTitle()),
                     Toast.LENGTH_SHORT).show();
             movieDetailViewModel.removeFavorite(movieDetail);
         }
     }
 
+
+    private void onLoadDirector(Credits credits) {
+        Context context = mMovieDirectorImage.getContext();
+        final Crew crew = ViewsUtils.getDisplayDirector(credits.getCrew());
+        mMovieDirector.setText(Objects.requireNonNull(crew).getName());
+        GlideApp.with(context)
+                .load(BASE_IMAGE_URL + crew.getProfilePath())
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .priority(Priority.HIGH)
+                .placeholder(R.drawable.ic_crew_cast)
+                //.centerCrop()
+                .into(mMovieDirectorImage);
+    }
+
+    private void onLoadCast(Credits credits) {
+        ArrayList<Cast> castList = credits.getCast();
+        castAdapter.addCasts(castList);
+    }
+
     private void onLoadVideo(Videos videos) {
         ArrayList<Video> videoList = videos.getVideos();
         videoAdapter.setVideo(videoList);
-        mVideoRecyclerView.setAdapter(videoAdapter);
+        mTrailerCount.setText(String.valueOf(videoAdapter.getItemCount()));
+    }
+
+    private void onLoadReview(){
+        movieDetailViewModel.reviewsMutableLiveData.observe(this, reviews -> {
+            mReviewsProgressBar.setVisibility(View.GONE);
+            reviewAdapter.addReviews(Objects.requireNonNull(reviews).getReviews());
+            mReviewsRecyclerView.setVisibility(View.VISIBLE);
+        });
     }
 
     // TODO - save sate of Favorite Icon
@@ -331,11 +398,7 @@ public class MovieDetailFragment extends Fragment implements Injectable {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            public void onCompletion(MediaPlayer mp) {
-                mediaPlayer.release();
-            }
-        });
+        mediaPlayer.setOnCompletionListener(mp -> mediaPlayer.release());
         unbinder.unbind();
     }
 }

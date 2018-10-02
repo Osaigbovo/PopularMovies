@@ -11,6 +11,11 @@
         <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
 
         <item name="android:windowContentTransitions">true</item>
+
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+
+
         <item name="android:windowSharedElementsUseOverlay">false</item>
     </style>
 
@@ -22,14 +27,15 @@
     <style name="AppTheme.Home">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:statusBarColor"></item>
 
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
 
         <item name="android:windowSharedElementReenterTransition">@null</item>
-        <item name="android:windowExitTransition">@transition/grid_exit</item>
+        <!--<item name="android:windowExitTransition">@transition/grid_exit</item>-->
+
+        <item name="android:windowSharedElementsUseOverlay">false</item>
     </style>
 
     <style name="AppTheme.Details">
@@ -45,12 +51,9 @@
         <item name="android:windowEnterTransition">@transition/details_movie_enter</item>
         <item name="android:windowReturnTransition">@transition/details_movie_return</item>
 
-        <item name="android:windowSharedElementEnterTransition">
-            @transition/details_movie_shared_enter
-        </item>
-        <item name="android:windowSharedElementReturnTransition">
-            @transition/details_movie_shared_return
-        </item>
+        <item name="android:windowSharedElementEnterTransition">@transition/details_movie_shared_enter</item>
+        <item name="android:windowSharedElementReturnTransition">@transition/details_movie_shared_return</item>
+        <item name="android:windowSharedElementsUseOverlay">true</item>
     </style>
 
     <style name="AppTheme.Search">
@@ -62,8 +65,6 @@
         <item name="android:windowSharedElementEnterTransition">@transition/search_shared_enter</item>
         <item name="android:windowSharedElementReturnTransition">@transition/search_shared_return</item>
         <item name="android:windowSharedElementsUseOverlay">true</item>
-        <!--<item name="shotLoadingPlaceholderColors">@array/loading_placeholders_dark</item>-->
-        <!--<item name="initialBadgeColor">@color/gif_badge_dark_image</item>-->
     </style>
 
     <style name="SearchViewTheme" parent="PlaidDarkOverlay">
@@ -86,12 +87,6 @@
     <style name="SearchWindowAnimations">
         <item name="android:windowEnterAnimation">@null</item>
         <item name="android:windowExitAnimation">@anim/fade_out_rapidly</item>
-    </style>
-
-    <style name="ExpandedFabTheme" parent="@android:style/ThemeOverlay.Material.Light">
-        <item name="android:textColorPrimary">@color/dark_icon</item>
-        <item name="android:textColorPrimaryDisableOnly">@color/dark_icon</item>
-        <item name="android:colorControlActivated">@color/dark_icon</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

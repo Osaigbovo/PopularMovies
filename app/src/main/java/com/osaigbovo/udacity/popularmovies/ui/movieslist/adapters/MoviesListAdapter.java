@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.osaigbovo.udacity.popularmovies.ui.movieslist;
+package com.osaigbovo.udacity.popularmovies.ui.movieslist.adapters;
 
 import android.arch.paging.PagedListAdapter;
 import android.support.annotation.NonNull;
@@ -24,6 +24,8 @@ import android.view.ViewGroup;
 import com.osaigbovo.udacity.popularmovies.R;
 import com.osaigbovo.udacity.popularmovies.data.NetworkState;
 import com.osaigbovo.udacity.popularmovies.data.model.Movie;
+import com.osaigbovo.udacity.popularmovies.ui.movieslist.MoviesListActivity;
+import com.osaigbovo.udacity.popularmovies.ui.movieslist.MoviesListViewHolder;
 import com.osaigbovo.udacity.popularmovies.util.NetworkStateViewHolder;
 import com.osaigbovo.udacity.popularmovies.util.RetryCallback;
 
@@ -41,7 +43,7 @@ public class MoviesListAdapter extends PagedListAdapter<Movie, RecyclerView.View
     private final MoviesListActivity mParentActivity;
     private final boolean mTwoPane;
 
-    MoviesListAdapter(MoviesListActivity parentActivity, RetryCallback retryCallback, boolean twoPane) {
+    public MoviesListAdapter(MoviesListActivity parentActivity, RetryCallback retryCallback, boolean twoPane) {
         super(DIFF_CALLBACK);
         this.retryCallback = retryCallback;
         mParentActivity = parentActivity;

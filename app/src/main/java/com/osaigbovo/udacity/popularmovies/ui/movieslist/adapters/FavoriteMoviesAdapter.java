@@ -1,12 +1,6 @@
-package com.osaigbovo.udacity.popularmovies.ui.movieslist;
+package com.osaigbovo.udacity.popularmovies.ui.movieslist.adapters;
 
-import android.app.Activity;
-import android.arch.paging.PagedListAdapter;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +12,7 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.osaigbovo.udacity.popularmovies.R;
 import com.osaigbovo.udacity.popularmovies.data.local.entity.MovieDetail;
-import com.osaigbovo.udacity.popularmovies.data.model.Movie;
-import com.osaigbovo.udacity.popularmovies.ui.moviedetails.MovieDetailActivity;
-import com.osaigbovo.udacity.popularmovies.ui.moviedetails.MovieDetailFragment;
+import com.osaigbovo.udacity.popularmovies.ui.movieslist.MoviesListActivity;
 import com.osaigbovo.udacity.popularmovies.util.ViewsUtils;
 import com.osaigbovo.udacity.popularmovies.util.glide.GlideApp;
 
@@ -28,7 +20,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 import static com.osaigbovo.udacity.popularmovies.util.AppConstants.BASE_IMAGE_URL_;
@@ -39,7 +30,7 @@ public class FavoriteMoviesAdapter extends RecyclerView.Adapter<FavoriteMoviesAd
     private final MoviesListActivity mParentActivity;
     private final boolean mTwoPane;
 
-    FavoriteMoviesAdapter(MoviesListActivity parentActivity, boolean twoPane) {
+    public FavoriteMoviesAdapter(MoviesListActivity parentActivity, boolean twoPane) {
         mParentActivity = parentActivity;
         mTwoPane = twoPane;
     }
@@ -77,7 +68,7 @@ public class FavoriteMoviesAdapter extends RecyclerView.Adapter<FavoriteMoviesAd
         return favMoviesList == null ? 0 : favMoviesList.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.imageView)
         ImageView movieImage;

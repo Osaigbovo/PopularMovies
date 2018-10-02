@@ -1,7 +1,8 @@
-package com.osaigbovo.udacity.popularmovies.ui.moviedetails;
+package com.osaigbovo.udacity.popularmovies.ui.moviedetails.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,19 +26,20 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     private ArrayList<Video> vdo;
     //private Context context;
 
-    VideoAdapter(/*Context context*/) {
+    public VideoAdapter(/*Context context*/) {
         //this.context = context;
     }
 
+    @NonNull
     @Override
-    public VideoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public VideoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //Creating a new view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_video, parent, false);
         return new VideoViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(VideoViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull VideoViewHolder holder, int position) {
 
         if (!vdo.isEmpty()) {
             Video videoResult = vdo.get(position);
@@ -65,10 +67,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             implements YouTubeThumbnailView.OnInitializedListener {
 
 
-        private YouTubeThumbnailView thumb;
+        private final YouTubeThumbnailView thumb;
         //private Map<View, YouTubeThumbnailLoader> mLoaders = new HashMap<>();
 
-        public VideoViewHolder(View view) {
+        VideoViewHolder(View view) {
             super(view);
             thumb = view.findViewById(R.id.youtube_thumbnail);
         }

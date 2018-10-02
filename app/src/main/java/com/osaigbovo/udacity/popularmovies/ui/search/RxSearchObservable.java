@@ -12,7 +12,7 @@ import io.reactivex.subjects.PublishSubject;
  */
 public class RxSearchObservable {
 
-    public static final String TAG = RxSearchObservable.class.getName();
+    private static final String TAG = RxSearchObservable.class.getName();
 
     private RxSearchObservable() {
         // no instance
@@ -32,7 +32,7 @@ public class RxSearchObservable {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.d(TAG, "onQueryTextChange:"  + newText);
+                Log.d(TAG, "onQueryTextChange:" + newText);
                 subject.onNext(newText);
                 return true;
             }

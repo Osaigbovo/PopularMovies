@@ -17,40 +17,44 @@
         android:paddingBottom="8dp">
 
         <TextView
-            android:id="@+id/text_video_label"
+            android:id="@+id/text_reviews_label"
             style="@style/MovieTextLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/movie_trailers_label"
+            android:text="@string/movie_reviews_label"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/text_video_count"
-            style="@style/MovieText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text=""
-            android:textColor="@color/colorGrey"
-            app:layout_constraintBottom_toBottomOf="@+id/text_video_label"
-            app:layout_constraintStart_toEndOf="@+id/text_video_label"
-            app:layout_constraintTop_toTopOf="@+id/text_video_label" />
-
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view_videos"
+            android:id="@+id/recycler_view_reviews"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:scrollbars="horizontal"
+            android:scrollbars="vertical"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_video_label"
-            tools:listitem="@layout/list_item_video" />
+            app:layout_constraintTop_toBottomOf="@+id/text_reviews_label"
+            tools:listitem="@layout/list_item_review" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar_review"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/recycler_view_reviews"
+            app:layout_constraintStart_toStartOf="@+id/recycler_view_reviews"
+            app:layout_constraintTop_toTopOf="@+id/recycler_view_reviews" />
 
     </android.support.constraint.ConstraintLayout>
 

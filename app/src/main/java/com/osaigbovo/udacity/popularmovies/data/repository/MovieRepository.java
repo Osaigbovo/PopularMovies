@@ -2,11 +2,10 @@ package com.osaigbovo.udacity.popularmovies.data.repository;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.paging.DataSource;
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
 
 import com.osaigbovo.udacity.popularmovies.data.local.dao.FavoriteDao;
 import com.osaigbovo.udacity.popularmovies.data.local.entity.MovieDetail;
+import com.osaigbovo.udacity.popularmovies.data.model.Reviews;
 import com.osaigbovo.udacity.popularmovies.data.model.SearchResponse;
 import com.osaigbovo.udacity.popularmovies.data.remote.RequestInterface;
 
@@ -37,15 +36,13 @@ public class MovieRepository {
         return requestInterface.getMovieDetail(movieID, API_KEY);
     }
 
+    public Observable<Reviews> getReviews(int movieID) {
+        return requestInterface.reviews(movieID, API_KEY, 1);
+    }
+
     public Observable<SearchResponse> getSearch(String query) {
         return requestInterface.search(API_KEY, query);
     }
-
-
-
-
-
-
 
     public LiveData<List<MovieDetail>> getFavoritess() {
         return favoriteDao.getFavoriteMoviess();
@@ -59,10 +56,6 @@ public class MovieRepository {
         return favoriteDao.sortASCMovie();
     }
 
-
-
-    @NonNull
-    @MainThread
     public LiveData<MovieDetail> isFavorite(int movieid) {
         return favoriteDao.isFavoriteMovie(movieid);
     }
@@ -70,10 +63,6 @@ public class MovieRepository {
     public LiveData<MovieDetail> getFavorite(int id) {
         return favoriteDao.getFavoriteMovie(id);
     }
-
-
-
-
 
     public void addFavorite(MovieDetail movieDetail) {
         Timber.i("Adding %s to database", movieDetail.getOriginalTitle());
