@@ -1,6 +1,11 @@
 package com.osaigbovo.udacity.popularmovies.ui.movieslist.adapters;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +17,9 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.osaigbovo.udacity.popularmovies.R;
 import com.osaigbovo.udacity.popularmovies.data.local.entity.MovieDetail;
+import com.osaigbovo.udacity.popularmovies.data.model.Movie;
+import com.osaigbovo.udacity.popularmovies.ui.moviedetails.MovieDetailActivity;
+import com.osaigbovo.udacity.popularmovies.ui.moviedetails.MovieDetailFragment;
 import com.osaigbovo.udacity.popularmovies.ui.movieslist.MoviesListActivity;
 import com.osaigbovo.udacity.popularmovies.util.ViewsUtils;
 import com.osaigbovo.udacity.popularmovies.util.glide.GlideApp;
@@ -73,15 +81,15 @@ public class FavoriteMoviesAdapter extends RecyclerView.Adapter<FavoriteMoviesAd
         @BindView(R.id.imageView)
         ImageView movieImage;
         @BindView(R.id.movieTitle)
-        TextView mt;
+        TextView movieTitle;
         @BindView(R.id.movieDate)
-        TextView md;
+        TextView movieDate;
         @BindView(R.id.movieGenres)
-        TextView ge;
+        TextView movieGenres;
         @BindView(R.id.movieDuration)
-        TextView du;
+        TextView movieDuration;
 
-        MovieDetail m;
+        MovieDetail movieDetail;
 
         private ViewHolder(View itemView) {
             super(itemView);
@@ -89,11 +97,11 @@ public class FavoriteMoviesAdapter extends RecyclerView.Adapter<FavoriteMoviesAd
         }
 
         private void bindTo(final int position, MoviesListActivity mParentActivity, boolean mTwoPane) {
-            this.m = favMoviesList.get(position);
+            this.movieDetail = favMoviesList.get(position);
 
-            mt.setText(m.getTitle()); // Display Movie Title
+            movieTitle.setText(movieDetail.getTitle()); // Display Movie Title
 
-            String image_url = BASE_IMAGE_URL_ + m.getPosterPath();
+            String image_url = BASE_IMAGE_URL_ + movieDetail.getPosterPath();
             GlideApp.with(itemView.getContext())
                     .load(image_url)
                     .diskCacheStrategy(DiskCacheStrategy.DATA)
@@ -103,14 +111,14 @@ public class FavoriteMoviesAdapter extends RecyclerView.Adapter<FavoriteMoviesAd
                     .transition(withCrossFade())
                     .into(movieImage);
 
-            md.setText(ViewsUtils.getDate(m.getReleaseDate())); // Display Date
-            ge.setText(ViewsUtils.getDisplayGenres(m.getGenres())); // Display Genres
-            du.setText(ViewsUtils.getDisplayRuntime(m.getRuntime())); // Display Movie Duration
+            movieDate.setText(ViewsUtils.getDate(movieDetail.getReleaseDate())); // Display Date
+            movieGenres.setText(ViewsUtils.getDisplayGenres(movieDetail.getGenres())); // Display Genres
+            movieDuration.setText(ViewsUtils.getDisplayRuntime(movieDetail.getRuntime())); // Display Movie Duration
 
-            itemView.setTag(m);
-            /*itemView.setOnClickListener(view -> {
+            itemView.setTag(movieDetail);
+            itemView.setOnClickListener(view -> {
                 Movie mMovie = (Movie) view.getTag();
-                Timber.i(String.valueOf(m));
+
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
                     arguments.putParcelable(MovieDetailFragment.ARG_MOVIE, mMovie);
@@ -129,7 +137,7 @@ public class FavoriteMoviesAdapter extends RecyclerView.Adapter<FavoriteMoviesAd
                                     .getString(R.string.transition_name));
                     context.startActivity(intent, options.toBundle());
                 }
-            });*/
+            });
         }
     }
 }

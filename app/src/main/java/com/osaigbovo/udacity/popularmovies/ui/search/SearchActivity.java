@@ -25,6 +25,7 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -115,6 +116,25 @@ public class SearchActivity extends AppCompatActivity {
         searchRecyclerView.setHasFixedSize(true);
 
         setupTransitions();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (searchRecyclerView != null) {
+            postponeEnterTransition();
+            searchRecyclerView.getViewTreeObserver()
+                    .addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    searchRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+                    searchRecyclerView.requestLayout();
+                    startPostponedEnterTransition();
+                    return true;
+                }
+            });
+        }
     }
 
     @Override

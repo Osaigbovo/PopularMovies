@@ -56,6 +56,23 @@
             app:layout_constraintStart_toStartOf="@+id/recycler_view_reviews"
             app:layout_constraintTop_toTopOf="@+id/recycler_view_reviews" />
 
+        <TextView
+            android:id="@+id/text_no_reviews"
+            style="@style/MovieText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/movie_review_none"
+            android:textAlignment="center"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/recycler_view_reviews"
+            app:layout_constraintStart_toStartOf="@+id/recycler_view_reviews"
+            app:layout_constraintTop_toTopOf="@+id/recycler_view_reviews" />
+
     </android.support.constraint.ConstraintLayout>
 
 </android.support.design.card.MaterialCardView>

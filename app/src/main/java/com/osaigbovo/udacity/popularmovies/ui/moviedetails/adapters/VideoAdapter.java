@@ -7,12 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.osaigbovo.udacity.popularmovies.BuildConfig;
-import com.osaigbovo.udacity.popularmovies.PopularMoviesApp;
 import com.osaigbovo.udacity.popularmovies.R;
 import com.osaigbovo.udacity.popularmovies.data.model.Video;
 import com.osaigbovo.udacity.popularmovies.ui.trailer.YoutubeLightboxActivity;
@@ -64,7 +64,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     }
 
     public class VideoViewHolder extends RecyclerView.ViewHolder
-            implements YouTubeThumbnailView.OnInitializedListener {
+            /*implements YouTubeThumbnailView.OnInitializedListener*/ {
 
 
         private final YouTubeThumbnailView thumb;
@@ -75,51 +75,49 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             thumb = view.findViewById(R.id.youtube_thumbnail);
         }
 
-        public void bindToPost(Video video) {
+        void bindToPost(Video video) {
             Context context = thumb.getContext();
             if (thumb.getTag() == null) {
                 thumb.setTag(video.getKey());
-                thumb.initialize(BuildConfig.YOUTUBE_KEY, this);
+                thumb.initialize(BuildConfig.YOUTUBE_KEY, new YouTubeThumbnailView.OnInitializedListener() {
+                    @Override
+                    public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView,
+                                                        YouTubeThumbnailLoader youTubeThumbnailLoader) {
+
+                        youTubeThumbnailLoader.setVideo((String) youTubeThumbnailView.getTag());
+
+                         /*Set a YouTubeThumbnailLoader.OnThumbnailLoadedListener which is invoked whenever a new
+                            thumbnail has finished loading and has been displayed in this YouTube thumbnail view.*/
+                        youTubeThumbnailLoader.setOnThumbnailLoadedListener(
+                                new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
+                                    @Override
+                                    public void onThumbnailLoaded(YouTubeThumbnailView view, String s) {
+                                        youTubeThumbnailLoader.release();
+                                    }
+
+                                    @Override
+                                    public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView,
+                                                                 YouTubeThumbnailLoader.ErrorReason errorReason) {
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView,
+                                                        YouTubeInitializationResult youTubeInitializationResult) {
+                        final String errorMessage = youTubeInitializationResult.toString();
+                        youTubeThumbnailView.setImageResource(R.drawable.no_thumbnail);
+                        Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show();
+                    }
+                });
             }
 
             thumb.setOnClickListener(v -> {
                 String videoid = (String) thumb.getTag();
                 Intent lightboxIntent = new Intent(context, YoutubeLightboxActivity.class);
                 lightboxIntent.putExtra(YoutubeLightboxActivity.KEY_VIDEO_ID, videoid);
-                PopularMoviesApp.getContext().startActivity(lightboxIntent);
+                context.startActivity(lightboxIntent);
             });
-        }
-
-        @Override
-        public void onInitializationSuccess(YouTubeThumbnailView view, YouTubeThumbnailLoader loader) {
-            //mLoaders.put(view, loader);
-            loader.setVideo((String) view.getTag());
-
-        /*Set a YouTubeThumbnailLoader.OnThumbnailLoadedListener which is invoked whenever a new
-        thumbnail has finished loading and has been displayed in this YouTube thumbnail view.*/
-            loader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
-                @Override
-                public void onThumbnailLoaded(YouTubeThumbnailView view, String s) {
-                /*Releases system resources used by this YouTubeThumbnailLoader.
-                  Note that after calling this method any further interaction with this YouTubeThumbnailLoader is forbidden.
-                  A new instance must be created to load thumbnails into a YouTubeThumbnailView.*/
-                    loader.release();
-                }
-
-                @Override
-                public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView,
-                                             YouTubeThumbnailLoader.ErrorReason errorReason) {
-
-                }
-            });
-        }
-
-        @Override
-        public void onInitializationFailure(YouTubeThumbnailView thumbnailView,
-                                            YouTubeInitializationResult errorReason) {
-            final String errorMessage = errorReason.toString();
-            thumbnailView.setImageResource(R.drawable.no_thumbnail);
-            //Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show();
         }
     }
 

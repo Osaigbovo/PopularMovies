@@ -20,10 +20,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.osaigbovo.udacity.popularmovies.R;
 import com.osaigbovo.udacity.popularmovies.data.model.Review;
+import com.osaigbovo.udacity.popularmovies.ui.widget.ExpandableTextView;
 
 import java.util.List;
 
@@ -64,16 +67,24 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         }
     }
 
-    class ReviewViewHolder extends RecyclerView.ViewHolder {
+    class ReviewViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.text_review_name)
         TextView mMovieReviewName;
         @BindView(R.id.text_review_content)
-        TextView mMovieReviewContent;
+        ExpandableTextView mMovieReviewContent;
+        @BindView(R.id.image_button_expand_collapse)
+        ImageButton mImageExpandCollapse;
 
         ReviewViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+
+            // set interpolators for both expanding and collapsing animations
+            mMovieReviewContent.setInterpolator(new OvershootInterpolator());
+
+            // toggle the ExpandableTextView
+            mImageExpandCollapse.setOnClickListener(this);
         }
 
         void onBind(final int position) {
@@ -87,6 +98,14 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             if (data.getContent() != null) {
                 mMovieReviewContent.setText(data.getContent());
             }
+        }
+
+        @Override
+        public void onClick(View view) {
+            mMovieReviewContent.toggle();
+
+            mImageExpandCollapse.setImageResource(mMovieReviewContent.isExpanded() ?
+                    R.drawable.ic_expand_arrow : R.drawable.ic_collapse_arrow);
         }
     }
 }

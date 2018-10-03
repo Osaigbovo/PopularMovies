@@ -4,8 +4,8 @@
 
     <item
         android:id="@+id/menu_search"
-        android:title="@string/text_search"
         android:icon="@drawable/ic_search"
+        android:title="@string/text_search"
         app:showAsAction="always" />
 
     <item

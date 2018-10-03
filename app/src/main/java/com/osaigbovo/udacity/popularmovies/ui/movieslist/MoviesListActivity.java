@@ -208,8 +208,6 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
         switch (item.getItemId()) {
             case R.id.action_sort:
                 sortMovies();

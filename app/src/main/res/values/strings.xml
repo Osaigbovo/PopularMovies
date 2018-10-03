@@ -15,10 +15,11 @@
     <string name="text_favorite">Favorite</string>
     <string name="close_sort">Close Sort</string>
 
+    <string name="text_share">Share</string>
+    <string name="share_trailer">Share</string>
 
     <!-- Transition -->
     <string name="transition_name" translatable="false">poster</string>
-
 
     <!--  Movie Item -->
     <string name="movie_image_thumbnail">Movie Thumbnail</string>
@@ -73,10 +74,13 @@
 
     <string name="movie_trailers_label">Trailers</string>
     <string name="movie_trailers_count">0</string>
+    <string name="movie_trailers_none">No Trailers</string>
 
     <string name="movie_reviews_label">Reviews</string>
     <string name="movie_review_name">John Paul</string>
     <string name="movie_review_body">Movie was good</string>
+    <string name="movie_review_none">No Reviews</string>
+
 
     <!-- Retry -->
     <string name="retry">Retry</string>

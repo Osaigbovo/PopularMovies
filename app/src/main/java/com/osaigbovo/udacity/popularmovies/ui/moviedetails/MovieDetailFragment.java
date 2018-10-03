@@ -18,6 +18,7 @@ package com.osaigbovo.udacity.popularmovies.ui.moviedetails;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -27,6 +28,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -116,6 +120,10 @@ public class MovieDetailFragment extends Fragment implements Injectable {
     CircularImageView mMovieDirectorImage;
     @BindView(R.id.text_director_name)
     TextView mMovieDirector;
+    @BindView(R.id.text_no_reviews)
+    TextView mMovieNoReviews;
+    @BindView(R.id.text_no_videos)
+    TextView mMovieNoVideos;
     @BindView(R.id.recycler_view_genres)
     RecyclerView mGenreRecyclerView;
     @BindView(R.id.recycler_view_cast)
@@ -124,6 +132,8 @@ public class MovieDetailFragment extends Fragment implements Injectable {
     TextView mTrailerCount;
     @BindView(R.id.recycler_view_videos)
     RecyclerView mVideoRecyclerView;
+    @BindView(R.id.progress_bar_video)
+    ProgressBar mVideosProgressBar;
     @BindView(R.id.progress_bar_review)
     ProgressBar mReviewsProgressBar;
     @BindView(R.id.recycler_view_reviews)
@@ -146,7 +156,8 @@ public class MovieDetailFragment extends Fragment implements Injectable {
     private MovieDetail movieDetail;
     private MediaPlayer mediaPlayer;
 
-    public MovieDetailFragment() { }
+    public MovieDetailFragment() {
+    }
 
     public static MovieDetailFragment newInstance(Movie movie) {
         Bundle args = new Bundle();
@@ -165,6 +176,8 @@ public class MovieDetailFragment extends Fragment implements Injectable {
         movieDetailViewModel = ViewModelProviders
                 .of(this, viewModelFactory)
                 .get(MovieDetailViewModel.class);
+
+        setHasOptionsMenu(true);
 
         /*if (savedInstanceState != null){
             mFavoriteLottie.setActivated(savedInstanceState.getBoolean(FAVORITE_STATE));
@@ -219,76 +232,73 @@ public class MovieDetailFragment extends Fragment implements Injectable {
 
         postponeEnterTransition();
 
+        Objects.requireNonNull(movie);
+        // Display Movie Poster
+        Context context = mPosterImage.getContext();
+        GlideApp.with(context)
+                .load(BASE_IMAGE_URL + movie.getPosterPath())
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model,
+                                                   Target<Drawable> target, DataSource dataSource,
+                                                   boolean isFirstResource) {
+                        scheduleStartPostponedEnterTransition(mPosterImage);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model,
+                                                Target<Drawable> target, boolean isFirstResource) {
+                        scheduleStartPostponedEnterTransition(mPosterImage);
+                        return false;
+                    }
+                })
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .priority(Priority.HIGH) // Try Priority.IMMEDIATE
+                .centerCrop()
+                .dontTransform()
+                //.placeholder(R.drawable.ic_movie_empty)
+                .onlyRetrieveFromCache(true)
+                .dontAnimate()
+                //.error(R.drawable.ic_movie_error)
+                .into(mPosterImage);
+
+        // Display Movie Original Title
+        mMovieTitle.setText(movie.getTitle());
+        // Display Movie Rating
+        mMovieRating.setText(String.valueOf(movie.getVoteAverage()));
+        mMovieRatingBar.setRating(Float.parseFloat(Double.toString(movie.getVoteAverage())) / 2);
+        // Display Movie Release Date
+        mMovieRelease.setText(ViewsUtils.getDate(movie.getReleaseDate()));
+        // Display Movie Synopsis or Overview
+        mMovieOverview.setText(movie.getOverview());
 
 
-            Objects.requireNonNull(movie);
-            // Display Movie Poster
-            Context context = mPosterImage.getContext();
-            GlideApp.with(context)
-                    .load(BASE_IMAGE_URL + movie.getPosterPath())
-                    .listener(new RequestListener<Drawable>() {
-                        @Override
-                        public boolean onResourceReady(Drawable resource, Object model,
-                                                       Target<Drawable> target, DataSource dataSource,
-                                                       boolean isFirstResource) {
-                            scheduleStartPostponedEnterTransition(mPosterImage);
-                            return false;
-                        }
+        movieDetailViewModel.getMovieDetails(movie.getId());
+        movieDetailViewModel.movieDetailMutableLiveData.observe(this, movieDetail -> {
+            this.movieDetail = movieDetail;
 
-                        @Override
-                        public boolean onLoadFailed(@Nullable GlideException e, Object model,
-                                                    Target<Drawable> target, boolean isFirstResource) {
-                            scheduleStartPostponedEnterTransition(mPosterImage);
-                            return false;
-                        }
-                    })
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.DATA)
-                    .priority(Priority.HIGH) // Try Priority.IMMEDIATE
-                    .centerCrop()
-                    .dontTransform()
-                    //.placeholder(R.drawable.ic_movie_empty)
-                    .onlyRetrieveFromCache(true)
-                    .dontAnimate()
-                    //.error(R.drawable.ic_movie_error)
-                    .into(mPosterImage);
-
-            // Display Movie Original Title
-            mMovieTitle.setText(movie.getTitle());
-            // Display Movie Rating
-            mMovieRating.setText(String.valueOf(movie.getVoteAverage()));
-            mMovieRatingBar.setRating(Float.parseFloat(Double.toString(movie.getVoteAverage())) / 2);
-            // Display Movie Release Date
-            mMovieRelease.setText(ViewsUtils.getDate(movie.getReleaseDate()));
-            // Display Movie Synopsis or Overview
-            mMovieOverview.setText(movie.getOverview());
+            // Display Movie Genres
+            Timber.i(ViewsUtils.getDisplayGenres(Objects.requireNonNull(movieDetail).getGenres()));
+            genreAdapter.addGenres(movieDetail.getGenres());
+            // Display Movie Runtime
+            mMovieRuntime.setText(ViewsUtils.getDisplayRuntime(movieDetail.getRuntime()));
 
 
-            movieDetailViewModel.getMovieDetails(movie.getId());
-            movieDetailViewModel.movieDetailMutableLiveData.observe(this, movieDetail -> {
-                this.movieDetail = movieDetail;
+            onLoadDirector(movieDetail.getCredits());
+            onLoadCast(movieDetail.getCredits());
+            onLoadVideo(movieDetail.getVideos());
+        });
 
-                // Display Movie Genres
-                Timber.i(ViewsUtils.getDisplayGenres(Objects.requireNonNull(movieDetail).getGenres()));
-                genreAdapter.addGenres(movieDetail.getGenres());
-                // Display Movie Runtime
-                mMovieRuntime.setText(ViewsUtils.getDisplayRuntime(movieDetail.getRuntime()));
+        movieDetailViewModel.getReviews(movie.getId());
+        onLoadReview();
 
 
-                onLoadDirector(movieDetail.getCredits());
-                onLoadCast(movieDetail.getCredits());
-                onLoadVideo(movieDetail.getVideos());
-            });
+        movieDetailViewModel.isFavorite(movie.getId()).observe(this, movieDetail -> {
 
-            movieDetailViewModel.getReviews(movie.getId());
-            onLoadReview();
-
-
-
-            movieDetailViewModel.isFavorite(movie.getId()).observe(this, movieDetail -> {
-
-                mFavoriteLottie.setActivated(movieDetail != null);
-                mFavoriteLottie.setZ(4.0F);
+            mFavoriteLottie.setActivated(movieDetail != null);
+            mFavoriteLottie.setZ(4.0F);
 
                 /*if(movieDetail!=null){
                     mFavoriteLottie.setProgress(1.0F);
@@ -297,14 +307,14 @@ public class MovieDetailFragment extends Fragment implements Injectable {
                     mFavoriteLottie.setProgress(0.0F);
                     //mFavoriteLottie.setActivated(false);
                 }*/
-                mFavoriteLottie.setVisibility(View.VISIBLE);
+            mFavoriteLottie.setVisibility(View.VISIBLE);
 
-            });
+        });
 
-            mFavoriteLottie.setOnClickListener(view -> {
-                mFavoriteLottie.toggleWishlisted();
-                onFavoriteClick(movieDetail);
-            });
+        mFavoriteLottie.setOnClickListener(view -> {
+            mFavoriteLottie.toggleWishlisted();
+            onFavoriteClick(movieDetail);
+        });
 
         return rootView;
     }
@@ -324,11 +334,11 @@ public class MovieDetailFragment extends Fragment implements Injectable {
     public void onFavoriteClick(MovieDetail movieDetail) {
         mediaPlayer.start();
         if (mFavoriteLottie.isActivated()) {
-            Toast.makeText(getContext(), String.valueOf("Added: " + movieDetail.getOriginalTitle()),
+            Toast.makeText(getContext(), String.valueOf("Added: " + movieDetail.getTitle()),
                     Toast.LENGTH_SHORT).show();
             movieDetailViewModel.addFavorite(movieDetail);
         } else {
-            Toast.makeText(getContext(), String.valueOf("Removed: " + movieDetail.getOriginalTitle()),
+            Toast.makeText(getContext(), String.valueOf("Removed: " + movieDetail.getTitle()),
                     Toast.LENGTH_SHORT).show();
             movieDetailViewModel.removeFavorite(movieDetail);
         }
@@ -344,7 +354,6 @@ public class MovieDetailFragment extends Fragment implements Injectable {
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .priority(Priority.HIGH)
                 .placeholder(R.drawable.ic_crew_cast)
-                //.centerCrop()
                 .into(mMovieDirectorImage);
     }
 
@@ -355,15 +364,26 @@ public class MovieDetailFragment extends Fragment implements Injectable {
 
     private void onLoadVideo(Videos videos) {
         ArrayList<Video> videoList = videos.getVideos();
-        videoAdapter.setVideo(videoList);
-        mTrailerCount.setText(String.valueOf(videoAdapter.getItemCount()));
+        mVideosProgressBar.setVisibility(View.GONE);
+        if(videoList.size() > 0){
+            videoAdapter.setVideo(videoList);
+            mTrailerCount.setText(String.valueOf(videoAdapter.getItemCount()));
+            mVideoRecyclerView.setVisibility(View.VISIBLE);
+        }else{
+            mTrailerCount.setVisibility(View.INVISIBLE);
+            mMovieNoVideos.setVisibility(View.VISIBLE);
+        }
     }
 
-    private void onLoadReview(){
+    private void onLoadReview() {
         movieDetailViewModel.reviewsMutableLiveData.observe(this, reviews -> {
             mReviewsProgressBar.setVisibility(View.GONE);
-            reviewAdapter.addReviews(Objects.requireNonNull(reviews).getReviews());
-            mReviewsRecyclerView.setVisibility(View.VISIBLE);
+            if (Objects.requireNonNull(reviews).getReviews() != null && reviews.getReviews().size() > 0) {
+                reviewAdapter.addReviews(reviews.getReviews());
+                mReviewsRecyclerView.setVisibility(View.VISIBLE);
+            } else {
+                mMovieNoReviews.setVisibility(View.VISIBLE);
+            }
         });
     }
 
@@ -382,6 +402,28 @@ public class MovieDetailFragment extends Fragment implements Injectable {
         if (savedInstanceState != null) {
             this.movie = savedInstanceState.getParcelable(ARG_MOVIE);
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.share, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_share) {
+            sharingTrailer(movieDetail.getVideos().getVideos().get(0));
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void sharingTrailer(Video video) {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, movieDetail.getTitle() + " - " + video.getName());
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "http://www.youtube.com/watch?v=" + video.getKey());
+        startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_trailer)));
     }
 
     @Override

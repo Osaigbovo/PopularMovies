@@ -47,8 +47,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_crew_cast" />
-                            <entry key="sourceFile" value="C:\Users\osamudiamen\Downloads\user.svg" />
+                            <entry key="outputName" value="ic_expand_arrow" />
+                            <entry key="sourceFile" value="C:\Users\osamudiamen\Downloads\expand-button.svg" />
                           </map>
                         </option>
                       </PersistentState>
