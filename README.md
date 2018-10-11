@@ -2,19 +2,31 @@
 <img src="https://github.com/Osaigbovo/PopularMovies/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png">
 </p>
 
-<h1 align="center">Popular Movies</h1>
+# <h1 align="center">Popular Movies</h1>
 <p align="center">This is an App made for Udacity Android Nanodegree Project 2.
 Discover Top Rated and Popular Movies with your friends and family using this app, also find out more infomation about each movie.
 This app uses an API provided by https://www.themoviedb.org/.
-It is made with latest Android Architecture Components like LiveData, ViewModel and Paging library. It uses Retrofit for network calls, uses
-Dagger2 for Dependency Injection, Glide for image processing, and RxJava for reactive programming. Also the layouts are designed using Constraint Layout.</p>
+It is made with latest Android Architecture Components like LiveData, ROOM, ViewModel and Paging library. It uses Retrofit for network calls, uses OkHTTP for logging, uses
+Dagger2 for Dependency Injection, Glide for image processing, airBnB's Lottie for animation, and RxJava for reactive programming.
+Also the layouts are designed using Constraint Layout.</p>
 
 
-<h2>Features</h2>
+## Features:
+* Browse through the Top Rated, Popular and your Favorite Movies.
+* Saves favorite movies into Room database for offline access.
+* Search for movies.
+* Swipe to delete favorite movies.
+* Watch and send movie trailers.
+* Read movie reviews.
+* MVVM with Android Architecture Components
+* Endless scrolling using Android Paging library.
+* Handles network status and network failures
+* Material Design.
+* UI optimized for phone and tablet
 
-- Browse through the Top Rated and Popular Movies.
-- Caches data from local cache.
-- UI optimized for phone and tablet
+
+## Screenshots
+<img src="../master/art/screen-01.jpg" width="280"> <img src="../master/art/screen-01.jpg" width="280"> <img src="../master/art/screen-01.jpg" width="280">
 
 
 <h2>Steps To Run The App</h2>

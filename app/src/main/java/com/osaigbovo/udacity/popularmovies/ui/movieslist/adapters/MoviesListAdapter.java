@@ -14,6 +14,8 @@ import com.osaigbovo.udacity.popularmovies.ui.movieslist.MoviesListViewHolder;
 import com.osaigbovo.udacity.popularmovies.util.NetworkStateViewHolder;
 import com.osaigbovo.udacity.popularmovies.util.RetryCallback;
 
+import java.util.Objects;
+
 /**
  * PagedListAdapter is a RecyclerView.Adapter base class which can present the content of PagedLists
  * in a RecyclerView. It requests new pages as the user scrolls, and handles new PagedLists by
@@ -114,7 +116,7 @@ public class MoviesListAdapter extends PagedListAdapter<Movie, RecyclerView.View
         @Override
         public boolean areItemsTheSame(
                 @NonNull Movie oldUser, @NonNull Movie newUser) {
-            return oldUser.getId() == newUser.getId();
+            return Objects.equals(oldUser.getId(), newUser.getId());
         }
 
         @Override
