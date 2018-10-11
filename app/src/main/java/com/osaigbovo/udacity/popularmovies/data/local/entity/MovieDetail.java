@@ -1,23 +1,10 @@
-/*
- * Copyright 2018.  Osaigbovo Odiase
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.osaigbovo.udacity.popularmovies.data.local.entity;
 
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Index;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
@@ -27,11 +14,17 @@ import com.osaigbovo.udacity.popularmovies.data.model.Videos;
 
 import java.util.ArrayList;
 
+/**
+ * Entity that represents a table within the database.
+ * where fields are columns of the table.
+ *
+ * @author Osaigbovo Odiase.
+ */
 @Entity(primaryKeys = "id",
         tableName = "favorite",
         indices = {@Index(value = {"id"}, unique = true)}
 )
-public class MovieDetail {
+public class MovieDetail implements Parcelable {
 
     @NonNull
     @SerializedName("id")
@@ -50,7 +43,7 @@ public class MovieDetail {
     private int budget;
 
     @SerializedName("genres")
-    private ArrayList<Genre> genres = null;
+    private ArrayList<Genre> genres;
 
     @SerializedName("title")
     private String title;
@@ -80,7 +73,7 @@ public class MovieDetail {
     private String tagline;
 
     @SerializedName("vote_average")
-    private float voteAverage;
+    private double voteAverage;
 
     @SerializedName("vote_count")
     private int voteCount;
@@ -102,7 +95,7 @@ public class MovieDetail {
     public MovieDetail(int id, String imdbId, String posterPath, String backdropPath,
                        int budget, ArrayList<Genre> genres, String title, String originalTitle,
                        String overview, float popularity, String releaseDate, int revenue, int runtime,
-                       String originalLanguage, String tagline, float voteAverage, int voteCount, boolean adult,
+                       String originalLanguage, String tagline, double voteAverage, int voteCount, boolean adult,
                        boolean video, Videos videos, Credits credits) {
         this.id = id;
         this.imdbId = imdbId;
@@ -248,11 +241,11 @@ public class MovieDetail {
         this.tagline = tagline;
     }
 
-    public float getVoteAverage() {
+    public double getVoteAverage() {
         return voteAverage;
     }
 
-    public void setVoteAverage(float voteAverage) {
+    public void setVoteAverage(double voteAverage) {
         this.voteAverage = voteAverage;
     }
 
@@ -295,5 +288,82 @@ public class MovieDetail {
     public void setCredits(Credits credits) {
         this.credits = credits;
     }
+
+    protected MovieDetail(Parcel in) {
+        id = in.readInt();
+        imdbId = in.readString();
+        posterPath = in.readString();
+        backdropPath = in.readString();
+        budget = in.readInt();
+        if (in.readByte() == 0x01) {
+            genres = new ArrayList<Genre>();
+            in.readList(genres, Genre.class.getClassLoader());
+        } else {
+            genres = null;
+        }
+        title = in.readString();
+        originalTitle = in.readString();
+        overview = in.readString();
+        popularity = in.readFloat();
+        releaseDate = in.readString();
+        revenue = in.readInt();
+        runtime = in.readInt();
+        originalLanguage = in.readString();
+        tagline = in.readString();
+        voteAverage = in.readDouble();
+        voteCount = in.readInt();
+        adult = in.readByte() != 0x00;
+        video = in.readByte() != 0x00;
+        videos = (Videos) in.readValue(Videos.class.getClassLoader());
+        credits = (Credits) in.readValue(Credits.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(imdbId);
+        dest.writeString(posterPath);
+        dest.writeString(backdropPath);
+        dest.writeInt(budget);
+        if (genres == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(genres);
+        }
+        dest.writeString(title);
+        dest.writeString(originalTitle);
+        dest.writeString(overview);
+        dest.writeFloat(popularity);
+        dest.writeString(releaseDate);
+        dest.writeInt(revenue);
+        dest.writeInt(runtime);
+        dest.writeString(originalLanguage);
+        dest.writeString(tagline);
+        dest.writeDouble(voteAverage);
+        dest.writeInt(voteCount);
+        dest.writeByte((byte) (adult ? 0x01 : 0x00));
+        dest.writeByte((byte) (video ? 0x01 : 0x00));
+        dest.writeValue(videos);
+        dest.writeValue(credits);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<MovieDetail> CREATOR = new Parcelable.Creator<MovieDetail>() {
+        @Override
+        public MovieDetail createFromParcel(Parcel in) {
+            return new MovieDetail(in);
+        }
+
+        @Override
+        public MovieDetail[] newArray(int size) {
+            return new MovieDetail[size];
+        }
+    };
 
 }

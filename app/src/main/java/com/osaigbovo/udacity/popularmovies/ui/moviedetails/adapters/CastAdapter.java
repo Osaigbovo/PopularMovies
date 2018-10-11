@@ -22,6 +22,11 @@ import butterknife.ButterKnife;
 
 import static com.osaigbovo.udacity.popularmovies.util.AppConstants.BASE_IMAGE_URL;
 
+/**
+ * Adapter for Movie Casts.
+ *
+ * @author Osaigbovo Odiase.
+ */
 public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastViewHolder> {
 
     private List<Cast> castList;

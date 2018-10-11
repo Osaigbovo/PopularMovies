@@ -19,8 +19,12 @@ import com.osaigbovo.udacity.popularmovies.R;
 import java.util.ArrayList;
 import java.util.List;
 
-//https://github.com/Blogcat/Android-ExpandableTextView
-
+/**
+ * CustomView for Expandable TextView
+ * //https://github.com/Blogcat/Android-ExpandableTextView
+ *
+ * @author Osaigbovo Odiase.
+ */
 public class ExpandableTextView extends AppCompatTextView {
     private final static int DEFAULT_ANIMATION_DURATION = 750;
     private final List<OnExpandListener> onExpandListeners;
@@ -120,12 +124,7 @@ public class ExpandableTextView extends AppCompatTextView {
 
             // animate from collapsed height to expanded height
             final ValueAnimator valueAnimator = ValueAnimator.ofInt(this.collapsedHeight, expandedHeight);
-            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(final ValueAnimator animation) {
-                    ExpandableTextView.this.setHeight((int) animation.getAnimatedValue());
-                }
-            });
+            valueAnimator.addUpdateListener(animation -> ExpandableTextView.this.setHeight((int) animation.getAnimatedValue()));
 
             // wait for the animation to end
             valueAnimator.addListener(new AnimatorListenerAdapter() {
@@ -179,12 +178,7 @@ public class ExpandableTextView extends AppCompatTextView {
 
             // animate from expanded height to collapsed height
             final ValueAnimator valueAnimator = ValueAnimator.ofInt(expandedHeight, this.collapsedHeight);
-            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(final ValueAnimator animation) {
-                    ExpandableTextView.this.setHeight((int) animation.getAnimatedValue());
-                }
-            });
+            valueAnimator.addUpdateListener(animation -> ExpandableTextView.this.setHeight((int) animation.getAnimatedValue()));
 
             // wait for the animation to end
             valueAnimator.addListener(new AnimatorListenerAdapter() {

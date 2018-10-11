@@ -7,6 +7,8 @@ import com.osaigbovo.udacity.popularmovies.util.ViewsUtils;
 
 
 /**
+ * https://github.com/nickbutcher/plaid
+ * 
  * An extension to image view that has a circular outline.
  */
 public class CircularImageView extends ForegroundImageView {

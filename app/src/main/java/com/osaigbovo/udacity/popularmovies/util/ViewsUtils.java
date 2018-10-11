@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Outline;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.util.Property;
 import android.view.View;
 import android.view.ViewOutlineProvider;
@@ -12,13 +13,15 @@ import android.view.ViewOutlineProvider;
 import com.osaigbovo.udacity.popularmovies.data.model.Crew;
 import com.osaigbovo.udacity.popularmovies.data.model.Genre;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+/*
+* @author Osaigbovo Odiase.
+* */
 public class ViewsUtils {
 
     private ViewsUtils() {
@@ -54,19 +57,6 @@ public class ViewsUtils {
         return df.format(newDate);
     }
 
-    public static String getTime(String dateString) {
-        try {
-            SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'");
-            Date date = format1.parse(dateString);
-            DateFormat sdf = new SimpleDateFormat("h:mm a");
-            Date netDate = (date);
-            return sdf.format(netDate);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return "xx";
-        }
-    }
-
     public static String getDisplayRuntime(int runtime) {
         int hours = runtime / 60;
         int minutes = runtime % 60;
@@ -95,7 +85,7 @@ public class ViewsUtils {
         return sb.toString();
     }
 
-    public static Crew getDisplayDirector(ArrayList<Crew> crews) {
+    public static Crew getDisplayDirector(@NonNull ArrayList<Crew> crews) {
         if (crews.isEmpty()) return null;
         Crew crew = null;
 
@@ -118,10 +108,7 @@ public class ViewsUtils {
     };
 
     /**
-     * converts drawable to bitmap
-     *
-     * @param drawable
-     * @return bitmap
+     * Converts drawable to bitmap
      */
     public static Bitmap getBitmap(Drawable drawable) {
         Bitmap bitmap;
@@ -133,7 +120,8 @@ public class ViewsUtils {
         }
 
         if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
-            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+            // Single color bitmap will be created of 1x1 pixel
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
         } else {
             bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
                     drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);

@@ -32,6 +32,11 @@ import butterknife.ButterKnife;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 import static com.osaigbovo.udacity.popularmovies.util.AppConstants.BASE_IMAGE_URL_;
 
+/**
+ * Adapter for Favorite Movies.
+ *
+ * @author Osaigbovo Odiase.
+ */
 public class FavoriteMoviesAdapter extends RecyclerView.Adapter<FavoriteMoviesAdapter.ViewHolder> {
 
     private List<MovieDetail> favMoviesList;
@@ -117,11 +122,11 @@ public class FavoriteMoviesAdapter extends RecyclerView.Adapter<FavoriteMoviesAd
 
             itemView.setTag(movieDetail);
             itemView.setOnClickListener(view -> {
-                Movie mMovie = (Movie) view.getTag();
+                MovieDetail mMovieDetail = (MovieDetail) view.getTag();
 
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
-                    arguments.putParcelable(MovieDetailFragment.ARG_MOVIE, mMovie);
+                    arguments.putParcelable(MovieDetailFragment.ARG_MOVIE, mMovieDetail);
                     MovieDetailFragment fragment = new MovieDetailFragment();
                     fragment.setArguments(arguments);
                     mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -130,7 +135,7 @@ public class FavoriteMoviesAdapter extends RecyclerView.Adapter<FavoriteMoviesAd
                 } else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, MovieDetailActivity.class);
-                    intent.putExtra(MovieDetailFragment.ARG_MOVIE, mMovie);
+                    intent.putExtra(MovieDetailFragment.ARG_MOVIE, mMovieDetail);
 
                     ActivityOptionsCompat options = ActivityOptionsCompat
                             .makeSceneTransitionAnimation((Activity) context, movieImage, context.getResources()

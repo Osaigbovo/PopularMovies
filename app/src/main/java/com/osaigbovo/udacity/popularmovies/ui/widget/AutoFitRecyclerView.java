@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 /*
  *  http://www.riptutorial.com/android/example/4810/gridlayoutmanager-with-dynamic-span-count
  * */
-
 public class AutoFitRecyclerView extends RecyclerView {
     private GridLayoutManager manager;
     private int columnWidth = -1;

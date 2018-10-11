@@ -5,6 +5,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+/**
+ * @author Osaigbovo Odiase.
+ */
 public class SearchResponse {
 
     @SerializedName("page")

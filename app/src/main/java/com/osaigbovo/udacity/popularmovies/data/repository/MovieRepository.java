@@ -1,7 +1,6 @@
 package com.osaigbovo.udacity.popularmovies.data.repository;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.paging.DataSource;
 
 import com.osaigbovo.udacity.popularmovies.data.local.dao.FavoriteDao;
 import com.osaigbovo.udacity.popularmovies.data.local.entity.MovieDetail;
@@ -20,6 +19,12 @@ import timber.log.Timber;
 
 import static com.osaigbovo.udacity.popularmovies.BuildConfig.API_KEY;
 
+/**
+ * Repository that acts as a mediators between different data sources; API network and ROOM database.
+ * It abstracts the data sources from the rest of the app
+ *
+ * @author Osaigbovo Odiase.
+ */
 @Singleton
 public class MovieRepository {
 
@@ -50,10 +55,6 @@ public class MovieRepository {
 
     public Flowable<List<MovieDetail>> getFavorites() {
         return favoriteDao.getFavoriteMovies();
-    }
-
-    public DataSource.Factory<Integer, MovieDetail> sortASCMovie() {
-        return favoriteDao.sortASCMovie();
     }
 
     public LiveData<MovieDetail> isFavorite(int movieid) {

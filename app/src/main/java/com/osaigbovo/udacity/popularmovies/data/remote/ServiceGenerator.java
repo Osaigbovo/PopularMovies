@@ -1,19 +1,6 @@
-/*
- * Copyright 2018.  Osaigbovo Odiase
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.osaigbovo.udacity.popularmovies.data.remote;
+
+import android.support.annotation.NonNull;
 
 import com.osaigbovo.udacity.popularmovies.PopularMoviesApp;
 
@@ -35,6 +22,12 @@ import timber.log.Timber;
 
 import static com.osaigbovo.udacity.popularmovies.util.AppConstants.BASE_URL;
 
+/**
+ * A class that defines how Retrofit 2 & OkHttp should communicate with an API.
+ * Interceptors, Caching, Logging
+ *
+ * @author Osaigbovo Odiase.
+ */
 @Singleton
 public class ServiceGenerator {
 
@@ -77,7 +70,7 @@ public class ServiceGenerator {
      */
     private static class ResponseCacheInterceptor implements Interceptor {
         @Override
-        public Response intercept(Chain chain) throws IOException {
+        public Response intercept(@NonNull Chain chain) throws IOException {
 
             Response originalResponse = chain.proceed(chain.request());
             String cacheControl = originalResponse.header("Cache-Control");
@@ -103,7 +96,7 @@ public class ServiceGenerator {
      */
     private static class OfflineResponseCacheInterceptor implements Interceptor {
         @Override
-        public Response intercept(Chain chain) throws IOException {
+        public Response intercept(@NonNull Chain chain) throws IOException {
             Request request = chain.request();
 
             if (!PopularMoviesApp.hasNetwork()) {
@@ -125,7 +118,7 @@ public class ServiceGenerator {
      */
     private static class ErrorHandlerInterceptor implements Interceptor {
         @Override
-        public Response intercept(Chain chain) throws IOException {
+        public Response intercept(@NonNull Chain chain) throws IOException {
             Request request = chain.request();
             Response response = chain.proceed(request);
             /*if (response.code() == 500) {

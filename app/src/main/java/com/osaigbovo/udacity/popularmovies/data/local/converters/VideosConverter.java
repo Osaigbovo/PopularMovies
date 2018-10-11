@@ -9,6 +9,11 @@ import com.osaigbovo.udacity.popularmovies.data.model.Video;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+/**
+ * TypeConverter which persists Video type into a known database type.
+ *
+ * @author Osaigbovo Odiase.
+ */
 public class VideosConverter {
 
     @TypeConverter

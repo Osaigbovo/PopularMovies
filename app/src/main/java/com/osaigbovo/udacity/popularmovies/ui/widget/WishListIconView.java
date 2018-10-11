@@ -7,6 +7,11 @@ import android.util.AttributeSet;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+/**
+ * https://github.com/airbnb/lottie-android
+ *
+ * @author Osaigbovo Odiase.
+ */
 public class WishListIconView extends LottieAnimationView {
 
     public WishListIconView(Context context, AttributeSet attrs) {

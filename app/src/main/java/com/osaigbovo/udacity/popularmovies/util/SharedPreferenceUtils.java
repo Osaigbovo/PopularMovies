@@ -4,6 +4,11 @@ import android.content.SharedPreferences;
 
 import com.osaigbovo.udacity.popularmovies.PopularMoviesApp;
 
+/**
+ * Utility methods for working with the SharedPreferences.
+ *
+ * @author Osaigbovo Odiase
+ */
 public class SharedPreferenceUtils {
 
     public static void setSharedPreferenceInt(String key, int value) {

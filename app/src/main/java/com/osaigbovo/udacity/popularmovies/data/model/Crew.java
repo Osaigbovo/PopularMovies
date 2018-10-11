@@ -1,23 +1,14 @@
-/*
- * Copyright 2018.  Osaigbovo Odiase
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.osaigbovo.udacity.popularmovies.data.model;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Crew {
+/**
+ * @author Osaigbovo Odiase.
+ */
+public class Crew implements Parcelable {
 
     @SerializedName("credit_id")
     private String creditId;
@@ -106,4 +97,43 @@ public class Crew {
         this.profilePath = profilePath;
     }
 
+
+    protected Crew(Parcel in) {
+        creditId = in.readString();
+        department = in.readString();
+        gender = in.readInt();
+        id = in.readInt();
+        job = in.readString();
+        name = in.readString();
+        profilePath = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(creditId);
+        dest.writeString(department);
+        dest.writeInt(gender);
+        dest.writeInt(id);
+        dest.writeString(job);
+        dest.writeString(name);
+        dest.writeString(profilePath);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Crew> CREATOR = new Parcelable.Creator<Crew>() {
+        @Override
+        public Crew createFromParcel(Parcel in) {
+            return new Crew(in);
+        }
+
+        @Override
+        public Crew[] newArray(int size) {
+            return new Crew[size];
+        }
+    };
 }

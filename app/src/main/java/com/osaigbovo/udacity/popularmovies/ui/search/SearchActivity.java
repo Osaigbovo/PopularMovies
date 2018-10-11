@@ -40,6 +40,7 @@ import com.osaigbovo.udacity.popularmovies.util.ImeUtils;
 import com.osaigbovo.udacity.popularmovies.util.TransitionUtils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -54,9 +55,14 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * Activity for the Search functionality
+ *
+ * @author Osaigbovo Odiase.
+ */
 public class SearchActivity extends AppCompatActivity {
 
-    public static final String TAG = SearchActivity.class.getName();
+    private static final String TAG = SearchActivity.class.getName();
     public static final String EXTRA_QUERY = "EXTRA_QUERY";
     public static final int RESULT_CODE_SAVE = 7;
 
@@ -81,15 +87,14 @@ public class SearchActivity extends AppCompatActivity {
     @BindView(R.id.results_scrim)
     View resultsScrim;
 
-    SearchMoviesAdapter searchMoviesAdapter;
+    private SearchMoviesAdapter searchMoviesAdapter;
     private TextView noResults;
     private SparseArray<Transition> transitions = new SparseArray<>();
-    private boolean focusQuery = true;
 
-    LinearLayoutManager linearLayoutManager;
-    List<Movie> searchMoviesList;
+    private LinearLayoutManager linearLayoutManager;
+    private List<Movie> searchMoviesList;
 
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private boolean mTwoPane;
 
@@ -126,14 +131,14 @@ public class SearchActivity extends AppCompatActivity {
             postponeEnterTransition();
             searchRecyclerView.getViewTreeObserver()
                     .addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                @Override
-                public boolean onPreDraw() {
-                    searchRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
-                    searchRecyclerView.requestLayout();
-                    startPostponedEnterTransition();
-                    return true;
-                }
-            });
+                        @Override
+                        public boolean onPreDraw() {
+                            searchRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+                            searchRecyclerView.requestLayout();
+                            startPostponedEnterTransition();
+                            return true;
+                        }
+                    });
         }
     }
 
@@ -164,6 +169,7 @@ public class SearchActivity extends AppCompatActivity {
 
     @Override
     public void onEnterAnimationComplete() {
+        boolean focusQuery = true;
         if (focusQuery) {
             // focus the search view once the enter transition finishes
             searchView.requestFocus();
@@ -173,7 +179,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void setupSearchView() {
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setSearchableInfo(Objects.requireNonNull(searchManager).getSearchableInfo(getComponentName()));
         // hint, inputType & ime options seem to be ignored from XML! Set in code
         searchView.setQueryHint(getString(R.string.search_hint));
         searchView.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
@@ -236,7 +242,7 @@ public class SearchActivity extends AppCompatActivity {
         searchViewModel.search(query);
     }
 
-    void clearResults() {
+    private void clearResults() {
         TransitionManager.beginDelayedTransition(container, getTransition(R.transition.auto));
         searchMoviesList.clear();
         searchRecyclerView.setVisibility(View.GONE);
@@ -245,7 +251,7 @@ public class SearchActivity extends AppCompatActivity {
         setNoResultsVisibility(View.GONE);
     }
 
-    void setNoResultsVisibility(int visibility) {
+    private void setNoResultsVisibility(int visibility) {
         if (visibility == View.VISIBLE) {
             if (noResults == null) {
                 noResults = (TextView) ((ViewStub)
@@ -294,7 +300,7 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    Transition getTransition(@TransitionRes int transitionId) {
+    private Transition getTransition(@TransitionRes int transitionId) {
         Transition transition = transitions.get(transitionId);
         if (transition == null) {
             transition = TransitionInflater.from(this).inflateTransition(transitionId);

@@ -1,19 +1,3 @@
-/*
- * Copyright 2016 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.osaigbovo.udacity.popularmovies.ui.transitions;
 
 import android.animation.Animator;
@@ -32,12 +16,13 @@ import android.view.ViewGroup;
 import com.osaigbovo.udacity.popularmovies.R;
 import com.osaigbovo.udacity.popularmovies.util.AnimUtils;
 
-
 /**
  * A transition which shows/hides a view with a circular clipping mask. Callers should provide the
  * center point of the reveal either {@link #setCenter(Point) directly} or by
  * {@link #centerOn(View) specifying} another view to center on; otherwise the target {@code view}'s
  * pivot point will be used.
+ *
+ * https://github.com/nickbutcher/plaid
  */
 public class CircularReveal extends Visibility {
 

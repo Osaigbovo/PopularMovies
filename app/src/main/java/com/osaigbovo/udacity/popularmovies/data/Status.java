@@ -15,6 +15,9 @@
  */
 package com.osaigbovo.udacity.popularmovies.data;
 
+/**
+ * @author Osaigbovo Odiase.
+ */
 public enum  Status {
     RUNNING,
     SUCCESS,

@@ -7,6 +7,11 @@ import com.osaigbovo.udacity.popularmovies.data.model.Crew;
 
 import java.util.ArrayList;
 
+/**
+ * TypeConverter which persists Crew type into a known database type.
+ *
+ * @author Osaigbovo Odiase.
+ */
 public class CrewConverter {
 
     public static String strSeparator = "__,__";

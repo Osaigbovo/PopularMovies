@@ -37,6 +37,11 @@ import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
+/**
+ * A Paged Data Source that uses the before/after keys returned in page requests for pagination.
+ *
+ * @author Osaigbovo Odiase.
+ */
 @Singleton
 public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
 

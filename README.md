@@ -3,7 +3,7 @@
 </p>
 
 <h1 align="center">Popular Movies</h1>
-<p align="center">This is an App made for Udacity Android Nanodegree Project 1.
+<p align="center">This is an App made for Udacity Android Nanodegree Project 2.
 Discover Top Rated and Popular Movies with your friends and family using this app, also find out more infomation about each movie.
 This app uses an API provided by https://www.themoviedb.org/.
 It is made with latest Android Architecture Components like LiveData, ViewModel and Paging library. It uses Retrofit for network calls, uses

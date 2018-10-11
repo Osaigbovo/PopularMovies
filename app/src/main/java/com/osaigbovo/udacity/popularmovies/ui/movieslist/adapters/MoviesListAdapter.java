@@ -1,18 +1,3 @@
-/*
- * Copyright 2018.  Osaigbovo Odiase
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.osaigbovo.udacity.popularmovies.ui.movieslist.adapters;
 
 import android.arch.paging.PagedListAdapter;
@@ -34,6 +19,8 @@ import com.osaigbovo.udacity.popularmovies.util.RetryCallback;
  * in a RecyclerView. It requests new pages as the user scrolls, and handles new PagedLists by
  * computing list differences on a background thread, and dispatching minimal, efficient updates to
  * the RecyclerView to ensure minimal UI thread work.
+ *
+ * @author Osaigbovo Odiase.
  */
 public class MoviesListAdapter extends PagedListAdapter<Movie, RecyclerView.ViewHolder> {
 
@@ -103,19 +90,19 @@ public class MoviesListAdapter extends PagedListAdapter<Movie, RecyclerView.View
      */
     public void setNetworkState(NetworkState newNetworkState) {
 
-                NetworkState previousState = this.networkState;
-                boolean hadExtraRow = hasExtraRow();
-                this.networkState = newNetworkState;
-                boolean hasExtraRow = hasExtraRow();
-                if (hadExtraRow != hasExtraRow) {
-                    if (hadExtraRow) {
-                        notifyItemRemoved(super.getItemCount());
-                    } else {
-                        notifyItemInserted(super.getItemCount());
-                    }
-                } else if (hasExtraRow && previousState != newNetworkState) {
-                    notifyItemChanged(getItemCount() - 1);
-                }
+        NetworkState previousState = this.networkState;
+        boolean hadExtraRow = hasExtraRow();
+        this.networkState = newNetworkState;
+        boolean hasExtraRow = hasExtraRow();
+        if (hadExtraRow != hasExtraRow) {
+            if (hadExtraRow) {
+                notifyItemRemoved(super.getItemCount());
+            } else {
+                notifyItemInserted(super.getItemCount());
+            }
+        } else if (hasExtraRow && previousState != newNetworkState) {
+            notifyItemChanged(getItemCount() - 1);
+        }
 
     }
 

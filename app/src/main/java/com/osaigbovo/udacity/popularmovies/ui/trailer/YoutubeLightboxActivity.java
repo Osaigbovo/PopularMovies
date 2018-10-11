@@ -18,6 +18,8 @@ import butterknife.ButterKnife;
  * This Activity shows how the YouTubePlayerView can be used to create a "Lightbox" similar to that
  * of the StandaloneYouTubePlayer. Avoided rebuffering the video by setting some configchange flags
  * on this activities declaration in the manifest.
+ *
+ * @author Osaigbovo Odiase.
  */
 public class YoutubeLightboxActivity extends YouTubeBaseActivity
         implements YouTubePlayer.OnInitializedListener {

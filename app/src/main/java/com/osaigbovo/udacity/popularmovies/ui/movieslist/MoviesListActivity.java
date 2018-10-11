@@ -1,18 +1,3 @@
-/*
- * Copyright 2018.  Osaigbovo Odiase
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.osaigbovo.udacity.popularmovies.ui.movieslist;
 
 import android.app.ActivityOptions;
@@ -51,7 +36,6 @@ import android.widget.TextView;
 import com.osaigbovo.udacity.popularmovies.PopularMoviesApp;
 import com.osaigbovo.udacity.popularmovies.R;
 import com.osaigbovo.udacity.popularmovies.data.NetworkState;
-import com.osaigbovo.udacity.popularmovies.data.Status;
 import com.osaigbovo.udacity.popularmovies.data.local.entity.MovieDetail;
 import com.osaigbovo.udacity.popularmovies.ui.base.BaseActivity;
 import com.osaigbovo.udacity.popularmovies.ui.moviedetails.MovieDetailActivity;
@@ -84,35 +68,26 @@ import timber.log.Timber;
  * lead to a {@link MovieDetailActivity} representing
  * movie details. On tablets, the activity presents the list of movies and
  * movie details side-by-side using two vertical panes.
+ *
+ * @author Osaigbovo Odiase.
  */
 public class MoviesListActivity extends BaseActivity implements RetryCallback {
 
     private static final int RC_SEARCH = 0;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
     private MoviesListViewModel moviesListViewModel;
 
-    @BindView(R.id.moviesSwipeRefreshLayout)
-    SwipeRefreshLayout mSwipeRefreshLayout;
-    @BindView(R.id.recycler_movies_list)
-    RecyclerView mRecyclerView;
-    @BindView(R.id.recycler_favorites_list)
-    RecyclerView mFavoriteRecyclerView;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.errorMessageTextView)
-    TextView mErrorMessageTextView;
-    @BindView(R.id.retryLoadingButton)
-    Button mRetryButton;
-    @BindView(R.id.loadingProgressBar)
-    ProgressBar mProgressBar;
-    @BindInt(R.integer.movies_columns)
-    int mColumns;
-    @BindView(R.id.item_favorite_state)
-    View noFavorites;
-    @BindDimen(R.dimen.grid_item_spacing)
-    int mGridSpacing;
+    @BindView(R.id.moviesSwipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.recycler_movies_list) RecyclerView mRecyclerView;
+    @BindView(R.id.recycler_favorites_list) RecyclerView mFavoriteRecyclerView;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.errorMessageTextView) TextView mErrorMessageTextView;
+    @BindView(R.id.retryLoadingButton) Button mRetryButton;
+    @BindView(R.id.loadingProgressBar) ProgressBar mProgressBar;
+    @BindInt(R.integer.movies_columns) int mColumns;
+    @BindView(R.id.item_favorite_state) View noFavorites;
+    @BindDimen(R.dimen.grid_item_spacing) int mGridSpacing;
 
     GridLayoutManager gridLayoutManager;
     LinearLayoutManager linearLayoutManager;
@@ -192,6 +167,12 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
                 }
             });
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        noFavorites.setVisibility(mRecyclerView.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -328,23 +309,23 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
             mBottomSheetDialog.dismiss();
             switch (checkedId) {
                 case R.id.radio_button_popular:
+                    noFavorites.setVisibility(View.GONE);
                     if (PopularMoviesApp.hasNetwork()) {
-                        noFavorites.setVisibility(View.GONE);
                         SharedPreferenceUtils.setSharedPreferenceString(AppConstants.PREF_FILTER, AppConstants.SORT_BY_POPULAR);
                         Timber.i("Get Popular Movies");
                         loadMovies(AppConstants.SORT_BY_POPULAR);
                     } else {
-                        //AppUtils.setSnackBar(snackBarView, getString(R.string.error_no_internet));
+                        showMessage(PopularMoviesApp.hasNetwork());
                     }
                     break;
                 case R.id.radio_button_top_rated:
+                    noFavorites.setVisibility(View.GONE);
                     if (PopularMoviesApp.hasNetwork()) {
-                        noFavorites.setVisibility(View.GONE);
                         SharedPreferenceUtils.setSharedPreferenceString(AppConstants.PREF_FILTER, AppConstants.SORT_BY_TOP_RATED);
                         Timber.i("Get Top Rated Movies");
                         loadMovies(AppConstants.SORT_BY_TOP_RATED);
                     } else {
-                        //AppUtils.setSnackBar(snackBarView, getString(R.string.error_no_internet));
+                        showMessage(PopularMoviesApp.hasNetwork());
                     }
                     break;
                 case R.id.radio_button_favorite:
@@ -425,7 +406,7 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
                     // Undo is selected, restore the deleted item
                     moviesListViewModel.addFavorite(movieDetail);
                     favoriteMoviesAdapter.restoreItem(movieDetail, position);
-                    if (favoriteMoviesAdapter.getItemCount() != 0){
+                    if (favoriteMoviesAdapter.getItemCount() != 0) {
                         mFavoriteRecyclerView.setVisibility(View.VISIBLE);
                         noFavorites.setVisibility(View.GONE);
                     }
@@ -467,24 +448,6 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
-
-    /**
-     * Show the current network state for the first load when the movie list
-     * in the adapter is empty and disable swipe to scroll at the first loading
-     *
-     * @param networkState the new network state
-     */
-    private void setInitialLoadingState(NetworkState networkState) {
-        // Error Message
-        mErrorMessageTextView.setVisibility(networkState.getMessage() != null ? View.VISIBLE : View.GONE);
-        if (networkState.getMessage() != null) {
-            mErrorMessageTextView.setText(networkState.getMessage());
-        }
-        // Loading and Retry
-        mRetryButton.setVisibility(networkState.getStatus() == Status.FAILED ? View.VISIBLE : View.GONE);
-        mProgressBar.setVisibility(networkState.getStatus() == Status.FAILED ? View.VISIBLE : View.GONE);
-        mSwipeRefreshLayout.setEnabled(networkState.getStatus() == Status.SUCCESS);
-    }
 
     @OnClick(R.id.retryLoadingButton)
     void retryInitialLoading() {

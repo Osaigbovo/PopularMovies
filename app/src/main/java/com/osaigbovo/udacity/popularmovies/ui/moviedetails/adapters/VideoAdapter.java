@@ -21,6 +21,11 @@ import java.util.ArrayList;
 
 import timber.log.Timber;
 
+/**
+ * Adapter for MOvie Trailers.
+ *
+ * @author Osaigbovo Odiase.
+ */
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 
     private ArrayList<Video> vdo;

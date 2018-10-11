@@ -12,9 +12,10 @@ import com.osaigbovo.udacity.popularmovies.data.local.dao.FavoriteDao;
 import com.osaigbovo.udacity.popularmovies.data.local.entity.MovieDetail;
 
 /**
- * The Room database that contains the Users table
+ * The Room database that contains the FavoriteMovies table
  * Define an abstract class that extends RoomDatabase.
- * This class is annotated with @Database, lists the entities contained in the database, and the DAOs which access them.
+ * This class is annotated with @Database, lists the entities contained in the database,
+ * and the DAOs which access them.
  */
 @Database(entities = {MovieDetail.class}, version = 1/*, exportSchema = false*/)
 @TypeConverters({GenreConverter.class, CastConverter.class, CrewConverter.class, VideosConverter.class})

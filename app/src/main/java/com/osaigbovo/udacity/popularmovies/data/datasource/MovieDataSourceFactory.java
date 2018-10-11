@@ -25,6 +25,11 @@ import com.osaigbovo.udacity.popularmovies.data.remote.RequestInterface;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+/**
+ * A Paged Data Source Factory provides a way to create and observe the last created data source.
+ *
+ * @author Osaigbovo Odiase
+ */
 @Singleton
 public class MovieDataSourceFactory extends DataSource.Factory<Integer, Movie> {
 

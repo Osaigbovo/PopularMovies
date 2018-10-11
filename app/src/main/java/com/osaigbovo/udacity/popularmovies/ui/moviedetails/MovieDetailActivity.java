@@ -37,6 +37,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.osaigbovo.udacity.popularmovies.R;
+import com.osaigbovo.udacity.popularmovies.data.local.entity.MovieDetail;
 import com.osaigbovo.udacity.popularmovies.data.model.Movie;
 import com.osaigbovo.udacity.popularmovies.util.ColorUtils;
 import com.osaigbovo.udacity.popularmovies.util.glide.GlideApp;
@@ -61,20 +62,12 @@ import static com.osaigbovo.udacity.popularmovies.util.ColorUtils.WHITE_FILTER;
  */
 public class MovieDetailActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
-    @BindView(R.id.collapsing_toolbar_detail)
-    CollapsingToolbarLayout mCollapsingToolbarLayout;
-    @BindView(R.id.image_movie_backdrop)
-    ImageView mBackdropImage;
-    @BindView(R.id.toolbar_detail)
-    Toolbar mToolbar;
+    @BindView(R.id.collapsing_toolbar_detail) CollapsingToolbarLayout mCollapsingToolbarLayout;
+    @BindView(R.id.image_movie_backdrop) ImageView mBackdropImage;
+    @BindView(R.id.toolbar_detail) Toolbar mToolbar;
 
-    @Inject
-    DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
-    private MovieDetailViewModel movieDetailViewModel;
-
-    private Movie movie;
+    @Inject DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
+    @Inject ViewModelProvider.Factory viewModelFactory;
 
     @Override
     public DispatchingAndroidInjector<Fragment> supportFragmentInjector() {
@@ -88,8 +81,6 @@ public class MovieDetailActivity extends AppCompatActivity implements HasSupport
         setContentView(R.layout.activity_movie_detail);
         ButterKnife.bind(this);
 
-        //movieDetailViewModel = ViewModelProviders.of(this, viewModelFactory).get(MovieDetailViewModel.class);
-
         // Show the Up button in the action bar.
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
@@ -100,35 +91,46 @@ public class MovieDetailActivity extends AppCompatActivity implements HasSupport
 
         Intent intent = getIntent();
         if (intent.hasExtra(MovieDetailFragment.ARG_MOVIE)) {
-            movie = intent.getExtras().getParcelable(MovieDetailFragment.ARG_MOVIE);
-            Timber.i(String.valueOf(movie.getTitle()));
-
-            if (mCollapsingToolbarLayout != null) {
-                mCollapsingToolbarLayout.setTitle(movie.getTitle());
+            if (intent.getExtras().getParcelable(MovieDetailFragment.ARG_MOVIE) instanceof Movie) {
+                Movie movie = intent.getExtras().getParcelable(MovieDetailFragment.ARG_MOVIE);
+                onLoadCollapsingTitle(movie.getTitle());
+                onLoadBackDropImage(movie.getBackdropPath());
+            } else if (intent.getExtras().getParcelable(MovieDetailFragment.ARG_MOVIE) instanceof MovieDetail) {
+                MovieDetail movieDetail = intent.getExtras().getParcelable(MovieDetailFragment.ARG_MOVIE);
+                onLoadCollapsingTitle(movieDetail.getTitle());
+                onLoadBackDropImage(movieDetail.getBackdropPath());
             }
+            // savedInstanceState is non-null when there is fragment state
+            // saved from previous configurations of this activity
+            // (e.g. when rotating the screen from portrait to landscape).
+            // In this case, the fragment will automatically be re-added
+            // to its container so we don't need to manually add it.
+            if (savedInstanceState == null) {
+                // Create the detail fragment and add it to the activity
+                // using a fragment transaction.
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.item_detail_container, MovieDetailFragment
+                                .newInstance(intent.getExtras().getParcelable(MovieDetailFragment.ARG_MOVIE)))
+                        .commit();
+            }
+        }
+    }
 
-            GlideApp.with(this)
-                    .load(BASE_BACKDROP_URL + movie.getBackdropPath())
-                    .listener(backDropImageListener)
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.DATA)
-                    .priority(Priority.IMMEDIATE)
-                    .transition(withCrossFade())
-                    .centerCrop()
-                    .into(mBackdropImage);
-        }
-        // savedInstanceState is non-null when there is fragment state
-        // saved from previous configurations of this activity
-        // (e.g. when rotating the screen from portrait to landscape).
-        // In this case, the fragment will automatically be re-added
-        // to its container so we don't need to manually add it.
-        if (savedInstanceState == null) {
-            // Create the detail fragment and add it to the activity
-            // using a fragment transaction.
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.item_detail_container, MovieDetailFragment.newInstance(movie))
-                    .commit();
-        }
+    private void onLoadCollapsingTitle(String title) {
+        Timber.i(String.valueOf(title));
+        mCollapsingToolbarLayout.setTitle(title);
+    }
+
+    private void onLoadBackDropImage(String backdropURL) {
+        GlideApp.with(this)
+                .load(BASE_BACKDROP_URL + backdropURL)
+                .listener(backDropImageListener)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .priority(Priority.IMMEDIATE)
+                .transition(withCrossFade())
+                .centerCrop()
+                .into(mBackdropImage);
     }
 
     @Override
@@ -156,7 +158,7 @@ public class MovieDetailActivity extends AppCompatActivity implements HasSupport
         super.onDestroy();
     }
 
-    private RequestListener<Drawable> backDropImageListener = new RequestListener<Drawable>() {
+    private final RequestListener<Drawable> backDropImageListener = new RequestListener<Drawable>() {
         @Override
         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target,
                                        DataSource dataSource, boolean isFirstResource) {

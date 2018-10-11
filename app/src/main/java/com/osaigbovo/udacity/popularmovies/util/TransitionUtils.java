@@ -14,12 +14,16 @@ import java.util.List;
 
 /**
  * Utility methods for working with transitions
+ *
+ * @author Nick Butcher/Plaid
  */
 public class TransitionUtils {
 
-    private TransitionUtils() { }
+    private TransitionUtils() {
+    }
 
-    public static @Nullable Transition findTransition(
+    public static @Nullable
+    Transition findTransition(
             @NonNull TransitionSet set, @NonNull Class<? extends Transition> clazz) {
         for (int i = 0; i < set.getTransitionCount(); i++) {
             Transition transition = set.getTransitionAt(i);
@@ -34,7 +38,8 @@ public class TransitionUtils {
         return null;
     }
 
-    public static @Nullable Transition findTransition(
+    public static @Nullable
+    Transition findTransition(
             @NonNull TransitionSet set,
             @NonNull Class<? extends Transition> clazz,
             @IdRes int targetId) {
@@ -84,14 +89,24 @@ public class TransitionUtils {
 
     public static class TransitionListenerAdapter implements Transition.TransitionListener {
 
-        @Override public void onTransitionStart(Transition transition) { }
+        @Override
+        public void onTransitionStart(Transition transition) {
+        }
 
-        @Override public void onTransitionEnd(Transition transition) { }
+        @Override
+        public void onTransitionEnd(Transition transition) {
+        }
 
-        @Override public void onTransitionCancel(Transition transition) { }
+        @Override
+        public void onTransitionCancel(Transition transition) {
+        }
 
-        @Override public void onTransitionPause(Transition transition) { }
+        @Override
+        public void onTransitionPause(Transition transition) {
+        }
 
-        @Override public void onTransitionResume(Transition transition) { }
+        @Override
+        public void onTransitionResume(Transition transition) {
+        }
     }
 }

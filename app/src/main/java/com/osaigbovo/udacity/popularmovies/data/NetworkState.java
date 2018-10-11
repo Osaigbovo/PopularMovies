@@ -15,6 +15,11 @@
  */
 package com.osaigbovo.udacity.popularmovies.data;
 
+/**
+ * Class to reflect the state of the Network.
+ *
+ * @author Osaigbovo Odiase.
+ */
 public class NetworkState {
 
     private Status status;

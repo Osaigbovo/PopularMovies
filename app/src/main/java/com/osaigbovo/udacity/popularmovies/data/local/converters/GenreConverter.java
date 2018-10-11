@@ -9,6 +9,12 @@ import com.osaigbovo.udacity.popularmovies.data.model.Genre;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+
+/**
+ * TypeConverter which persists Genre type into a known database type.
+ *
+ * @author Osaigbovo Odiase.
+ */
 public class GenreConverter {
 
     @TypeConverter

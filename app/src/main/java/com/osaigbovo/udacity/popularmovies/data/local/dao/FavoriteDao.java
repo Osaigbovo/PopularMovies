@@ -1,7 +1,6 @@
 package com.osaigbovo.udacity.popularmovies.data.local.dao;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.paging.DataSource;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -14,6 +13,11 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 
+/**
+ * Data Access Object that contains methods used for accessing the database.
+ *
+ * @author Osaigbovo Odiase.
+ */
 @Dao
 public interface FavoriteDao {
 
@@ -22,9 +26,6 @@ public interface FavoriteDao {
 
     @Query("SELECT * FROM favorite")
     Flowable<List<MovieDetail>> getFavoriteMovies();
-
-    @Query("SELECT * FROM favorite ORDER BY title ASC")
-    DataSource.Factory<Integer, MovieDetail> sortASCMovie();
 
     @Query("SELECT * FROM favorite WHERE id=:id")
     LiveData<MovieDetail> isFavoriteMovie(int id);

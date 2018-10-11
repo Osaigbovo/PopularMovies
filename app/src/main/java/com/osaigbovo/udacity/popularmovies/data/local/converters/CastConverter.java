@@ -7,6 +7,11 @@ import com.osaigbovo.udacity.popularmovies.data.model.Cast;
 
 import java.util.ArrayList;
 
+/**
+ * TypeConverter which persists Cast type into a known database type.
+ *
+ * @author Osaigbovo Odiase.
+ */
 public class CastConverter {
 
     public static String strSeparator = "__,__";
