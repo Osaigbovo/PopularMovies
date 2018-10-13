@@ -48,12 +48,12 @@ public class MoviesListViewModel extends ViewModel {
         config = new PagedList.Config.Builder()
                 .setPageSize(pageSize)
                 .setInitialLoadSizeHint(pageSize * 2)
-                .setEnablePlaceholders(false)
+                .setEnablePlaceholders(true)
                 .build();
         moviesList = new LivePagedListBuilder<>(movieDataSourceFactory, config).build();
 
         // Get a list of Favorite Movies from the Database
-        favoriteMoviesLiveData= LiveDataReactiveStreams.fromPublisher(movieRepository.getFavorites()
+        favoriteMoviesLiveData = LiveDataReactiveStreams.fromPublisher(movieRepository.getFavorites()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread()));
     }
@@ -77,9 +77,9 @@ public class MoviesListViewModel extends ViewModel {
     }
 
     public void sort(String text) {
-        if (movieDataSourceFactory.getMoDataSourceLiveData().getValue() != null) {
+        /*if (movieDataSourceFactory.getMoDataSourceLiveData().getValue() != null) {
             movieDataSourceFactory.getMoDataSourceLiveData().getValue().invalidate();
-        }
+        }*/
         //moviesList.getValue().getDataSource().invalidate();
         movieDataSourceFactory.sort(text);
     }

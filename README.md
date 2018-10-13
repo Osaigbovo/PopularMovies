@@ -26,7 +26,7 @@ Also the layouts are designed using Constraint Layout.</p>
 
 
 ## Screenshots
-<img src="../master/art/screen-01.jpg" width="280"> <img src="../master/art/screen-01.jpg" width="280"> <img src="../master/art/screen-01.jpg" width="280">
+<img src="../master/art/screen-01.jpg" width="280"> <img src="../master/art/screen-02.jpg" width="280"> <img src="../master/art/screen-03.jpg" width="280">
 
 
 <h2>Steps To Run The App</h2>
