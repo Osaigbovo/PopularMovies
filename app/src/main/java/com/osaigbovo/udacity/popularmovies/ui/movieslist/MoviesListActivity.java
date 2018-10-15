@@ -1,10 +1,8 @@
 package com.osaigbovo.udacity.popularmovies.ui.movieslist;
 
 import android.app.ActivityOptions;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
-import android.arch.paging.PagedList;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,7 +12,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -41,7 +38,6 @@ import com.osaigbovo.udacity.popularmovies.PopularMoviesApp;
 import com.osaigbovo.udacity.popularmovies.R;
 import com.osaigbovo.udacity.popularmovies.data.NetworkState;
 import com.osaigbovo.udacity.popularmovies.data.local.entity.MovieDetail;
-import com.osaigbovo.udacity.popularmovies.data.model.Movie;
 import com.osaigbovo.udacity.popularmovies.ui.base.BaseActivity;
 import com.osaigbovo.udacity.popularmovies.ui.moviedetails.MovieDetailActivity;
 import com.osaigbovo.udacity.popularmovies.ui.movieslist.adapters.FavoriteMoviesAdapter;
@@ -79,21 +75,33 @@ import timber.log.Timber;
 public class MoviesListActivity extends BaseActivity implements RetryCallback {
 
     private static final int RC_SEARCH = 0;
-    private static final String SAVED_LAYOUT_MANAGER= "layout_manager_state";
+    private static final String SAVED_LAYOUT_MANAGER = "layout_manager_state";
+    private static final String BUNDLE_RECYCLER_POSITION_KEY = "recycler_position";
 
-    @Inject ViewModelProvider.Factory viewModelFactory;
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
     private MoviesListViewModel moviesListViewModel;
 
-    @BindView(R.id.moviesSwipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
-    @BindView(R.id.recycler_movies_list) RecyclerView mRecyclerView;
-    @BindView(R.id.recycler_favorites_list) RecyclerView mFavoriteRecyclerView;
-    @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.errorMessageTextView) TextView mErrorMessageTextView;
-    @BindView(R.id.retryLoadingButton) Button mRetryButton;
-    @BindView(R.id.loadingProgressBar) ProgressBar mProgressBar;
-    @BindInt(R.integer.movies_columns) int mColumns;
-    @BindView(R.id.item_favorite_state) View noFavorites;
-    @BindDimen(R.dimen.grid_item_spacing) int mGridSpacing;
+    @BindView(R.id.moviesSwipeRefreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.recycler_movies_list)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.recycler_favorites_list)
+    RecyclerView mFavoriteRecyclerView;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.errorMessageTextView)
+    TextView mErrorMessageTextView;
+    @BindView(R.id.retryLoadingButton)
+    Button mRetryButton;
+    @BindView(R.id.loadingProgressBar)
+    ProgressBar mProgressBar;
+    @BindInt(R.integer.movies_columns)
+    int mColumns;
+    @BindView(R.id.item_favorite_state)
+    View noFavorites;
+    @BindDimen(R.dimen.grid_item_spacing)
+    int mGridSpacing;
 
     GridLayoutManager gridLayoutManager;
     LinearLayoutManager linearLayoutManager;
@@ -133,6 +141,10 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
         assert mRecyclerView != null;
         setupRecyclerView();
         initSwipeToRefresh();
+
+        if (savedInstanceState == null) {
+            loadMoviesFromSharedPrefs();
+        }
     }
 
     private void setupRecyclerView() {
@@ -144,7 +156,6 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
         moviesListAdapter = new MoviesListAdapter(this, this, mTwoPane);
         favoriteMoviesAdapter = new FavoriteMoviesAdapter(this, mTwoPane);
 
-
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mFavoriteRecyclerView.setLayoutManager(linearLayoutManager);
 
@@ -155,16 +166,13 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
         mFavoriteRecyclerView.addItemDecoration(new ItemOffsetDecoration(spacing));
         mRecyclerView.setAdapter(moviesListAdapter);
         mFavoriteRecyclerView.setAdapter(favoriteMoviesAdapter);
-
-        loadMoviesFromSharedPrefs();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable(SAVED_LAYOUT_MANAGER, mRecyclerView.getLayoutManager().onSaveInstanceState());
+        outState.putParcelable(SAVED_LAYOUT_MANAGER, gridLayoutManager.onSaveInstanceState());
         super.onSaveInstanceState(outState);
     }
-
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -176,24 +184,30 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
     protected void onResume() {
         super.onResume();
 
+        if (layoutManagerSavedState != null) {
+            gridLayoutManager.onRestoreInstanceState(layoutManagerSavedState);
+            setupList();
+        }
+
         if (mRecyclerView != null) {
             postponeEnterTransition();
-            mRecyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                @Override
-                public boolean onPreDraw() {
-                    mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
-                    mRecyclerView.requestLayout();
-                    startPostponedEnterTransition();
-                    return true;
-                }
-            });
+            mRecyclerView.getViewTreeObserver()
+                    .addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                        @Override
+                        public boolean onPreDraw() {
+                            mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+                            mRecyclerView.requestLayout();
+                            startPostponedEnterTransition();
+                            return true;
+                        }
+                    });
         }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        noFavorites.setVisibility(mRecyclerView.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+        //noFavorites.setVisibility(mRecyclerView.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -238,7 +252,6 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
                 if (searchMenuView != null) {
                     searchMenuView.setAlpha(1f);
                 }
-
                 if (resultCode == SearchActivity.RESULT_CODE_SAVE) {
                     String query = data.getStringExtra(SearchActivity.EXTRA_QUERY);
                     if (TextUtils.isEmpty(query)) return;
@@ -365,12 +378,10 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
 
     // Pass require filter/sort
     private void loadMovies(String sort) {
-
         if (sort.equalsIgnoreCase(AppConstants.SORT_BY_FAVORITE)) {
             mSwipeRefreshLayout.setEnabled(false);
             mRecyclerView.setVisibility(View.GONE);
             mFavoriteRecyclerView.setVisibility(View.VISIBLE);
-
             moviesListViewModel.getFavorites().observe(this, favoriteMovies -> {
                 if (favoriteMovies != null && favoriteMovies.size() != 0) {
                     favoriteMoviesAdapter.addMoviesList(favoriteMovies);
@@ -382,7 +393,6 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
 
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
             itemTouchHelper.attachToRecyclerView(mFavoriteRecyclerView);
-
         } else {
             mFavoriteRecyclerView.setVisibility(View.GONE);
             noFavorites.setVisibility(View.GONE);
@@ -394,25 +404,9 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
 
     // Fetch and observe List. Also submit paged list to Adapter.
     public void setupList() {
-        moviesListViewModel.moviesList.observe(this, new Observer<PagedList<Movie>>() {
-            @Override
-            public void onChanged(@Nullable PagedList<Movie> pagedList) {
-                //moviesListAdapter.submitList(pagedList);
-
-                if (layoutManagerSavedState != null) {
-                    mRecyclerView.getLayoutManager().onRestoreInstanceState(layoutManagerSavedState);
-                    //mRecyclerView.setLayoutManager(mRecyclerView.getLayoutManager());
-                    Timber.w("IS THIS CALLED");
-                    layoutManagerSavedState = null;
-                } else {
-                    moviesListAdapter.submitList(pagedList);
-                }
-
-            }
-        });
+        moviesListViewModel.moviesList.observe(this, moviesListAdapter::submitList);
         moviesListViewModel.getNetworkState().observe(this, moviesListAdapter::setNetworkState);
     }
-
 
     private ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper
             .SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -495,5 +489,4 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
     public void retry() {
         moviesListViewModel.retry();
     }
-
 }

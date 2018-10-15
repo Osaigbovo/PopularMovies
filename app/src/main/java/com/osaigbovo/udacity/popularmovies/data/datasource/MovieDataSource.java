@@ -10,7 +10,6 @@ import com.osaigbovo.udacity.popularmovies.data.model.Movie;
 import com.osaigbovo.udacity.popularmovies.data.model.MovieResponse;
 import com.osaigbovo.udacity.popularmovies.data.remote.RequestInterface;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Completable;
@@ -31,32 +30,28 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
     private static final String API_KEY = BuildConfig.API_KEY;
     private static final String TAG = "MovieDataSource";
 
-    RequestInterface requestInterface;
-    private CompositeDisposable compositeDisposable;
     private MutableLiveData<NetworkState> networkState = new MutableLiveData<>();
     private MutableLiveData<NetworkState> initialLoad = new MutableLiveData<>();
-
-    private int pageNumber = 1;
 
     private LoadInitialParams<Integer> initialParams;
     private LoadInitialCallback<Integer, Movie> initialCallback;
     private LoadParams<Integer> afterParams;
     private LoadCallback<Integer, Movie> afterCallback;
 
-    //Keep Completable reference for the retry event
-    private Completable retryCompletable;
+    private RequestInterface requestInterface;
+    private CompositeDisposable compositeDisposable;
+    private Completable retryCompletable; //Keep Completable reference for the retry event
+    private int pageNumber = 1;
+    private String sortType;
 
-    String type;
-
-    @Inject
-    MovieDataSource(RequestInterface requestInterface) {
+    MovieDataSource(RequestInterface requestInterface, String sortType) {
         this.requestInterface = requestInterface;
+        this.sortType = sortType;
         compositeDisposable = new CompositeDisposable();
     }
 
     @Override
     public void loadBefore(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Integer, Movie> callback) {
-
     }
 
     @Override
@@ -65,7 +60,6 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
         this.initialParams = params;
         this.initialCallback = callback;
 
-        //Log.d(TAG, "Fetching first page: " + pageNumber);
         Timber.e("Fetching %d page: ", pageNumber);
         // Update network states. We also provide an initial load state to the listeners so that
         // the UI can know when the very first list is loaded.
@@ -73,7 +67,7 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
         initialLoad.postValue(NetworkState.LOADING);
 
         // Get the initial Movies from the api
-        compositeDisposable.add(requestInterface.getMovies(type, API_KEY, 1)
+        compositeDisposable.add(requestInterface.getMovies(sortType, API_KEY, 1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(movieResponse -> onMoviesFetched(movieResponse, callback), this::onError));
@@ -82,7 +76,7 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
 
     private void onMoviesFetched(MovieResponse movieResponse, LoadInitialCallback<Integer, Movie> callback) {
         // Clear retry since request succeeded
-        this.setRetry(null);
+        setRetry(null);
         networkState.postValue(NetworkState.LOADED);
         initialLoad.postValue(NetworkState.LOADED);
         callback.onResult(movieResponse.getResults(), null, 2);
@@ -107,7 +101,7 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
         networkState.postValue(NetworkState.LOADING);
 
         // Get the Movies from the API after id
-        compositeDisposable.add(requestInterface.getMovies(type, API_KEY, afterParams.key)
+        compositeDisposable.add(requestInterface.getMovies(sortType, API_KEY, afterParams.key)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(movieResponse -> onMoreMoviesFetched(movieResponse, callback), this::onPaginationError)
@@ -116,13 +110,11 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
 
     private void onMoreMoviesFetched(MovieResponse movieResponse, LoadCallback<Integer, Movie> callback) {
         // clear retry since last request succeeded
-        MovieDataSource.this.setRetry(null);
-
-        //pageNumber++;
+        setRetry(null);
         Timber.e(String.format("Fetching %d page: ", afterParams.key));
         //Log.e(TAG, String.format("Fetching %d page: ", movieResponse.getPage()));
 
-        callback.onResult(movieResponse.getResults(), afterParams.key+1);
+        callback.onResult(movieResponse.getResults(), afterParams.key + 1);
         networkState.postValue(NetworkState.LOADED);
     }
 

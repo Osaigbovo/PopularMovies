@@ -2,7 +2,6 @@ package com.osaigbovo.udacity.popularmovies.data.datasource;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.DataSource;
-import android.support.annotation.NonNull;
 
 import com.osaigbovo.udacity.popularmovies.data.model.Movie;
 import com.osaigbovo.udacity.popularmovies.data.remote.RequestInterface;
@@ -18,17 +17,14 @@ import javax.inject.Singleton;
 @Singleton
 public class MovieDataSourceFactory extends DataSource.Factory<Integer, Movie> {
 
-    RequestInterface requestInterface;
-
-    private MovieDataSource movieDataSource;
-    private MutableLiveData<MovieDataSource> movieDataSourceLiveData;
-    private String type;
+    public final MutableLiveData<MovieDataSource> movieDataSourceLiveData = new MutableLiveData<>();
+    private final RequestInterface requestInterface;
+    private final String sortType;
 
     @Inject
-    MovieDataSourceFactory(MovieDataSource movieDataSource, RequestInterface requestInterface) {
-        this.movieDataSource = movieDataSource;
+    public MovieDataSourceFactory(RequestInterface requestInterface, String sortType) {
         this.requestInterface = requestInterface;
-        movieDataSourceLiveData = new MutableLiveData<>();
+        this.sortType = sortType;
     }
 
     /*
@@ -41,24 +37,9 @@ public class MovieDataSourceFactory extends DataSource.Factory<Integer, Movie> {
      * */
     @Override
     public DataSource<Integer, Movie> create() {
-        movieDataSource = new MovieDataSource(requestInterface);
-        movieDataSource.type = type;
+        MovieDataSource movieDataSource = new MovieDataSource(requestInterface, sortType);
         movieDataSourceLiveData.postValue(movieDataSource);
         return movieDataSource;
-    }
-
-    @NonNull
-    public MutableLiveData<MovieDataSource> getMoDataSourceLiveData() {
-        return movieDataSourceLiveData;
-    }
-
-    public MovieDataSource getMovieDataSource() {
-        return movieDataSource;
-    }
-
-    // Sort between Top Rated and Popular movies from the API Endpoint.
-    public void sort(String text) {
-        type = text;
     }
 
 }
