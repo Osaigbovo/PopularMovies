@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://github.com/Osaigbovo/PopularMovies/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png">
+<img src="https://github.com/Osaigbovo/PopularMovies/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" width="40">
 </p>
 
 # <h1 align="center">Popular Movies</h1>
@@ -26,7 +26,11 @@ Also the layouts are designed using Constraint Layout.</p>
 
 
 ## Screenshots
-<img src="../master/art/screen-01.jpg" width="280"> <img src="../master/art/screen-02.jpg" width="280"> <img src="../master/art/screen-03.jpg" width="280">
+<img src="../master/art/home.png" width="240"> <img src="../master/art/options.png" width="240"> <img src="../master/art/favorite.png" width="240">
+
+<img src="../master/art/swipe to delete.png" width="240"> <img src="../master/art/search.png" width="240">
+
+<img src="../master/art/movie deets.png" width="240"> <img src="../master/art/movie deetss.png" width="240"> <img src="../master/art/movie deetsss.png" width="240">
 
 
 <h2>Steps To Run The App</h2>
