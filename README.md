@@ -1,5 +1,5 @@
 
-# <h1 align="center"> <img src="https://github.com/Osaigbovo/PopularMovies/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" width="40">  PopularMovies</h1>
+# <h1 align="center"><img src="https://github.com/Osaigbovo/PopularMovies/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" width="40">PopularMovies</h1>
 This is an App made for Udacity Android Nanodegree Project 2.
 Discover Top Rated and Popular Movies with your friends and family using this app, also find out more infomation about each movie.
 This app uses an API provided by https://www.themoviedb.org/.
