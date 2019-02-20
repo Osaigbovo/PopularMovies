@@ -1,10 +1,8 @@
 
 # <h1 align="center"><img src="https://github.com/Osaigbovo/PopularMovies/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" width="40">PopularMovies</h1>
-This is an App made for Udacity Android Nanodegree Project 2.
-Discover Top Rated and Popular Movies with your friends and family using this app, also find out more infomation about each movie.
-This app uses an API provided by https://www.themoviedb.org/.
-It is made with latest Android Architecture Components like LiveData, ROOM, ViewModel and Paging library. It uses Retrofit for network calls, uses OkHTTP for logging, uses
-Dagger2 for Dependency Injection, Glide for image processing, airBnB's Lottie for animation, and RxJava for reactive programming.
+PopularMovies App was made as a part of the Udacity Android Nanodegree program. Users can discover Top-Rated and Popular movies with your friends and family using this app, also find out more infomation about each movie.
+This app used an API provided by https://www.themoviedb.org/. It was developed with the latest Android Architecture Components like LiveData, ROOM, ViewModel and Paging library. It used Retrofit 2 for network calls, used OkHTTP for logging, used
+Dagger 2 for Dependency Injection, Glide for image processing, Lottie for animation, and RxJava 2 for reactive programming.
 Also the layouts are designed using Constraint Layout.
 
 
