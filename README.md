@@ -3,6 +3,7 @@
 PopularMovies is an Android app that was developed as a part of the Udacity Android Nanodegree program. Users can discover Top-Rated and Popular movies with their friends and family using this app, and find out more information about each movie. This app used an API provided by https://www.themoviedb.org/.
 It was developed with the latest Android Architecture Components like LiveData, Room, ViewModel and Paging library. It used Retrofit 2 for network calls, used OkHTTP for logging, used Dagger 2 for Dependency Injection, Glide for image processing, Lottie for animation, and RxJava 2 for reactive programming. Also the layouts are designed using Constraint Layout.
 
+
 ## Features:
 * Browse through the Top Rated, Popular and your Favorite Movies.
 * Saves favorite movies into Room database for offline access.
