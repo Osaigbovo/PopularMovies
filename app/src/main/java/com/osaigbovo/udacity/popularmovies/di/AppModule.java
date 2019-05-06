@@ -1,10 +1,11 @@
 package com.osaigbovo.udacity.popularmovies.di;
 
 import android.app.Application;
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+import androidx.room.Room;
 
 import com.osaigbovo.udacity.popularmovies.data.local.PopularMoviesDatabase;
 import com.osaigbovo.udacity.popularmovies.data.local.dao.FavoriteDao;

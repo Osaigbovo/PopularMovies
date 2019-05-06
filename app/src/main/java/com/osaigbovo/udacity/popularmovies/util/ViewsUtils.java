@@ -5,10 +5,11 @@ import android.graphics.Canvas;
 import android.graphics.Outline;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import android.util.Property;
 import android.view.View;
 import android.view.ViewOutlineProvider;
+
+import androidx.annotation.NonNull;
 
 import com.osaigbovo.udacity.popularmovies.data.model.Crew;
 import com.osaigbovo.udacity.popularmovies.data.model.Genre;

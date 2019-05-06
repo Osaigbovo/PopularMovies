@@ -2,9 +2,10 @@ package com.osaigbovo.udacity.popularmovies.util;
 
 import android.content.Context;
 import android.os.ResultReceiver;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+
+import androidx.annotation.NonNull;
 
 import java.lang.reflect.Method;
 import java.util.Objects;

@@ -2,10 +2,11 @@ package com.osaigbovo.udacity.popularmovies.ui.widget;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
+
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.osaigbovo.udacity.popularmovies.util.AnimUtils;
 
@@ -15,7 +16,7 @@ import java.util.List;
 
 /**
  * https://github.com/nickbutcher/plaid
- *
+ * <p>
  * A {@link RecyclerView.ItemAnimator} that fades & slides newly added items in from a given
  * direction.
  */

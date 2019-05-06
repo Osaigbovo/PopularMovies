@@ -1,8 +1,8 @@
 package com.osaigbovo.udacity.popularmovies.data.datasource;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.PageKeyedDataSource;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.PageKeyedDataSource;
 
 import com.osaigbovo.udacity.popularmovies.BuildConfig;
 import com.osaigbovo.udacity.popularmovies.data.NetworkState;

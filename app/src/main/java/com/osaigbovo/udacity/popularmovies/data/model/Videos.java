@@ -1,8 +1,9 @@
 package com.osaigbovo.udacity.popularmovies.data.model;
 
-import android.arch.persistence.room.ColumnInfo;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import androidx.room.ColumnInfo;
 
 import com.google.gson.annotations.SerializedName;
 

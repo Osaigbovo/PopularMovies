@@ -1,6 +1,6 @@
 package com.osaigbovo.udacity.popularmovies.data.remote;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.osaigbovo.udacity.popularmovies.PopularMoviesApp;
 

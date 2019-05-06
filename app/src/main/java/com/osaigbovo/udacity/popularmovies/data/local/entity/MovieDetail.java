@@ -1,11 +1,12 @@
 package com.osaigbovo.udacity.popularmovies.data.local.entity;
 
-import android.arch.persistence.room.Embedded;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Index;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
+import androidx.room.Embedded;
+import androidx.room.Entity;
+import androidx.room.Index;
 
 import com.google.gson.annotations.SerializedName;
 import com.osaigbovo.udacity.popularmovies.data.model.Credits;

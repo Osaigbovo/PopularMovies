@@ -15,20 +15,20 @@
  */
 package com.osaigbovo.udacity.popularmovies.ui.moviedetails;
 
-import android.arch.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.graphics.Palette;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.palette.graphics.Palette;
 
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
@@ -36,6 +36,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.osaigbovo.udacity.popularmovies.R;
 import com.osaigbovo.udacity.popularmovies.data.local.entity.MovieDetail;
 import com.osaigbovo.udacity.popularmovies.data.model.Movie;
@@ -62,9 +63,11 @@ import static com.osaigbovo.udacity.popularmovies.util.ColorUtils.WHITE_FILTER;
  */
 public class MovieDetailActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
-    @BindView(R.id.collapsing_toolbar_detail) CollapsingToolbarLayout mCollapsingToolbarLayout;
+    @BindView(R.id.collapsing_toolbar_detail)
+    CollapsingToolbarLayout mCollapsingToolbarLayout;
     @BindView(R.id.image_movie_backdrop) ImageView mBackdropImage;
-    @BindView(R.id.toolbar_detail) Toolbar mToolbar;
+    @BindView(R.id.toolbar_detail)
+    Toolbar mToolbar;
 
     @Inject DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
     @Inject ViewModelProvider.Factory viewModelFactory;

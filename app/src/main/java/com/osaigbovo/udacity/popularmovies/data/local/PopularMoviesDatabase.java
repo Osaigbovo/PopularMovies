@@ -1,8 +1,8 @@
 package com.osaigbovo.udacity.popularmovies.data.local;
 
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.TypeConverters;
+import androidx.room.Database;
+import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 
 import com.osaigbovo.udacity.popularmovies.data.local.converters.CastConverter;
 import com.osaigbovo.udacity.popularmovies.data.local.converters.CrewConverter;

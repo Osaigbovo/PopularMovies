@@ -1,6 +1,6 @@
 package com.osaigbovo.udacity.popularmovies.data.local.converters;
 
-import android.arch.persistence.room.TypeConverter;
+import androidx.room.TypeConverter;
 
 import com.google.gson.Gson;
 import com.osaigbovo.udacity.popularmovies.data.model.Crew;

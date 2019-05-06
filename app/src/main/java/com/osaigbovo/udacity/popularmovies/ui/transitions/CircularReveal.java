@@ -4,14 +4,15 @@ import android.animation.Animator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Point;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
 import android.transition.TransitionValues;
 import android.transition.Visibility;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 
 import com.osaigbovo.udacity.popularmovies.R;
 import com.osaigbovo.udacity.popularmovies.util.AnimUtils;
@@ -21,7 +22,7 @@ import com.osaigbovo.udacity.popularmovies.util.AnimUtils;
  * center point of the reveal either {@link #setCenter(Point) directly} or by
  * {@link #centerOn(View) specifying} another view to center on; otherwise the target {@code view}'s
  * pivot point will be used.
- *
+ * <p>
  * https://github.com/nickbutcher/plaid
  */
 public class CircularReveal extends Visibility {
@@ -29,7 +30,8 @@ public class CircularReveal extends Visibility {
     private Point center;
     private float startRadius;
     private float endRadius;
-    private @IdRes int centerOnId = View.NO_ID;
+    private @IdRes
+    int centerOnId = View.NO_ID;
     private View centerOn;
 
     public CircularReveal() {

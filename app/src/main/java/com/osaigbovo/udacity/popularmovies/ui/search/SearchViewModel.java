@@ -1,6 +1,6 @@
 package com.osaigbovo.udacity.popularmovies.ui.search;
 
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModel;
 
 import com.osaigbovo.udacity.popularmovies.data.model.SearchResponse;
 import com.osaigbovo.udacity.popularmovies.data.repository.MovieRepository;
