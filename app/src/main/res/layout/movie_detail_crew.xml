@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,7 +11,7 @@
     app:cardBackgroundColor="@color/colorWhite"
     app:cardElevation="4dp">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -44,7 +45,7 @@
             app:layout_constraintStart_toStartOf="@+id/text_director_label"
             app:layout_constraintTop_toBottomOf="@+id/list_item_director" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_cast"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,6 +59,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_cast_label" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </android.support.design.card.MaterialCardView>

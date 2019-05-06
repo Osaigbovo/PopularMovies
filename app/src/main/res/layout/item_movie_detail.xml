@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".ui.moviedetails.MovieDetailFragment">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:descendantFocusability="blocksDescendants">
@@ -129,7 +129,7 @@
             app:layout_constraintTop_toTopOf="@+id/image_release_date"
             tools:text="@string/movie_release_text" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_genres"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -142,7 +142,7 @@
             app:layout_constraintStart_toEndOf="@+id/image_movie_poster"
             app:layout_constraintTop_toBottomOf="@+id/text_movie_release" />
 
-        <android.support.constraint.Barrier
+        <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier_genres"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
             app:constraint_referenced_ids="recycler_view_genres"
             app:layout_constraintTop_toBottomOf="@+id/recycler_view_genres" />
 
-        <android.support.constraint.Group
+        <androidx.constraintlayout.widget.Group
             android:id="@+id/group_more_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -207,5 +207,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/card_movie_video" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
