@@ -26,8 +26,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            buildConfigField("String", "API_KEY", '"5ba7a64b2ea5c12dd9e12ded0bab8faf"') // 5ba7a64b2ea5c12dd9e12ded0bab8faf
-            buildConfigField("String", "YOUTUBE_KEY", '"AIzaSyAcPnu4LocIiUAM2mOcpiGkzp6DnMRSn04"') // AIzaSyAcPnu4LocIiUAM2mOcpiGkzp6DnMRSn04
+            buildConfigField("String", "API_KEY", '""') // 5ba7a64b2ea5c12dd9e12ded0bab8faf
+            buildConfigField("String", "YOUTUBE_KEY", '""') // AIzaSyAcPnu4LocIiUAM2mOcpiGkzp6DnMRSn04
         }
     }
 
