@@ -117,8 +117,8 @@ dependencies {
     implementation "com.github.bumptech.glide:recyclerview-integration:${versions.glide}"
 
     // Reactive Programming
-    implementation "io.reactivex.rxjava2:rxandroid:${versions.rxandroid}"
-    implementation "io.reactivex.rxjava2:rxjava:${versions.rxjava}"
+    implementation "io.reactivex.rxjava3:rxandroid:${versions.rxandroid}"
+    implementation "io.reactivex.rxjava3:rxjava:${versions.rxjava}"
 
     // View Injection
     implementation "com.jakewharton:butterknife:${versions.butterknife}"
