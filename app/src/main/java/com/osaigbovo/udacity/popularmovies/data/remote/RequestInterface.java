@@ -5,8 +5,8 @@ import com.osaigbovo.udacity.popularmovies.data.model.MovieResponse;
 import com.osaigbovo.udacity.popularmovies.data.model.Reviews;
 import com.osaigbovo.udacity.popularmovies.data.model.SearchResponse;
 
-import io.reactivex.Observable;
-import io.reactivex.Single;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;

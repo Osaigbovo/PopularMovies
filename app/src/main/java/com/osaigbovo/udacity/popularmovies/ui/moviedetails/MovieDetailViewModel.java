@@ -10,10 +10,11 @@ import com.osaigbovo.udacity.popularmovies.data.repository.MovieRepository;
 
 import javax.inject.Inject;
 
-import io.reactivex.Completable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 import timber.log.Timber;
 
 /**
@@ -50,7 +51,7 @@ public class MovieDetailViewModel extends ViewModel {
             Timber.tag("Success");
             movieDetailMutableLiveData.postValue(movieDetail);
         } else {
-            Timber.tag("MovieDetail is a null object");
+            Timber.tag("MovieDetail is a null");
         }
     }
 

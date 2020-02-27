@@ -3,8 +3,8 @@ package com.osaigbovo.udacity.popularmovies.ui.search;
 import android.util.Log;
 import android.widget.SearchView;
 
-import io.reactivex.Observable;
-import io.reactivex.subjects.PublishSubject;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.subjects.PublishSubject;
 
 /**
  * github.com/amitshekhariitbhu/RxJava2-Android-Samples/blob/master/app/src/main/java/com/rxjava2/

@@ -7,7 +7,7 @@ import com.osaigbovo.udacity.popularmovies.data.repository.MovieRepository;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
 
 /**
  * ViewModel for SearchActivity.

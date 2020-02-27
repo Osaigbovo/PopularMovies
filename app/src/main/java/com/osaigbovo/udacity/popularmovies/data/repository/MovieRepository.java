@@ -21,8 +21,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import io.reactivex.Flowable;
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Observable;
+
 import timber.log.Timber;
 
 import static com.osaigbovo.udacity.popularmovies.BuildConfig.API_KEY;
@@ -97,7 +98,8 @@ public class MovieRepository {
                 .build();
 
         // Get the paged list
-        LiveData<PagedList<Movie>> moviesPagedList = new LivePagedListBuilder<>(movieDataSourceFactory, config).build();;
+        LiveData<PagedList<Movie>> moviesPagedList = new LivePagedListBuilder<>(movieDataSourceFactory, config).build();
+        ;
 
         LiveData<NetworkState> networkState = Transformations.switchMap(movieDataSourceFactory.movieDataSourceLiveData,
                 MovieDataSource::getNetworkState);
