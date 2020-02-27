@@ -26,7 +26,6 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.palette.graphics.Palette;
 
@@ -48,8 +47,9 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
-import dagger.android.support.HasSupportFragmentInjector;
+import dagger.android.HasAndroidInjector;
 import timber.log.Timber;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
@@ -61,7 +61,7 @@ import static com.osaigbovo.udacity.popularmovies.util.ColorUtils.WHITE_FILTER;
  * activity is only used on narrow width devices. On tablet-size devices,
  * movie details are presented side-by-side with a list of movies
  */
-public class MovieDetailActivity extends AppCompatActivity implements HasSupportFragmentInjector {
+public class MovieDetailActivity extends AppCompatActivity implements HasAndroidInjector {
 
     @BindView(R.id.collapsing_toolbar_detail)
     CollapsingToolbarLayout mCollapsingToolbarLayout;
@@ -69,12 +69,12 @@ public class MovieDetailActivity extends AppCompatActivity implements HasSupport
     @BindView(R.id.toolbar_detail)
     Toolbar mToolbar;
 
-    @Inject DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
+    @Inject DispatchingAndroidInjector<Object> androidInjector;
     @Inject ViewModelProvider.Factory viewModelFactory;
 
     @Override
-    public DispatchingAndroidInjector<Fragment> supportFragmentInjector() {
-        return dispatchingAndroidInjector;
+    public AndroidInjector<Object> androidInjector() {
+        return androidInjector;
     }
 
     @Override
@@ -193,4 +193,5 @@ public class MovieDetailActivity extends AppCompatActivity implements HasSupport
             return false;
         }
     };
+
 }

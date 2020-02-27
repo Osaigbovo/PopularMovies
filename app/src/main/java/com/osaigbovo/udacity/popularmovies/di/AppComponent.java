@@ -8,7 +8,7 @@ import javax.inject.Singleton;
 
 import dagger.BindsInstance;
 import dagger.Component;
-import dagger.android.support.AndroidSupportInjectionModule;
+import dagger.android.AndroidInjectionModule;
 
 /*
  * Component which actually determines all the modules that has to be used and
@@ -18,7 +18,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
  */
 @Singleton
 @Component(modules = {
-        AndroidSupportInjectionModule.class,
+        AndroidInjectionModule.class,
         AppModule.class,
         ActivityModule.class,
         FragmentBuildersModule.class})

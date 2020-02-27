@@ -1,6 +1,5 @@
 package com.osaigbovo.udacity.popularmovies;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -15,7 +14,7 @@ import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasActivityInjector;
+import dagger.android.HasAndroidInjector;
 import timber.log.Timber;
 
 /**
@@ -23,14 +22,14 @@ import timber.log.Timber;
  *
  * @author Osaigbovo Odiase.
  */
-public class PopularMoviesApp extends Application implements HasActivityInjector {
+public class PopularMoviesApp extends Application implements HasAndroidInjector {
 
     private static PopularMoviesApp instance;
 
     public static Context context;
 
     @Inject
-    DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
+    DispatchingAndroidInjector<Object> androidInjector;
 
     private RefWatcher refWatcher;
 
@@ -78,8 +77,9 @@ public class PopularMoviesApp extends Application implements HasActivityInjector
     }
 
     @Override
-    public AndroidInjector<Activity> activityInjector() {
-        return dispatchingAndroidInjector;
+    public AndroidInjector<Object> androidInjector() {
+        AppInjector.init(this);
+        return androidInjector;
     }
 }
 

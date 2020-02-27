@@ -246,6 +246,7 @@ public class MoviesListActivity extends BaseActivity implements RetryCallback {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case RC_SEARCH:
                 // reset the search icon which we hid

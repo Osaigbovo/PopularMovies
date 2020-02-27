@@ -11,8 +11,8 @@ import androidx.fragment.app.FragmentManager;
 import com.osaigbovo.udacity.popularmovies.PopularMoviesApp;
 
 import dagger.android.AndroidInjection;
+import dagger.android.HasAndroidInjector;
 import dagger.android.support.AndroidSupportInjection;
-import dagger.android.support.HasSupportFragmentInjector;
 
 /**
  * Helper class to automatically inject fragments if they implement {link Injectable}.
@@ -72,7 +72,7 @@ public class AppInjector {
     }
 
     private static void handleActivity(Activity activity) {
-        if (activity instanceof HasSupportFragmentInjector) {
+        if (activity instanceof HasAndroidInjector) {
             AndroidInjection.inject(activity);
         }
         if (activity instanceof FragmentActivity) {
