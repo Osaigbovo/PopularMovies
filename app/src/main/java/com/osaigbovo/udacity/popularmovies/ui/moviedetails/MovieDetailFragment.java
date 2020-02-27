@@ -168,7 +168,7 @@ public class MovieDetailFragment extends Fragment implements Injectable {
             onLoadSynopsis(movie.getOverview());
 
             movieDetailViewModel.getMovieDetails(movie.getId());
-            movieDetailViewModel.movieDetailMutableLiveData.observe(this, movieDetail -> {
+            movieDetailViewModel.movieDetailMutableLiveData.observe(getViewLifecycleOwner(), movieDetail -> {
                 this.movieDetail = movieDetail;
                 onLoadGenres(movieDetail.getGenres());
                 onLoadRuntime(movieDetail.getRuntime());
@@ -176,7 +176,7 @@ public class MovieDetailFragment extends Fragment implements Injectable {
                 onLoadCast(movieDetail.getCredits());
                 onLoadVideo(movieDetail.getVideos());
 
-                movieDetailViewModel.isFavorite(movieDetail.getId()).observe(this, favMovieDetail1 -> {
+                movieDetailViewModel.isFavorite(movieDetail.getId()).observe(getViewLifecycleOwner(), favMovieDetail1 -> {
                     mFavoriteLottie.setActivated(favMovieDetail1 != null);
         /*if(movieDetail!=null){
             mFavoriteLottie.setProgress(1.0F);
@@ -382,7 +382,7 @@ public class MovieDetailFragment extends Fragment implements Injectable {
 
     // Display Movie Reviews
     private void onLoadReview() {
-        movieDetailViewModel.reviewsMutableLiveData.observe(this, reviews -> {
+        movieDetailViewModel.reviewsMutableLiveData.observe(getViewLifecycleOwner(), reviews -> {
             mReviewsProgressBar.setVisibility(View.GONE);
             if (Objects.requireNonNull(reviews).getReviews() != null && reviews.getReviews().size() > 0) {
                 reviewAdapter.addReviews(reviews.getReviews());

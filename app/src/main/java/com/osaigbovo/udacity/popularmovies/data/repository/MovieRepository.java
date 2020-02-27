@@ -21,6 +21,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import hu.akarnokd.rxjava3.bridge.RxJavaBridge;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 
@@ -65,7 +66,7 @@ public class MovieRepository {
     }
 
     public Flowable<List<MovieDetail>> getFavorites() {
-        return favoriteDao.getFavoriteMovies();
+        return favoriteDao.getFavoriteMovies().as(RxJavaBridge.toV3Flowable());
     }
 
     public LiveData<MovieDetail> isFavorite(int movieid) {

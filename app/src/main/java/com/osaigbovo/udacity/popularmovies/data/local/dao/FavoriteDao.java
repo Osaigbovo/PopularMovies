@@ -11,7 +11,7 @@ import com.osaigbovo.udacity.popularmovies.data.local.entity.MovieDetail;
 
 import java.util.List;
 
-import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.Flowable;
 
 /**
  * Data Access Object that contains methods used for accessing the database.

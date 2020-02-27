@@ -26,8 +26,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            buildConfigField("String", "API_KEY", '"5ba7a64b2ea5c12dd9e12ded0bab8faf"')
-            buildConfigField("String", "YOUTUBE_KEY", '"AIzaSyAcPnu4LocIiUAM2mOcpiGkzp6DnMRSn04"')
+            buildConfigField("String", "API_KEY", '"5ba7a64b2ea5c12dd9e12ded0bab8faf"') // 5ba7a64b2ea5c12dd9e12ded0bab8faf
+            buildConfigField("String", "YOUTUBE_KEY", '"AIzaSyAcPnu4LocIiUAM2mOcpiGkzp6DnMRSn04"') // AIzaSyAcPnu4LocIiUAM2mOcpiGkzp6DnMRSn04
         }
     }
 
@@ -87,6 +87,8 @@ dependencies {
     // Room RxJava Support for Room
     implementation 'androidx.room:room-rxjava2:2.2.4'
 
+    implementation "com.github.akarnokd:rxjava3-bridge:3.0.0"
+
     // Paging
     implementation "androidx.paging:paging-runtime:${versions.paging}"
     implementation "android.arch.paging:rxjava2:${versions.paging}"
@@ -94,7 +96,8 @@ dependencies {
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
     implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"
+    //implementation "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"
+    implementation "com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0-RC8"
 
     // OkHTTP
     implementation "com.squareup.okhttp3:okhttp:${versions.okhttp}"
