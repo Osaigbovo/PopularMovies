@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion versions.compileSdk
-    buildToolsVersion "29.0.3"
+
     defaultConfig {
         applicationId "com.osaigbovo.udacity.popularmovies"
         minSdkVersion 21
@@ -26,8 +26,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            buildConfigField("String", "API_KEY", '""') // 5ba7a64b2ea5c12dd9e12ded0bab8faf
-            buildConfigField("String", "YOUTUBE_KEY", '""') // AIzaSyAcPnu4LocIiUAM2mOcpiGkzp6DnMRSn04
+            buildConfigField("String", "API_KEY", '"5ba7a64b2ea5c12dd9e12ded0bab8faf"') // 5ba7a64b2ea5c12dd9e12ded0bab8faf
+            buildConfigField("String", "YOUTUBE_KEY", '"AIzaSyAcPnu4LocIiUAM2mOcpiGkzp6DnMRSn04"') // AIzaSyAcPnu4LocIiUAM2mOcpiGkzp6DnMRSn04
         }
     }
 
@@ -136,8 +136,7 @@ dependencies {
     implementation "com.jakewharton.timber:timber:${versions.timber}"
 
     // LeakCanary
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leakcanary}"
-    // debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'
+    // debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leakcanary}"
     // releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${versions.leakcanary}"
 
     // Dependencies for local unit tests

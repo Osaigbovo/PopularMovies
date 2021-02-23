@@ -125,7 +125,7 @@ public class MoviesListAdapter extends PagedListAdapter<Movie, RecyclerView.View
                 @NonNull Movie oldUser, @NonNull Movie newUser) {
             // NOTE: if you use equals, your object must properly override Object#equals()
             // Incorrectly returning false here will result in too many animations.
-            return oldUser.equals(newUser);
+            return oldUser == newUser;
         }
     };
 }

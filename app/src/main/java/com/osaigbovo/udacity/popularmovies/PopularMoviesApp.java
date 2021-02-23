@@ -30,13 +30,6 @@ public class PopularMoviesApp extends Application implements HasAndroidInjector 
     @Inject
     DispatchingAndroidInjector<Object> androidInjector;
 
-//    private RefWatcher refWatcher;
-//
-//    public static RefWatcher getRefWatcher(Context context) {
-//        PopularMoviesApp application = (PopularMoviesApp) context.getApplicationContext();
-//        return application.refWatcher;
-//    }
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -48,11 +41,6 @@ public class PopularMoviesApp extends Application implements HasAndroidInjector 
             Timber.plant(new Timber.DebugTree());
         }
         Timber.i("Creating our Application");
-
-        /*if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
-        }
-        refWatcher = LeakCanary.install(this);*/
 
         context = getApplicationContext();
     }
