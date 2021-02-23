@@ -6,7 +6,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.osaigbovo.udacity.popularmovies.di.AppInjector;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.Objects;
 
@@ -31,12 +30,12 @@ public class PopularMoviesApp extends Application implements HasAndroidInjector 
     @Inject
     DispatchingAndroidInjector<Object> androidInjector;
 
-    private RefWatcher refWatcher;
-
-    public static RefWatcher getRefWatcher(Context context) {
-        PopularMoviesApp application = (PopularMoviesApp) context.getApplicationContext();
-        return application.refWatcher;
-    }
+//    private RefWatcher refWatcher;
+//
+//    public static RefWatcher getRefWatcher(Context context) {
+//        PopularMoviesApp application = (PopularMoviesApp) context.getApplicationContext();
+//        return application.refWatcher;
+//    }
 
     @Override
     public void onCreate() {
